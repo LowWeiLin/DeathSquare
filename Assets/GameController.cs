@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour {
 	// ===============================
 	// 		Players
 	// ===============================
-	private List<GameObject> playerList = new List<GameObject>();
+	private List<PlayerBase> playerBaseList = new List<PlayerBase>();
 
 	// ===============================
 	// 		Entities
@@ -35,11 +35,19 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+		foreach (PlayerBase player in playerBaseList) {
+			// TODO: check if player can make action.
+			if (!player.isMoving) {
+				player.Action();
+			}
+		}
+
 	}
 
 	// Register a player in the game
 	public void registerPlayer(GameObject playerObject) {
-		playerList.Add (playerObject);
+		playerBaseList.Add (playerObject.GetComponent<PlayerBase>());
+		Debug.Log ("Register");
 	}
 
 }

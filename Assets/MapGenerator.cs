@@ -69,6 +69,11 @@ public class MapGenerator : MonoBehaviour {
 	public Vector2 GridToWorld(Vector2 g) {
 		return new Vector2(g.x * tileWidth, g.y * tileHeight);
 	}
+
+	
+	public Vector2 GridToWorld(int x, int y) {
+		return new Vector2(x * tileWidth, y * tileHeight);
+	}
 	
 	public bool OutOfBounds(Vector2 v, int gridWidth, int gridHeight) {
 		Vector2 world = WorldToGrid(v);

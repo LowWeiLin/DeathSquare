@@ -4,12 +4,12 @@ using System.Collections;
 public class PlayerBase : EntityBase {
 
 	// Use this for initialization
-	void Start () {
-	
+	new protected void Start () {
+		base.Start ();
+		gameController.registerPlayer (this.gameObject);
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	public virtual void Action () {
 	
 	}
 }
