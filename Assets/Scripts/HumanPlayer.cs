@@ -12,6 +12,21 @@ public class HumanPlayer : PlayerBase {
 
 	public override void Action () {
 		// Something like that.
-		setMoveToPosition (new Vec2i(getPosition().x, getPosition().y + 1));
+		if(Input.GetKey(KeyCode.UpArrow))
+		{	
+			setMoveToPosition (new Vec2i(getPosition().x, getPosition().y + 1));
+		}
+		else if(Input.GetKey(KeyCode.DownArrow))
+		{	
+			setMoveToPosition (new Vec2i(getPosition().x, getPosition().y - 1));
+		}
+		else if(Input.GetKey(KeyCode.LeftArrow))
+		{	
+			setMoveToPosition (new Vec2i(getPosition().x - 1, getPosition().y));
+		}
+		else if(Input.GetKey(KeyCode.RightArrow))
+		{	
+			setMoveToPosition (new Vec2i(getPosition().x + 1, getPosition().y));
+		}
 	}
 }
