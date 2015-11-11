@@ -58,6 +58,14 @@ public class Map : MonoBehaviour {
 		}
 	}
 
+	public bool isOccupied(Vec2i v) {
+		// TODO: check if visible.
+		if (OutOfBounds(v) || map[v.y, v.x] != 0) {
+			return true;
+		}
+		return false;
+	}
+
 	public void DestroyTiles() {
 		foreach (GameObject obj in tiles) { 
 			Destroy(obj);
@@ -66,6 +74,10 @@ public class Map : MonoBehaviour {
 	}
 
 	public Vector2 WorldToGrid(Vector2 w) {
+		return new Vector2(Mathf.Floor(w.x / tileWidth), Mathf.Floor(w.y / tileHeight));
+	}
+
+	public Vector2 WorldToGrid(Vec2i w) {
 		return new Vector2(Mathf.Floor(w.x / tileWidth), Mathf.Floor(w.y / tileHeight));
 	}
 	
@@ -81,12 +93,11 @@ public class Map : MonoBehaviour {
 		return new Vector2(x * tileWidth, y * tileHeight);
 	}
 	
-	public bool OutOfBounds(Vector2 v) {
-		Vector2 world = WorldToGrid(v);
-		return world.x < 0 || world.y < 0 || world.x >= width || world.y >= height;
+	public bool OutOfBounds(Vec2i v) {
+		return v.x < 0 || v.y < 0 || v.x >= width || v.y >= height;
 	}
 	
-	public bool WithinBounds(Vector2 v) {
+	public bool WithinBounds(Vec2i v) {
 		return !OutOfBounds(v);
 	}
 

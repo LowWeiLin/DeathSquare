@@ -71,12 +71,14 @@ public class EntityBase : MonoBehaviour {
 
 	public void setMoveToPosition(Vec2i pos) {
 		// Check isAdjacent, no obstacles on map and entity list
-		if (pos.isAdjacent (position)) {
+		if (pos.isAdjacent (position) && !gameController.isOccupied(pos)) {
 		
-			this.moveToPosition = pos;
+			this.moveToPosition = position;
 
 			// Move immediately if valid
-			this.position = pos;
+			// Must use this fn to change position.
+			gameController.entityMap.ChangePosition(this, pos);
+
 			this.initialPosition = gameObject.transform.position;
 			this.targetPosition = map.GridToWorld (pos.x, pos.y);
 

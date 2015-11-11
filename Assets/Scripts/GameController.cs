@@ -15,12 +15,12 @@ public class GameController : MonoBehaviour {
 	// ===============================
 	// 		Players
 	// ===============================
-	private List<PlayerBase> playerBaseList = new List<PlayerBase>();
+	public List<PlayerBase> playerBaseList = new List<PlayerBase>();
 
 	// ===============================
 	// 		Entities
 	// ===============================
-	EntityMap entityMap = new EntityMap();
+	public EntityMap entityMap = new EntityMap();
 
 	
 	// Use this for initialization
@@ -49,4 +49,7 @@ public class GameController : MonoBehaviour {
 		entityMap.AddEntity (playerObject.GetComponent<EntityBase>());
 	}
 
+	public bool isOccupied(Vec2i v) {
+		return map.isOccupied (v) || entityMap.isOccupied (v);
+	}
 }

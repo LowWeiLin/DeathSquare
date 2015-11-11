@@ -13,19 +13,22 @@ public class EntityMap
 		return isOccupied(new Vec2i(x,y));
 	}
 
-	
-	public bool isOccupied(Vec2i pos) {
+	public EntityBase getOccupant(Vec2i pos) {
 		List<EntityBase> list = null;
 		if (entities.TryGetValue(pos, out list)) {
 			if (list.Count > 0) {
 				foreach(EntityBase e in list) {
 					if (e.isCollider) {
-						return true;
+						return e;
 					}
 				}	
 			}
 		}
-		return false;
+		return null;
+	}
+	
+	public bool isOccupied(Vec2i pos) {
+		return (getOccupant(pos) != null);
 	}
 
 	public void AddEntity (EntityBase e) {
@@ -37,9 +40,17 @@ public class EntityMap
 		list.Add (e);
 	}
 
-	public void ChangePosition(EntityBase e, Vec2i newPos) {
-		// TODO:
+	public void RemoveEntity(EntityBase entity) {
+		List<EntityBase> list = null;
+		if (entities.TryGetValue(entity.position, out list)) {
+			list.Remove(entity);
+		}
+	}
 
+	public void ChangePosition(EntityBase e, Vec2i newPos) {
+		RemoveEntity (e);
+		e.position = newPos;
+		AddEntity (e);
 	}
 }
 
