@@ -25,8 +25,9 @@ public class EntityBase : MonoBehaviour {
 	protected MapGenerator mapGenerator;
 	protected GameController gameController;
 
+	private Vector3 initialPosition;
 	private Vector3 targetPosition;
-	private float epi = 0.00001f;
+	private float epi = 0.01f;
 	float progress;
 
 	// Use this for initialization
@@ -39,13 +40,14 @@ public class EntityBase : MonoBehaviour {
 	void Update () {
 		if (isMoving && progress <= 1f) {
 
-			transform.position = Vector3.Lerp (transform.position, targetPosition, progress);
+			transform.position = Vector3.Lerp (initialPosition, targetPosition, progress);
 			if ((transform.position - targetPosition).magnitude <= epi) {
 				isMoving = false;
 				progress = 0f;
 				transform.position = targetPosition;
+			} else {
+				progress += 0.05f;
 			}
-			progress += 0.05f;
 		}
 	}
 	
@@ -59,6 +61,7 @@ public class EntityBase : MonoBehaviour {
 
 		// Move immediately if valid
 		this.position = pos;
+		this.initialPosition = gameObject.transform.position;
 		this.targetPosition = mapGenerator.GridToWorld (pos.x, pos.y);
 
 		this.isMoving = true;

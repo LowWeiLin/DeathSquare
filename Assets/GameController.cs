@@ -47,7 +47,6 @@ public class GameController : MonoBehaviour {
 	// Register a player in the game
 	public void registerPlayer(GameObject playerObject) {
 		playerBaseList.Add (playerObject.GetComponent<PlayerBase>());
-		Debug.Log ("Register");
 	}
 
 }

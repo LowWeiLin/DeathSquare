@@ -11,6 +11,5 @@ public class HumanPlayer : PlayerBase {
 	public override void Action () {
 		// Something like that.
 		setMoveToPosition (new Vec2i(getPosition().x, getPosition().y + 1));
-		Debug.Log ("Action");
 	}
 }
