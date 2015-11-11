@@ -5,6 +5,8 @@ public class HumanPlayer : PlayerBase {
 
 	// Use this for initialization
 	new protected void Start () {
+		position.x = 1;
+		position.y = 1;
 		base.Start ();
 	}
 

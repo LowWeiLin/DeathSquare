@@ -13,6 +13,17 @@ public struct Vec2i {
 	public override int GetHashCode() {
 		return x * 10000 + y;	
 	}
+
+	public bool isAdjacent(Vec2i v) {
+		if (Mathf.Abs(v.x - x) <= 1 || Mathf.Abs(v.y - y) <= 1) {
+			return true;
+		}
+		return false;
+	}
+
+	public Vec2i Add(int x, int y) {
+		return new Vec2i (this.x + x, this.y + y);
+	}
 }
 
 public class EntityBase : MonoBehaviour {
@@ -22,7 +33,7 @@ public class EntityBase : MonoBehaviour {
 	public bool isMoving = false;
 	public bool isCollider = false;
 
-	protected MapGenerator mapGenerator;
+	protected Map map;
 	protected GameController gameController;
 
 	private Vector3 initialPosition;
@@ -33,7 +44,10 @@ public class EntityBase : MonoBehaviour {
 	// Use this for initialization
 	protected void Start () {
 		gameController = GameObject.Find ("GameController").GetComponent<GameController> ();
-		mapGenerator = GameObject.Find ("Map").GetComponent<MapGenerator> ();
+		map = GameObject.Find ("Map").GetComponent<Map> ();
+
+		this.transform.position = map.GridToWorld (position);
+
 	}
 	
 	// Update is called once per frame
@@ -56,15 +70,18 @@ public class EntityBase : MonoBehaviour {
 	}
 
 	public void setMoveToPosition(Vec2i pos) {
-		// Check valid pos
-		this.moveToPosition = pos;
+		// Check isAdjacent, no obstacles on map and entity list
+		if (pos.isAdjacent (position)) {
+		
+			this.moveToPosition = pos;
 
-		// Move immediately if valid
-		this.position = pos;
-		this.initialPosition = gameObject.transform.position;
-		this.targetPosition = mapGenerator.GridToWorld (pos.x, pos.y);
+			// Move immediately if valid
+			this.position = pos;
+			this.initialPosition = gameObject.transform.position;
+			this.targetPosition = map.GridToWorld (pos.x, pos.y);
 
-		this.isMoving = true;
+			this.isMoving = true;
+		}
 
 	}
 

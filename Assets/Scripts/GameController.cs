@@ -7,8 +7,7 @@ public class GameController : MonoBehaviour {
 	// ===============================
 	// 		Map
 	// ===============================
-	public MapGenerator mapGenerator;
-	private int[,] globalMap;
+	public Map map;
 
 	private int width = 16;
 	private int height = 16;
@@ -21,14 +20,14 @@ public class GameController : MonoBehaviour {
 	// ===============================
 	// 		Entities
 	// ===============================
-	private Dictionary<Vec2i, List<GameObject>> entityList = new Dictionary<Vec2i, List<GameObject>>();
+	EntityMap entityMap = new EntityMap();
 
 	
 	// Use this for initialization
 	void Start () {
-		mapGenerator.init ();
-		globalMap = mapGenerator.GenerateMap(width, height);
-		mapGenerator.DrawMap (globalMap, width, height);
+		map.init ();
+		map.GenerateMap(width, height);
+		map.DrawMap (width, height);
 
 	}
 	
@@ -47,6 +46,7 @@ public class GameController : MonoBehaviour {
 	// Register a player in the game
 	public void registerPlayer(GameObject playerObject) {
 		playerBaseList.Add (playerObject.GetComponent<PlayerBase>());
+		entityMap.AddEntity (playerObject.GetComponent<EntityBase>());
 	}
 
 }

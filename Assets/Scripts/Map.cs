@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class MapGenerator : MonoBehaviour {
+public class Map : MonoBehaviour {
 
 	public GameObject wall;
 	public GameObject floor;
@@ -11,6 +11,9 @@ public class MapGenerator : MonoBehaviour {
 	private float tileWidth;
 	private float tileHeight;
 
+	public int[,] map;
+	public int width;
+	public int height;
 
 	public void init() {
 		tileWidth = floor.GetComponent<SpriteRenderer> ().bounds.size.x;
@@ -18,7 +21,6 @@ public class MapGenerator : MonoBehaviour {
 	}
 	
 	public int[,] GenerateMap (int width, int height) {
-		int[,] map;
 		map = new int[height, width];
 
 		for (int i=0 ; i<height ; i++) {
@@ -33,8 +35,9 @@ public class MapGenerator : MonoBehaviour {
 		return map;
 	}
 
-	public void DrawMap(int[,] map, int width, int height) {
-
+	public void DrawMap(int width, int height) {
+		this.width = width;
+		this.height = height;
 
 		// Destroy existing tiles
 		DestroyTiles ();
@@ -69,19 +72,22 @@ public class MapGenerator : MonoBehaviour {
 	public Vector2 GridToWorld(Vector2 g) {
 		return new Vector2(g.x * tileWidth, g.y * tileHeight);
 	}
-
+	
+	public Vector2 GridToWorld(Vec2i v) {
+		return new Vector2(v.x * tileWidth, v.y * tileHeight);
+	}
 	
 	public Vector2 GridToWorld(int x, int y) {
 		return new Vector2(x * tileWidth, y * tileHeight);
 	}
 	
-	public bool OutOfBounds(Vector2 v, int gridWidth, int gridHeight) {
+	public bool OutOfBounds(Vector2 v) {
 		Vector2 world = WorldToGrid(v);
-		return world.x < 0 || world.y < 0 || world.x >= gridWidth || world.y >= gridHeight;
+		return world.x < 0 || world.y < 0 || world.x >= width || world.y >= height;
 	}
 	
-	public bool WithinBounds(Vector2 v, int gridWidth, int gridHeight) {
-		return !OutOfBounds(v, gridWidth, gridHeight);
+	public bool WithinBounds(Vector2 v) {
+		return !OutOfBounds(v);
 	}
 
 }
