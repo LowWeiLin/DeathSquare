@@ -49,10 +49,11 @@ public class Map : MonoBehaviour {
 				GameObject tile;
 				// Set tiles
 				if (map[j,i] == 0) {
-					tile = (GameObject)Instantiate(floor, GridToWorld(new Vector2(j,i)), Quaternion.identity);
+					tile = Instantiate(floor, GridToWorld(new Vector2(j,i)), Quaternion.identity) as GameObject;
 				} else {
-					tile = (GameObject)Instantiate(wall, GridToWorld(new Vector2(j,i)), Quaternion.identity);
+					tile = Instantiate(wall, GridToWorld(new Vector2(j,i)), Quaternion.identity) as GameObject;
 				}
+				tile.transform.parent = transform;
 				tiles.Add(tile);
 			}
 		}
