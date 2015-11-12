@@ -2,8 +2,8 @@
 using System.Collections;
 
 public struct Vec2i {
-	public int x;
-	public int y;
+	public readonly int x;
+	public readonly int y;
 
 	public Vec2i(int x, int y) {
 		this.x = x;
@@ -20,9 +20,13 @@ public struct Vec2i {
 		}
 		return false;
 	}
-
-	public Vec2i Add(int x, int y) {
-		return new Vec2i (this.x + x, this.y + y);
+	
+	public static Vec2i operator +(Vec2i left, Vec2i right) {
+		return new Vec2i(right.x + left.x, right.y + left.y);
+	}
+	
+	public static Vec2i operator -(Vec2i left, Vec2i right) {
+		return new Vec2i(right.x - left.x, right.y - left.y);
 	}
 }
 
@@ -67,6 +71,10 @@ public class EntityBase : MonoBehaviour {
 	
 	public Vec2i getPosition() {
 		return position;
+	}
+
+	public bool IsOccupied(Vec2i position) {
+		return gameController.entityMap.isOccupied(position);
 	}
 
 	public void setMoveToPosition(Vec2i pos) {
