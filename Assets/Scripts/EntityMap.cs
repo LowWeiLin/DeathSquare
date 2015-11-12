@@ -1,19 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EntityMap
-{
+public class EntityMap {
+
 	private Dictionary<Vec2i, List<EntityBase>> entities = new Dictionary<Vec2i, List<EntityBase>>();
 
-	public EntityMap ()
-	{
+	public bool IsOccupied(int x, int y) {
+		return IsOccupied(new Vec2i(x,y));
 	}
 
-	public bool isOccupied(int x, int y) {
-		return isOccupied(new Vec2i(x,y));
-	}
-
-	public EntityBase getOccupant(Vec2i pos) {
+	public EntityBase GetOccupant(Vec2i pos) {
 		List<EntityBase> list = null;
 		if (entities.TryGetValue(pos, out list)) {
 			if (list.Count > 0) {
@@ -27,8 +23,8 @@ public class EntityMap
 		return null;
 	}
 	
-	public bool isOccupied(Vec2i pos) {
-		return (getOccupant(pos) != null);
+	public bool IsOccupied(Vec2i pos) {
+		return (GetOccupant(pos) != null);
 	}
 
 	public void AddEntity (EntityBase e) {

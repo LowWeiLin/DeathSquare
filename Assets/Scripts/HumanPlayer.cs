@@ -3,10 +3,12 @@ using System.Collections;
 
 public class HumanPlayer : PlayerBase {
 
-	// Use this for initialization
-	new protected void Start () {
-		position = new Vec2i(1, 1);
-		base.Start ();
+	void Start () {
+		Init();
+	}
+
+	public void Init() {
+		base.Init(new Vec2i(1, 1));
 	}
 
 	public override void Action () {
@@ -26,10 +28,14 @@ public class HumanPlayer : PlayerBase {
 			offset = new Vec2i(1, 0);
 		}
 
-		Vec2i destination = getPosition() + offset;
+		Vec2i destination = position + offset;
 
 		if (!IsOccupied(destination)) {
 			setMoveToPosition(destination);
+		}
+
+		if (Input.GetKeyUp(KeyCode.Space)) {
+			Fire();
 		}
 	}
 }

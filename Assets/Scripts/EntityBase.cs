@@ -39,47 +39,28 @@ public class EntityBase : MonoBehaviour {
 
 	protected Map map;
 	protected GameController gameController;
-
-	private Vector3 initialPosition;
-	private Vector3 targetPosition;
-	private float epi = 0.01f;
-	float progress;
-
-	// Use this for initialization
-	protected void Start () {
+	
+	public void Init(Vec2i position) {
 		gameController = GameObject.Find ("GameController").GetComponent<GameController> ();
 		map = GameObject.Find ("Map").GetComponent<Map> ();
 
-		this.transform.position = map.GridToWorld (position);
+		this.position = position;
+		transform.position = map.GridToWorld (position);
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (isMoving && progress <= 1f) {
-
-			transform.position = Vector3.Lerp (initialPosition, targetPosition, progress);
-			if ((transform.position - targetPosition).magnitude <= epi) {
-				isMoving = false;
-				progress = 0f;
-				transform.position = targetPosition;
-			} else {
-				progress += 0.05f;
-			}
-		}
-	}
-	
-	public Vec2i getPosition() {
-		return position;
+		gameController.RegisterEntity (this);
 	}
 
-	public bool IsOccupied(Vec2i position) {
-		return gameController.entityMap.isOccupied(position);
+	public virtual bool CanAct() {
+		return !isMoving;
+	}
+
+	public virtual void Action () {
+		
 	}
 
 	public void setMoveToPosition(Vec2i pos) {
 		// Check isAdjacent, no obstacles on map and entity list
-		if (pos.isAdjacent (position) && !gameController.isOccupied(pos)) {
+		if (pos.isAdjacent (position) && !gameController.IsOccupied(pos)) {
 		
 			this.moveToPosition = position;
 
@@ -87,12 +68,29 @@ public class EntityBase : MonoBehaviour {
 			// Must use this fn to change position.
 			gameController.entityMap.ChangePosition(this, pos);
 
-			this.initialPosition = gameObject.transform.position;
-			this.targetPosition = map.GridToWorld (pos.x, pos.y);
+			Vector3 initialPosition = gameObject.transform.position;
+			Vector3 targetPosition = map.GridToWorld (pos.x, pos.y);
 
-			this.isMoving = true;
+			StartCoroutine(Move(initialPosition, targetPosition));
 		}
-
 	}
 
+	IEnumerator Move(Vector3 initialPosition, Vector3 targetPosition) {
+		isMoving = true;
+		float progress = 0f;
+		while (progress <= 1f) {
+			transform.position = Vector3.Lerp (initialPosition, targetPosition, progress);
+			progress += 0.05f;
+			yield return null;
+		}
+		isMoving = false;
+	}
+
+	// ===============================
+	// 		Entity API
+	// ===============================
+
+	public bool IsOutOfBounds(Vec2i position) {
+		return map.OutOfBounds(position);
+	}
 }

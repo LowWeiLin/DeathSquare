@@ -15,7 +15,7 @@ public class Map : MonoBehaviour {
 	public int width;
 	public int height;
 
-	public void init() {
+	public void Init() {
 		tileWidth = floor.GetComponent<SpriteRenderer> ().bounds.size.x;
 		tileHeight = floor.GetComponent<SpriteRenderer> ().bounds.size.y;
 	}
@@ -58,7 +58,7 @@ public class Map : MonoBehaviour {
 		}
 	}
 
-	public bool isOccupied(Vec2i v) {
+	public bool IsOccupied(Vec2i v) {
 		// TODO: check if visible.
 		if (OutOfBounds(v) || map[v.y, v.x] != 0) {
 			return true;

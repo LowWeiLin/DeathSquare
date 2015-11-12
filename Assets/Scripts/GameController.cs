@@ -15,41 +15,39 @@ public class GameController : MonoBehaviour {
 	// ===============================
 	// 		Players
 	// ===============================
-	public List<PlayerBase> playerBaseList = new List<PlayerBase>();
+	public List<PlayerBase> players = new List<PlayerBase>();
 
 	// ===============================
 	// 		Entities
 	// ===============================
 	public EntityMap entityMap = new EntityMap();
+	public List<EntityBase> entities = new List<EntityBase>();
 
 	
-	// Use this for initialization
 	void Start () {
-		map.init ();
+		map.Init();
 		map.GenerateMap(width, height);
 		map.DrawMap (width, height);
-
 	}
 	
-	// Update is called once per frame
 	void Update () {
-	
-		foreach (PlayerBase player in playerBaseList) {
-			// TODO: check if player can make action.
-			if (!player.isMoving) {
-				player.Action();
+		foreach (EntityBase e in new List<EntityBase>(entities)) {
+			if (e.CanAct()) {
+				e.Action();
 			}
 		}
-
 	}
 
-	// Register a player in the game
-	public void registerPlayer(GameObject playerObject) {
-		playerBaseList.Add (playerObject.GetComponent<PlayerBase>());
-		entityMap.AddEntity (playerObject.GetComponent<EntityBase>());
+	public void RegisterPlayer(PlayerBase player) {
+		players.Add(player);
 	}
 
-	public bool isOccupied(Vec2i v) {
-		return map.isOccupied (v) || entityMap.isOccupied (v);
+	public void RegisterEntity(EntityBase entity) {
+		entities.Add(entity);
+		entityMap.AddEntity(entity);
+	}
+
+	public bool IsOccupied(Vec2i v) {
+		return map.IsOccupied (v) || entityMap.IsOccupied (v);
 	}
 }
