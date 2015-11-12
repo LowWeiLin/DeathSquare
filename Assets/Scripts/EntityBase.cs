@@ -83,6 +83,7 @@ public class EntityBase : MonoBehaviour {
 			progress += 0.05f;
 			yield return null;
 		}
+		transform.position = targetPosition;
 		isMoving = false;
 	}
 
