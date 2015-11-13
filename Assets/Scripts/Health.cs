@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof(EntityBase))]
 public class Health : MonoBehaviour {
-	
+
+	EntityBase entity;
+
 	public int maxHp = 10;
 	public int hp = 10;
 	
 	// Use this for initialization
 	void Start () {
+		entity = GetComponent<EntityBase> ();
 		hp = maxHp;
 	}
 	
@@ -17,8 +21,7 @@ public class Health : MonoBehaviour {
 		hp = Mathf.Max (hp, 0);
 		if (hp <= 0)
 		{
-			Debug.Log("Died:" + gameObject);
-			Destroy(this.gameObject);
+			entity.DestroyEntity();
 		}
 	}
 	

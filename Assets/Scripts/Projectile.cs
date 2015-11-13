@@ -15,9 +15,11 @@ public class Projectile : EntityBase {
 	}
 
 	public override void OnCollision(EntityBase entity) {
-		Health h = entity.GetComponent<Health> ();
-		if (h != null) {
-			h.TakeDamage (1);
+		if (entity != null) {
+			Health h = entity.GetComponent<Health> ();
+			if (h != null) {
+				h.TakeDamage (1);
+			}
 		}
 		DestroyEntity ();
 	}
