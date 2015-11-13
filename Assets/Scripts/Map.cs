@@ -15,7 +15,10 @@ public class Map : MonoBehaviour {
 	public int width;
 	public int height;
 
+	private bool initialized = false;
 	public void Init() {
+		if (initialized)
+			return;
 		tileWidth = floor.GetComponent<SpriteRenderer> ().bounds.size.x;
 		tileHeight = floor.GetComponent<SpriteRenderer> ().bounds.size.y;
 	}

@@ -14,6 +14,7 @@ public class EntityBase : MonoBehaviour {
 	public void Init(Vec2i position) {
 		gameController = GameObject.Find ("GameController").GetComponent<GameController> ();
 		map = GameObject.Find ("Map").GetComponent<Map> ();
+		map.Init ();
 
 		this.position = position;
 		transform.position = map.GridToWorld (position);
@@ -40,7 +41,11 @@ public class EntityBase : MonoBehaviour {
 		
 	}
 
-	public void Move(Dir direction) {
+	protected void Face(Dir d) {
+		facing = d;
+	}
+
+	protected void Move(Dir direction) {
 		Move (position + direction.ToVec());
 	}
 
@@ -87,4 +92,5 @@ public class EntityBase : MonoBehaviour {
 	public bool IsOutOfBounds(Vec2i position) {
 		return map.OutOfBounds(position);
 	}
+
 }
