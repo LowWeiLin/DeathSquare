@@ -14,7 +14,7 @@ public struct Vec2i {
 		return x * 10000 + y;	
 	}
 	
-	public bool isAdjacent(Vec2i v) {
+	public bool IsAdjacent(Vec2i v) {
 		if (Mathf.Abs(v.x - x) <= 1 || Mathf.Abs(v.y - y) <= 1) {
 			return true;
 		}
@@ -30,6 +30,6 @@ public struct Vec2i {
 	}
 
 	public override string ToString () {
-		return string.Format("(%d, %d)", x, y);
+		return string.Format("({0}, {1})", x, y);
 	}
 }
