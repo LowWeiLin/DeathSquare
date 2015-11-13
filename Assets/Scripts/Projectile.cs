@@ -3,19 +3,15 @@ using System.Collections;
 
 public class Projectile : EntityBase {
 
-	public new void Init(Vec2i position) {
+	Dir direction;
+
+	public void Init(Vec2i position, Dir direction) {
 		base.Init(position);
+		this.direction = direction;
 	}
 
 	public override void Action () {
-		Vec2i offset = new Vec2i(0, 1);
-		Vec2i destination = position + offset;
-
-		setMoveToPosition(destination);
-
-		if (IsOutOfBounds(position)) {
-			Destroy(gameObject);
-		}
+		Move(direction);
 	}
 
 	public override void OnCollision(EntityBase entity) {

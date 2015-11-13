@@ -38,7 +38,11 @@ public class EntityBase : MonoBehaviour {
 		
 	}
 
-	public void setMoveToPosition(Vec2i pos) {
+	public void Move(Dir direction) {
+		Move (position + direction.ToVec());
+	}
+	
+	public void Move(Vec2i pos) {
 		// Check isAdjacent, no obstacles on map and entity list
 		if (pos.isAdjacent (position) && !gameController.IsOccupied (pos)) {
 		
@@ -51,7 +55,7 @@ public class EntityBase : MonoBehaviour {
 			Vector3 initialPosition = gameObject.transform.position;
 			Vector3 targetPosition = map.GridToWorld (pos.x, pos.y);
 
-			StartCoroutine (Move (initialPosition, targetPosition));
+			StartCoroutine (MoveTransform (initialPosition, targetPosition));
 		} else if (gameController.IsOccupied (pos)) {
 			EntityBase e = gameController.GetOccupant(pos);
 
@@ -61,7 +65,7 @@ public class EntityBase : MonoBehaviour {
 		}
 	}
 
-	IEnumerator Move(Vector3 initialPosition, Vector3 targetPosition) {
+	IEnumerator MoveTransform(Vector3 initialPosition, Vector3 targetPosition) {
 		isMoving = true;
 		float progress = 0f;
 		while (progress <= 1f) {

@@ -5,7 +5,7 @@ public enum Dir {Up, Right, Down, Left}
 
 public static class Extensions
 {
-	public static Vec2i vec(this Dir dir)
+	public static Vec2i ToVec(this Dir dir)
 	{
 		switch (dir) {
 		case Dir.Up:

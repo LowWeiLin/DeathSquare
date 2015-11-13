@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class HumanPlayer : PlayerBase {
@@ -31,7 +31,7 @@ public class HumanPlayer : PlayerBase {
 		Vec2i destination = position + offset;
 
 		if (!IsOccupied(destination)) {
-			setMoveToPosition(destination);
+			Move(destination);
 		}
 
 		if (Input.GetKeyUp(KeyCode.Space)) {
