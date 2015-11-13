@@ -47,7 +47,20 @@ public class GameController : MonoBehaviour {
 		entityMap.AddEntity(entity);
 	}
 
+	public void UnregisterPlayer(PlayerBase player) {
+		players.Remove(player);
+	}
+	
+	public void UnregisterEntity(EntityBase entity) {
+		entities.Remove(entity);
+		entityMap.RemoveEntity(entity);
+	}
+
 	public bool IsOccupied(Vec2i v) {
 		return map.IsOccupied (v) || entityMap.IsOccupied (v);
+	}
+
+	public EntityBase GetOccupant(Vec2i v) {
+		return entityMap.GetOccupant (v);
 	}
 }

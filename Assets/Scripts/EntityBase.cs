@@ -21,6 +21,11 @@ public class EntityBase : MonoBehaviour {
 		gameController.RegisterEntity (this);
 	}
 
+	public void DestroyEntity() {
+		gameController.UnregisterEntity (this);
+		Destroy (this.gameObject);
+	}
+
 	public virtual bool CanAct() {
 		return !isMoving;
 	}
@@ -29,20 +34,30 @@ public class EntityBase : MonoBehaviour {
 		
 	}
 
+	public virtual void OnCollision(EntityBase entity) {
+		
+	}
+
 	public void setMoveToPosition(Vec2i pos) {
 		// Check isAdjacent, no obstacles on map and entity list
-		if (pos.isAdjacent (position) && !gameController.IsOccupied(pos)) {
+		if (pos.isAdjacent (position) && !gameController.IsOccupied (pos)) {
 		
 			this.moveToPosition = position;
 
 			// Move immediately if valid
 			// Must use this fn to change position.
-			gameController.entityMap.ChangePosition(this, pos);
+			gameController.entityMap.ChangePosition (this, pos);
 
 			Vector3 initialPosition = gameObject.transform.position;
 			Vector3 targetPosition = map.GridToWorld (pos.x, pos.y);
 
-			StartCoroutine(Move(initialPosition, targetPosition));
+			StartCoroutine (Move (initialPosition, targetPosition));
+		} else if (gameController.IsOccupied (pos)) {
+			EntityBase e = gameController.GetOccupant(pos);
+
+			// Call OnCollision functions
+			OnCollision(e);
+
 		}
 	}
 

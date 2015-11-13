@@ -17,4 +17,8 @@ public class Projectile : EntityBase {
 			Destroy(gameObject);
 		}
 	}
+
+	public override void OnCollision(EntityBase entity) {
+		DestroyEntity ();
+	}
 }
