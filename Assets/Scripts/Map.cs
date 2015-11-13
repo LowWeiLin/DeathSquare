@@ -74,8 +74,8 @@ public class Map : MonoBehaviour {
 		tiles.Clear ();
 	}
 
-	public Vector2 WorldToGrid(Vector2 w) {
-		return new Vector2(Mathf.Floor(w.x / tileWidth), Mathf.Floor(w.y / tileHeight));
+	public Vec2i WorldToGrid(Vector2 w) {
+		return new Vec2i(Mathf.FloorToInt(w.x / tileWidth), Mathf.FloorToInt(w.y / tileHeight));
 	}
 
 	public Vector2 WorldToGrid(Vec2i w) {

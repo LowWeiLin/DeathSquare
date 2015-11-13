@@ -4,7 +4,7 @@ using System.Collections;
 public class EntityBase : MonoBehaviour {
 
 	public Vec2i position;
-	public Vec2i moveToPosition; // UDLR of position.
+	public Dir facing;
 	public bool isMoving = false;
 	public bool isCollider = false;
 
@@ -17,6 +17,8 @@ public class EntityBase : MonoBehaviour {
 
 		this.position = position;
 		transform.position = map.GridToWorld (position);
+
+		facing = Dir.Up;
 
 		gameController.RegisterEntity (this);
 	}
@@ -44,16 +46,16 @@ public class EntityBase : MonoBehaviour {
 	
 	public void Move(Vec2i pos) {
 		// Check isAdjacent, no obstacles on map and entity list
-		if (pos.isAdjacent (position) && !gameController.IsOccupied (pos)) {
+		if (pos.IsAdjacent (position) && !gameController.IsOccupied (pos)) {
 		
-			this.moveToPosition = position;
-
 			// Move immediately if valid
 			// Must use this fn to change position.
 			gameController.entityMap.ChangePosition (this, pos);
 
 			Vector3 initialPosition = gameObject.transform.position;
 			Vector3 targetPosition = map.GridToWorld (pos.x, pos.y);
+
+			facing = map.WorldToGrid((initialPosition - targetPosition)).ToDir();
 
 			StartCoroutine (MoveTransform (initialPosition, targetPosition));
 		} else if (gameController.IsOccupied (pos)) {

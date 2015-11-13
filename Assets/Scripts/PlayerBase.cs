@@ -21,6 +21,6 @@ public class PlayerBase : EntityBase {
 
 	public void Fire() {
 		GameObject shot = Instantiate(projectile) as GameObject;
-		shot.GetComponent<Projectile>().Init(position);
+		shot.GetComponent<Projectile>().Init(position, facing);
 	}
 }
