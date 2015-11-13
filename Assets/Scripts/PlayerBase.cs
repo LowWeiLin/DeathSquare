@@ -19,6 +19,10 @@ public class PlayerBase : EntityBase {
 		return gameController.entityMap.IsOccupied(position);
 	}
 
+	public bool IsOccupied(Dir direction) {
+		return IsOccupied(direction.ToVec() + position);
+	}
+
 	public void Fire() {
 		GameObject shot = Instantiate(projectile) as GameObject;
 		shot.GetComponent<Projectile>().Init(position, facing);

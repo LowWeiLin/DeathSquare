@@ -43,23 +43,24 @@ public class EntityBase : MonoBehaviour {
 	public void Move(Dir direction) {
 		Move (position + direction.ToVec());
 	}
-	
-	public void Move(Vec2i pos) {
-		// Check isAdjacent, no obstacles on map and entity list
-		if (pos.IsAdjacent (position) && !gameController.IsOccupied (pos)) {
+
+	void Move(Vec2i destination) {
+
+		facing = (destination - position).ToDir();
 		
+		// Check isAdjacent, no obstacles on map and entity list
+		if (destination.IsAdjacent (position) && !gameController.IsOccupied (destination)) {
+
 			// Move immediately if valid
 			// Must use this fn to change position.
-			gameController.entityMap.ChangePosition (this, pos);
+			gameController.entityMap.ChangePosition (this, destination);
 
 			Vector3 initialPosition = gameObject.transform.position;
-			Vector3 targetPosition = map.GridToWorld (pos.x, pos.y);
-
-			facing = map.WorldToGrid((initialPosition - targetPosition)).ToDir();
-
+			Vector3 targetPosition = map.GridToWorld (destination.x, destination.y);
 			StartCoroutine (MoveTransform (initialPosition, targetPosition));
-		} else if (gameController.IsOccupied (pos)) {
-			EntityBase e = gameController.GetOccupant(pos);
+
+		} else if (gameController.IsOccupied (destination)) {
+			EntityBase e = gameController.GetOccupant(destination);
 
 			// Call OnCollision functions
 			OnCollision(e);
