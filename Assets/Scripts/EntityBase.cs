@@ -6,7 +6,8 @@ public class EntityBase : MonoBehaviour {
 	public Vec2i position;
 	public Dir facing;
 	public bool isMoving = false;
-	public bool isCollider = false;
+	public bool willObstruct = false;
+	public bool willCollide = false;
 
 	protected Map map;
 	protected GameController gameController;
@@ -53,9 +54,17 @@ public class EntityBase : MonoBehaviour {
 
 		facing = (destination - position).ToDir();
 		
-		// Check isAdjacent, no obstacles on map and entity list
-		if (destination.IsAdjacent (position) && !gameController.IsOccupied (destination)) {
+		bool isAdjacent = destination.IsAdjacent(position);
+		if (!isAdjacent) {
+			return;
+		}
 
+		bool occupied = gameController.IsOccupied(destination);
+		bool unobstructed = !occupied ||
+			gameController.entityMap.IsOccupied(destination) &&
+			!gameController.GetOccupant(destination).willObstruct;
+
+		if (unobstructed) {
 			// Move immediately if valid
 			// Must use this fn to change position.
 			gameController.entityMap.ChangePosition (this, destination);
@@ -63,13 +72,16 @@ public class EntityBase : MonoBehaviour {
 			Vector3 initialPosition = gameObject.transform.position;
 			Vector3 targetPosition = map.GridToWorld (destination.x, destination.y);
 			StartCoroutine (MoveTransform (initialPosition, targetPosition));
+		}
 
-		} else if (gameController.IsOccupied (destination)) {
+		if (occupied) {
 			EntityBase e = gameController.GetOccupant(destination);
+			this.OnCollision(e);
 
-			// Call OnCollision functions
-			OnCollision(e);
-
+			// e will be null if colliding with a wall
+			if (e != null) {
+				e.OnCollision(this);
+			}
 		}
 	}
 

@@ -34,8 +34,6 @@ public class HumanPlayer : PlayerBase {
 			return;
 		}
 
-		if (!IsOccupied(direction)) {
-			Move(direction);
-		}
+		Move(direction);
 	}
 }

@@ -8,7 +8,7 @@ public class PlayerBase : EntityBase {
 	
 	public new void Init(Vec2i position) {
 		base.Init(position);
-		isCollider = true;
+		willObstruct = true;
 		gameController.RegisterPlayer (this);
 	}
 

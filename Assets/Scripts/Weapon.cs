@@ -5,19 +5,19 @@ public abstract class Weapon : MonoBehaviour {
 
 	public float cooldown;
 
-	bool enabled = true;
+	bool isUsable = true;
 
 	public void Attack(PlayerBase player) {
-		if (enabled) {
+		if (isUsable) {
 			PerformAttack(player);
 			StartCoroutine(PutOnCooldown ());
 		}
 	}
 
 	IEnumerator PutOnCooldown() {
-		enabled = false;
+		isUsable = false;
 		yield return new WaitForSeconds(cooldown);
-		enabled = true;
+		isUsable = true;
 	}
 
 	public abstract void PerformAttack(PlayerBase player);

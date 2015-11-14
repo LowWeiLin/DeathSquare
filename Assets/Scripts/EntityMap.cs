@@ -10,7 +10,7 @@ public class EntityMap {
 		if (entities.TryGetValue(pos, out list)) {
 			if (list.Count > 0) {
 				foreach(EntityBase e in list) {
-					if (e.isCollider) {
+					if (e.willCollide) {
 						return e;
 					}
 				}	
