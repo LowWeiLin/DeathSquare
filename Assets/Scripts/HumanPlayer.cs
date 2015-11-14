@@ -14,7 +14,7 @@ public class HumanPlayer : PlayerBase {
 	public override void Action () {
 
 		if (Input.GetKeyUp(KeyCode.Space)) {
-			Fire();
+			Attack();
 		}
 
 		Dir direction = default(Dir);

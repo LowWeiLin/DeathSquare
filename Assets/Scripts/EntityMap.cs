@@ -5,10 +5,6 @@ public class EntityMap {
 
 	private Dictionary<Vec2i, List<EntityBase>> entities = new Dictionary<Vec2i, List<EntityBase>>();
 
-	public bool IsOccupied(int x, int y) {
-		return IsOccupied(new Vec2i(x,y));
-	}
-
 	public EntityBase GetOccupant(Vec2i pos) {
 		List<EntityBase> list = null;
 		if (entities.TryGetValue(pos, out list)) {
@@ -22,9 +18,13 @@ public class EntityMap {
 		}
 		return null;
 	}
-	
+
+	public bool IsOccupied(int x, int y) {
+		return IsOccupied(new Vec2i(x, y));
+	}
+
 	public bool IsOccupied(Vec2i pos) {
-		return (GetOccupant(pos) != null);
+		return GetOccupant(pos) != null;
 	}
 
 	public void AddEntity (EntityBase e) {

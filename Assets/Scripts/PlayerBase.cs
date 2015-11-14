@@ -23,8 +23,11 @@ public class PlayerBase : EntityBase {
 		return IsOccupied(direction.ToVec() + position);
 	}
 
-	public void Fire() {
-		GameObject shot = Instantiate(projectile) as GameObject;
-		shot.GetComponent<Projectile>().Init(position, facing);
+	public void Attack() {
+		foreach (Transform child in transform) {
+			if (child.gameObject.GetComponent<Weapon>() != null) {
+				child.gameObject.GetComponent<Weapon> ().Attack(this);
+			}
+		}
 	}
 }

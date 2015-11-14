@@ -32,7 +32,7 @@ public class EntityBase : MonoBehaviour {
 		return !isMoving;
 	}
 
-	public virtual void Action () {
+	public virtual void Action() {
 		
 	}
 
