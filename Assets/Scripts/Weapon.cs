@@ -3,7 +3,7 @@ using System.Collections;
 
 public abstract class Weapon : MonoBehaviour {
 
-	public float cooldown;
+	public abstract float cooldown { get; protected set; }
 
 	bool isUsable = true;
 
