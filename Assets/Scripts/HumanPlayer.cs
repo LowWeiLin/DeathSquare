@@ -13,7 +13,7 @@ public class HumanPlayer : PlayerBase {
 
 	public override void Action () {
 
-		if (Input.GetKeyUp(KeyCode.Space)) {
+		if (Input.GetKey(KeyCode.Space)) {
 			Attack();
 		}
 
