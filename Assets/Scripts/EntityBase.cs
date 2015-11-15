@@ -60,7 +60,12 @@ public class EntityBase : MonoBehaviour {
 			return;
 		}
 
-		if (!this.willObstruct || !gameController.IsObstructed(destination)) {
+		List<EntityBase> entities = gameController.GetOccupants(destination);
+		bool HitSomething = gameController.IsOccupied (destination);
+		// entities will be null if colliding with a wall
+		bool HitWall = (entities == null) && HitSomething;
+
+		if ((!this.willObstruct && !HitWall) || !gameController.IsObstructed(destination)) {
 			// Move immediately if valid
 			// Must use this fn to change position.
 			gameController.entityMap.ChangePosition (this, destination);
@@ -70,11 +75,9 @@ public class EntityBase : MonoBehaviour {
 			StartCoroutine (MoveTransform (initialPosition, targetPosition));
 		}
 
-		if (gameController.IsOccupied(destination)) {
-			List<EntityBase> entities = gameController.GetOccupants(destination);
-			
-			// entities will be null if colliding with a wall
-			if (entities == null) {
+		if (HitSomething) {
+
+			if (HitWall) {
 				this.OnCollision(null);
 			} else {
 				// TODO: This is fragile and may cause conflicts. May need to review how this is done.

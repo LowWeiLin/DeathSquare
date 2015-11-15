@@ -26,7 +26,7 @@ public class Projectile : EntityBase {
 
 	public override void OnCollision(EntityBase entity) {
 		// Do not collide with attacker
-		if (entity == attacker) {
+		if (entity && entity == attacker) {
 			return;
 		}
 
