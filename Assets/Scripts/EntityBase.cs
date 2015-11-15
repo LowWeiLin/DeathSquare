@@ -60,7 +60,7 @@ public class EntityBase : MonoBehaviour {
 			return;
 		}
 
-		if (!gameController.IsObstructed(destination)) {
+		if (!this.willObstruct || !gameController.IsObstructed(destination)) {
 			// Move immediately if valid
 			// Must use this fn to change position.
 			gameController.entityMap.ChangePosition (this, destination);

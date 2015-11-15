@@ -3,9 +3,9 @@ using System.Collections;
 
 public class Projectile : EntityBase {
 
-	Dir direction;
-	PlayerBase attacker;
-	Team team;
+	public Dir direction;
+	public PlayerBase attacker;
+	public Team team;
 
 	public void Init(PlayerBase attacker) {
 		base.Init(attacker.position);

@@ -48,7 +48,7 @@ public class PlayerBase : EntityBase {
 		return entities;
 	}
 
-	public bool[,] LocalOccupancyMap(int radius) {
+	public bool[,] LocalObstructionMap(int radius) {
 		if (radius <= 0) {
 			return null;
 		}
@@ -59,7 +59,7 @@ public class PlayerBase : EntityBase {
 			int x = 0;
 			for (int j=-radius ; j<=radius ; j++) {
 				Vec2i pos = position + new Vec2i(j,i);
-				map[y,x] = IsOccupied(pos);
+				map[y,x] = IsObstructed(pos);
 			    x++;
 			}
 			y++;
@@ -104,6 +104,14 @@ public class PlayerBase : EntityBase {
 		} else {
 			return false;
 		}
+	}
+
+	public bool IsObstructed(Vec2i position) {
+		return gameController.IsObstructed(position);
+	}
+
+	public bool IsObstructed(Dir direction) {
+		return gameController.IsObstructed(direction.ToVec() + position);
 	}
 
 	public bool IsOccupied(Vec2i position) {
