@@ -18,7 +18,6 @@ public class AIPlayer : PlayerBase {
 			if (GetFirstPlayerInDir(d)) {
 				Face(d);
 				Attack();
-				return;
 			}
 		}
 

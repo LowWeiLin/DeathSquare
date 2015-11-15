@@ -13,6 +13,7 @@ public class Projectile : EntityBase {
 		this.attacker = attacker;
 		if (this.attacker)
 			team = this.attacker.GetTeam ();
+		this.movementRate = 0.1f;
 	}
 
 	public void Init(Vec2i position, Dir direction) {
