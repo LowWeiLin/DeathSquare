@@ -14,7 +14,7 @@ public class AIPlayer : PlayerBase {
 	public override void Action () {
 
 		foreach (Dir d in Dir.GetValues(typeof(Dir))) {
-			if (IsPlayer(GetFirstEntityInDir(d))) {
+			if (GetFirstPlayerInDir(d)) {
 				Face(d);
 				Attack();
 				return;

@@ -15,6 +15,8 @@ public class PlayerBase : EntityBase {
 	// ===============================
 	// 		API
 	// ===============================
+	
+	public delegate bool Predicate(EntityBase entity);
 
 	public List<EntityBase> GetEntitiesInRange(int range) {
 		return GetEntitiesInRange (range, (e)=>true);
@@ -24,7 +26,6 @@ public class PlayerBase : EntityBase {
 		return GetEntitiesInRange (range, IsPlayer);
 	}
 
-	public delegate bool Predicate(EntityBase entity);
 	public List<EntityBase> GetEntitiesInRange(int range, Predicate P) {
 		List<EntityBase> entities = new List<EntityBase>();
 		int y = 0;
@@ -32,9 +33,13 @@ public class PlayerBase : EntityBase {
 			int x = 0;
 			for (int j=-range ; j<=range ; j++) {
 				Vec2i pos = position + new Vec2i(j,i);
-				EntityBase e = GetOccupant(pos);
-				if (e != null && P(e)) {
-					entities.Add(e);
+				List<EntityBase> occupants = GetOccupants(pos);
+				if (occupants != null) {
+					foreach (EntityBase e in occupants) {
+						if (P(e)) {
+							entities.Add(e);
+						}
+					}
 				}
 				x++;
 			}
@@ -63,13 +68,29 @@ public class PlayerBase : EntityBase {
 		return map;
 	}
 
+	public EntityBase GetFirstPlayerInDir(Dir dir) {
+		return GetFirstEntityInDir (dir, IsPlayer);
+	}
+
 	public EntityBase GetFirstEntityInDir(Dir dir) {
+		return GetFirstEntityInDir (dir, (e)=>true);
+	}
+
+	public EntityBase GetFirstEntityInDir(Dir dir, Predicate p) {
 		Vec2i pos = position;
 		int searched = 0;
 		while (true && searched < 100) { // TODO: set a limit for search
 			pos += dir.ToVec();
-			if (IsOccupied(pos)) {
-				return GetOccupant(pos);
+			List<EntityBase> occupants = GetOccupants(pos);
+			if (occupants != null) {
+				foreach (EntityBase occupant in occupants) {
+					if (p(occupant)) {
+						return occupant;
+					}
+				}
+			}
+			if (IsOutOfBounds(pos) || false) {
+				return null;
 			}
 		}
 		return null;
@@ -89,8 +110,8 @@ public class PlayerBase : EntityBase {
 		return gameController.IsOccupied(position);
 	}
 
-	public EntityBase GetOccupant(Vec2i position) {
-		return gameController.GetOccupant(position);
+	public List<EntityBase> GetOccupants(Vec2i position) {
+		return gameController.GetOccupants(position);
 	}
 
 	public bool IsOccupied(Dir direction) {

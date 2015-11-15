@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EntityBase : MonoBehaviour {
 
@@ -59,12 +60,7 @@ public class EntityBase : MonoBehaviour {
 			return;
 		}
 
-		bool occupied = gameController.IsOccupied(destination);
-		bool unobstructed = !occupied ||
-			gameController.entityMap.IsOccupied(destination) &&
-			!gameController.GetOccupant(destination).willObstruct;
-
-		if (unobstructed) {
+		if (!gameController.IsObstructed(destination)) {
 			// Move immediately if valid
 			// Must use this fn to change position.
 			gameController.entityMap.ChangePosition (this, destination);
@@ -74,13 +70,27 @@ public class EntityBase : MonoBehaviour {
 			StartCoroutine (MoveTransform (initialPosition, targetPosition));
 		}
 
-		if (occupied) {
-			EntityBase e = gameController.GetOccupant(destination);
-			this.OnCollision(e);
+		if (gameController.IsOccupied(destination)) {
+			List<EntityBase> entities = gameController.GetOccupants(destination);
+			
+			// entities will be null if colliding with a wall
+			if (entities == null) {
+				this.OnCollision(null);
+			} else {
+				// TODO: This is fragile and may cause conflicts. May need to review how this is done.
 
-			// e will be null if colliding with a wall
-			if (e != null) {
-				e.OnCollision(this);
+				// Call OnCollision for current entity
+				for(int i=0 ; i<entities.Count ; i++) {
+					this.OnCollision(entities[i]);
+				}
+
+				// Call OnCollision for collided entities
+				entities = gameController.GetOccupants(destination);
+				if (entities != null) {
+					for(int i=0 ; i<entities.Count ; i++) {
+						entities[i].OnCollision(this);
+					}
+				}
 			}
 		}
 	}

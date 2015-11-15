@@ -22,6 +22,9 @@ public class Projectile : EntityBase {
 				h.TakeDamage (1);
 			}
 		}
-		DestroyEntity ();
+		// Destroy if obstructed.
+		if (entity == null || entity.willObstruct) {
+			DestroyEntity ();
+		}
 	}
 }

@@ -60,7 +60,11 @@ public class GameController : MonoBehaviour {
 		return map.IsOccupied (v) || entityMap.IsOccupied (v);
 	}
 
-	public EntityBase GetOccupant(Vec2i v) {
-		return entityMap.GetOccupant (v);
+	public bool IsObstructed(Vec2i v) {
+		return map.IsOccupied (v) || entityMap.IsObstructed (v);
+	}
+
+	public List<EntityBase> GetOccupants(Vec2i v) {
+		return entityMap.GetOccupants (v);
 	}
 }

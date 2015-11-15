@@ -5,12 +5,22 @@ public class EntityMap {
 
 	private Dictionary<Vec2i, List<EntityBase>> entities = new Dictionary<Vec2i, List<EntityBase>>();
 
-	public EntityBase GetOccupant(Vec2i pos) {
+	public List<EntityBase> GetOccupants(Vec2i pos) {
+		List<EntityBase> list = null;
+		if (entities.TryGetValue(pos, out list)) {
+			if (list.Count > 0) {
+				return list;
+			}
+		}
+		return null;
+	}
+
+	public EntityBase GetObstruction(Vec2i pos) {
 		List<EntityBase> list = null;
 		if (entities.TryGetValue(pos, out list)) {
 			if (list.Count > 0) {
 				foreach(EntityBase e in list) {
-					if (e.willCollide) {
+					if (e.willObstruct) {
 						return e;
 					}
 				}	
@@ -24,7 +34,16 @@ public class EntityMap {
 	}
 
 	public bool IsOccupied(Vec2i pos) {
-		return GetOccupant(pos) != null;
+		return GetOccupants(pos) != null;
+	}
+
+	
+	public bool IsObstructed(int x, int y) {
+		return IsObstructed(new Vec2i(x, y));
+	}
+	
+	public bool IsObstructed(Vec2i pos) {
+		return GetObstruction(pos) != null;
 	}
 
 	public void AddEntity (EntityBase e) {
