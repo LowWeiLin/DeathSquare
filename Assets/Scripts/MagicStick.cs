@@ -8,8 +8,9 @@ public class MagicStick : Weapon {
 		protected set {}
 	}
 
-	public override void PerformAttack(PlayerBase player) {
-		GameObject shot = Instantiate(player.projectile) as GameObject;
-		shot.GetComponent<Projectile>().Init(player.position, player.facing);
+	public override void PerformAttack(PlayerBase attacker) {
+		GameObject shot = Instantiate(attacker.projectile) as GameObject;
+		shot.GetComponent<Projectile>().Init(attacker);
+	
 	}
 }

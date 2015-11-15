@@ -4,6 +4,16 @@ using System.Collections;
 public class Projectile : EntityBase {
 
 	Dir direction;
+	PlayerBase attacker;
+	Team team;
+
+	public void Init(PlayerBase attacker) {
+		base.Init(attacker.position);
+		this.direction = attacker.facing;
+		this.attacker = attacker;
+		if (this.attacker)
+			team = this.attacker.GetTeam ();
+	}
 
 	public void Init(Vec2i position, Dir direction) {
 		base.Init(position);
@@ -15,13 +25,19 @@ public class Projectile : EntityBase {
 	}
 
 	public override void OnCollision(EntityBase entity) {
+		// Do not collide with attacker
+		if (entity == attacker) {
+			return;
+		}
+
 		// Will be null if colliding with a wall
-		if (entity != null) {
+		if (entity != null && !this.GetTeam().IsSameTeam(entity.GetTeam())) {
 			Health h = entity.GetComponent<Health> ();
 			if (h != null) {
 				h.TakeDamage (1);
 			}
 		}
+
 		// Destroy if obstructed.
 		if (entity == null || entity.willObstruct) {
 			DestroyEntity ();

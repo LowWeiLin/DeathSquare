@@ -115,4 +115,14 @@ public class EntityBase : MonoBehaviour {
 		return map.OutOfBounds(position);
 	}
 
+	public Team GetTeam() {
+		Team team = GetComponent<Team> ();
+		if (team) {
+			return team;
+		} else {
+			team = gameObject.AddComponent<Team>();
+			return team;
+		} 
+	}
+
 }
