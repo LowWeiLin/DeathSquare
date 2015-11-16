@@ -17,9 +17,11 @@ public class EntityBase : MonoBehaviour {
 	
 	public void Init(Vec2i position) {
 		gameController = GameObject.Find ("GameController").GetComponent<GameController> ();
+		gameController.Init ();
+
 		map = GameObject.Find ("Map").GetComponent<Map> ();
 		map.Init ();
-
+		
 		this.position = position;
 		transform.position = map.GridToWorld (position);
 

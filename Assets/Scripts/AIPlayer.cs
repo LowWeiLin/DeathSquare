@@ -8,7 +8,8 @@ public class AIPlayer : PlayerBase {
 	}
 	
 	public void Init() {
-		base.Init(new Vec2i(10, 10));
+		base.Init(new Vec2i(0,0));
+		base.Init(gameController.FindNearestUnobstructed (new Vec2i(20, 20)));
 	}
 	
 	public override void Action () {

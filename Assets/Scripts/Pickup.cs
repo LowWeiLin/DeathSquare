@@ -8,11 +8,8 @@ public class Pickup : EntityBase {
 	}
 
 	public void Init() {
-		if (transform.parent == null) {
-			base.Init(new Vec2i(3, 1));
-		} else {
-			base.Init(new Vec2i(0, 0));
-		}
+		base.Init(new Vec2i(0,0));
+		base.Init(gameController.FindNearestUnobstructed (new Vec2i(Random.Range(0, 20), Random.Range(0,20))));
 	}
 
 	public override void OnCollision(EntityBase entity) {

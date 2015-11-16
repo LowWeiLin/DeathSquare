@@ -8,7 +8,8 @@ public class HumanPlayer : PlayerBase {
 	}
 
 	public void Init() {
-		base.Init(new Vec2i(1, 1));
+		base.Init(new Vec2i(0,0));
+		base.Init(gameController.FindNearestUnobstructed (new Vec2i(1, 1)));
 	}
 
 	public override void Action () {
