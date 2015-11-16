@@ -3,6 +3,10 @@ using System.Collections;
 
 public class HumanPlayer : PlayerBase {
 
+	private bool attackButton = false;
+	private bool moveButton = false;
+	private Dir moveDir;
+
 	void Start () {
 		Init();
 	}
@@ -13,28 +17,40 @@ public class HumanPlayer : PlayerBase {
 	}
 
 	public override void Action () {
-
-		if (Input.GetKey(KeyCode.Space)) {
-			Attack();
+		
+		if (moveButton) {
+			Move(moveDir);
 		}
 
-		Dir direction = default(Dir);
-		
+		if (attackButton) {
+			Attack ();
+		}
+
+		attackButton = false;
+		moveButton = false;
+	}
+
+	public void Update() {
+		if (Input.GetKey(KeyCode.Space)) {
+			attackButton = true;
+		}
+
 		if (Input.GetKey(KeyCode.UpArrow)) {
-			direction = Dir.Up;
+			moveButton = true;
+			moveDir = Dir.Up;
 		}
 		else if (Input.GetKey(KeyCode.DownArrow)) {
-			direction = Dir.Down;
+			moveButton = true;
+			moveDir = Dir.Down;
 		}
 		else if (Input.GetKey(KeyCode.LeftArrow)) {
-			direction = Dir.Left;
+			moveButton = true;
+			moveDir = Dir.Left;
 		}
 		else if (Input.GetKey(KeyCode.RightArrow)) {
-			direction = Dir.Right;
-		} else {
-			return;
+			moveButton = true;
+			moveDir = Dir.Right;
 		}
 
-		Move(direction);
 	}
 }

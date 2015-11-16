@@ -10,7 +10,7 @@ public class EntityBase : MonoBehaviour {
 	public bool willObstruct = false;
 	public bool willCollide = false;
 
-	public float movementRate = 0.05f;
+	protected float movementRate = 4f;
 
 	protected Map map;
 	protected GameController gameController;
@@ -107,7 +107,7 @@ public class EntityBase : MonoBehaviour {
 		float progress = 0f;
 		while (progress <= 1f) {
 			transform.position = Vector3.Lerp (initialPosition, targetPosition, progress);
-			progress += movementRate;
+			progress += Time.deltaTime * movementRate;
 			yield return null;
 		}
 		transform.position = targetPosition;
