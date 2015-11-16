@@ -12,8 +12,8 @@ public class Map : MonoBehaviour {
 	private float tileHeight;
 
 	public int[,] map;
-	public int width;
-	public int height;
+	private int width;
+	private int height;
 
 	private bool initialized = false;
 	public void Init() {
@@ -24,6 +24,7 @@ public class Map : MonoBehaviour {
 	}
 	
 	public int[,] GenerateMap (int width, int height) {
+		/*
 		map = new int[height, width];
 
 		for (int i=0 ; i<height ; i++) {
@@ -34,6 +35,10 @@ public class Map : MonoBehaviour {
 				}
 			}
 		}
+		*/
+
+		DungeonGenerator dungeonGenerator = new DungeonGenerator ();
+		map = dungeonGenerator.Generate (width, height);
 
 		return map;
 	}
@@ -46,15 +51,15 @@ public class Map : MonoBehaviour {
 		DestroyTiles ();
 
 		// Create new tiles
-		for (int i=0 ; i<height ; i++) {
-			for (int j=0 ; j<width ; j++) {
+		for (int y=0 ; y<height ; y++) {
+			for (int x=0 ; x<width ; x++) {
 
 				GameObject tile;
 				// Set tiles
-				if (map[j,i] == 0) {
-					tile = Instantiate(floor, GridToWorld(new Vector2(j,i)), Quaternion.identity) as GameObject;
+				if (map[y,x] == 0) {
+					tile = Instantiate(floor, GridToWorld(new Vector2(x,y)), Quaternion.identity) as GameObject;
 				} else {
-					tile = Instantiate(wall, GridToWorld(new Vector2(j,i)), Quaternion.identity) as GameObject;
+					tile = Instantiate(wall, GridToWorld(new Vector2(x,y)), Quaternion.identity) as GameObject;
 				}
 				tile.transform.parent = transform;
 				tiles.Add(tile);

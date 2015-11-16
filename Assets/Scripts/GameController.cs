@@ -9,8 +9,8 @@ public class GameController : MonoBehaviour {
 	// ===============================
 	public Map map;
 
-	private int width = 16;
-	private int height = 16;
+	private int width = 50;
+	private int height = 50;
 
 	// ===============================
 	// 		Players
