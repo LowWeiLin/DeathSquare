@@ -4,7 +4,7 @@ using System.Collections;
 public class MagicStick : Weapon {
 
 	public override float cooldown {
-		get { return 1; }
+		get { return 0.7f; }
 		protected set {}
 	}
 

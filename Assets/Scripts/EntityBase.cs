@@ -102,14 +102,17 @@ public class EntityBase : MonoBehaviour {
 		}
 	}
 
+	protected float moveProgress = 1f;
 	IEnumerator MoveTransform(Vector3 initialPosition, Vector3 targetPosition) {
 		isMoving = true;
 		float progress = 0f;
 		while (progress <= 1f) {
 			transform.position = Vector3.Lerp (initialPosition, targetPosition, progress);
 			progress += Time.deltaTime * movementRate;
+			moveProgress = progress;
 			yield return null;
 		}
+		moveProgress = 1f;
 		transform.position = targetPosition;
 		isMoving = false;
 	}

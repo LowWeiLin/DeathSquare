@@ -35,21 +35,20 @@ public class HumanPlayer : PlayerBase {
 			attackButton = true;
 		}
 
-		if (Input.GetKey(KeyCode.UpArrow)) {
-			moveButton = true;
-			moveDir = Dir.Up;
-		}
-		else if (Input.GetKey(KeyCode.DownArrow)) {
-			moveButton = true;
-			moveDir = Dir.Down;
-		}
-		else if (Input.GetKey(KeyCode.LeftArrow)) {
-			moveButton = true;
-			moveDir = Dir.Left;
-		}
-		else if (Input.GetKey(KeyCode.RightArrow)) {
-			moveButton = true;
-			moveDir = Dir.Right;
+		if (moveProgress >= 0.5f) {
+			if (Input.GetKey (KeyCode.UpArrow)) {
+				moveButton = true;
+				moveDir = Dir.Up;
+			} else if (Input.GetKey (KeyCode.DownArrow)) {
+				moveButton = true;
+				moveDir = Dir.Down;
+			} else if (Input.GetKey (KeyCode.LeftArrow)) {
+				moveButton = true;
+				moveDir = Dir.Left;
+			} else if (Input.GetKey (KeyCode.RightArrow)) {
+				moveButton = true;
+				moveDir = Dir.Right;
+			}
 		}
 
 	}
