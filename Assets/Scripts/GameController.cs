@@ -78,16 +78,31 @@ public class GameController : MonoBehaviour {
 		return map.IsOccupied (v) || entityMap.IsObstructed (v);
 	}
 
+	public bool IsUnobstructed(int x, int y) {
+		return !IsObstructed (new Vec2i (x, y));
+	}
+
+	public bool IsUnobstructed(Vec2i v) {
+		return !IsObstructed (v);
+	}
+
 	public List<EntityBase> GetOccupants(Vec2i v) {
 		return entityMap.GetOccupants (v);
 	}
 
-	// http://stackoverflow.com/questions/3330181/algorithm-for-finding-nearest-object-on-2d-grid
+
+	public delegate bool Predicate(int x, int y);
+	
 	public Vec2i FindNearestUnobstructed(Vec2i v, int maxDistance=15) {
+		return FindNearest(v, IsUnobstructed, maxDistance);
+	}
+
+	// http://stackoverflow.com/questions/3330181/algorithm-for-finding-nearest-object-on-2d-grid
+	public Vec2i FindNearest(Vec2i v, Predicate p, int maxDistance=15) {
 		int xs = v.x;
 		int ys = v.y;
 
-		if (!IsObstructed(v))
+		if (p(xs, ys))
 		{
 			return v;
 		}
@@ -100,7 +115,7 @@ public class GameController : MonoBehaviour {
 				int y1 = ys - i;
 				
 				// Check point (x1, y1)
-				if (!IsObstructed(x1, y1))
+				if (p(x1, y1))
 				{
 					return new Vec2i(x1, y1);
 				}
@@ -109,7 +124,7 @@ public class GameController : MonoBehaviour {
 				int y2 = ys + i;
 				
 				// Check point (x2, y2)
-				if (!IsObstructed(x2, y2))
+				if (p(x2, y2))
 				{
 					return new Vec2i(x2, y2);
 				}
@@ -122,7 +137,7 @@ public class GameController : MonoBehaviour {
 				int y1 = ys + d - i;
 				
 				// Check point (x1, y1)
-				if (!IsObstructed(x1, y1))
+				if (p(x1, y1))
 				{
 					return new Vec2i(x1, y1);
 				}
@@ -131,14 +146,14 @@ public class GameController : MonoBehaviour {
 				int y2 = ys - i;
 				
 				// Check point (x2, y2)
-				if (!IsObstructed(x2, y2))
+				if (p(x2, y2))
 				{
 					return new Vec2i(x2, y2);
 				}
 			}
 		}
 		
-		throw new UnityException ("No unobstructed position found! Try increasing search range! " + v + " maxDist: " + maxDistance);
+		throw new UnityException ("No position found! Try increasing search range! " + v + " maxDist: " + maxDistance);
 		//return v;
 	}
 }
