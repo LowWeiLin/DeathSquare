@@ -3,9 +3,9 @@ using System.Collections;
 
 public class HumanPlayer : PlayerBase {
 
-	private bool attackButton = false;
-	private bool moveButton = false;
-	private Dir moveDir;
+	bool attackButton = false;
+	bool moveButton = false;
+	Dir moveDir;
 
 	void Start () {
 		Init();
@@ -37,19 +37,23 @@ public class HumanPlayer : PlayerBase {
 
 		if (moveProgress >= 0.5f) {
 			if (Input.GetKey (KeyCode.UpArrow)) {
-				moveButton = true;
-				moveDir = Dir.Up;
+				StartCoroutine(MaybeMove(Dir.Up));
 			} else if (Input.GetKey (KeyCode.DownArrow)) {
-				moveButton = true;
-				moveDir = Dir.Down;
+				StartCoroutine(MaybeMove(Dir.Down));
 			} else if (Input.GetKey (KeyCode.LeftArrow)) {
-				moveButton = true;
-				moveDir = Dir.Left;
+				StartCoroutine(MaybeMove(Dir.Left));
 			} else if (Input.GetKey (KeyCode.RightArrow)) {
-				moveButton = true;
-				moveDir = Dir.Right;
+				StartCoroutine(MaybeMove(Dir.Right));
 			}
 		}
+	}
 
+	IEnumerator MaybeMove(Dir direction) {
+		Face(direction);
+		yield return new WaitForSeconds(0.09f);
+		if (Input.GetKey(direction.ToArrow())) {
+			moveButton = true;
+			moveDir = direction;
+		}
 	}
 }

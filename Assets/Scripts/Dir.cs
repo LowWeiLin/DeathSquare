@@ -4,6 +4,22 @@ using System.Collections;
 public enum Dir { Up, Right, Down, Left }
 
 public static class DirExtensions {
+	public static KeyCode ToArrow(this Dir dir) {
+		switch (dir) {
+		case Dir.Up:
+			return KeyCode.UpArrow;
+		case Dir.Right:
+			return KeyCode.RightArrow;
+		case Dir.Down:
+			return KeyCode.DownArrow;
+		case Dir.Left:
+			return KeyCode.LeftArrow;
+		default:
+			Debug.Log("Warning: invalid direction");
+			return default(KeyCode);
+		}
+	}
+
 	public static Vec2i ToVec(this Dir dir) {
 		switch (dir) {
 		case Dir.Up:
