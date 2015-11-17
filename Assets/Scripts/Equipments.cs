@@ -37,7 +37,7 @@ public class Equipments : MonoBehaviour {
 
 	void EquipWeapon(Weapon w) {
 		Equipable e = w.gameObject.GetComponent<Equipable>();
-		if (e == null) {
+		if (!CanEquip(e)) {
 			return;
 		}
 		// Find and remove from inventory
@@ -45,8 +45,9 @@ public class Equipments : MonoBehaviour {
 
 	}
 
-	void bool CanEquip(Equipable e) {
-		if () {
+	bool CanEquip(Equipable e) {
+		if (e == null) {
+			return false;
 		}
 
 		return true;
