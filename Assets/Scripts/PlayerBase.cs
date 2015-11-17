@@ -2,12 +2,22 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent (typeof(Inventory))]
+[RequireComponent (typeof(Equipments))]
 public class PlayerBase : EntityBase {
 
+	protected Inventory inventory;
+	protected Equipments equipments;
+
 	public new void Init(Vec2i position) {
+		inventory = gameObject.GetComponent<Inventory> ();
+		equipments = gameObject.GetComponent<Equipments> ();
+		
 		base.Init(position);
+
 		willObstruct = true;
 		gameController.RegisterPlayer (this);
+
 	}
 
 	// ===============================

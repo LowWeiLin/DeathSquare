@@ -21,10 +21,7 @@ public class Pickable : MonoBehaviour {
 	public void Pick(PlayerBase picker) {
 		if (CanBePicked (picker)) {
 			// Add to picker's inventory
-			MakeChild(picker);
-
-			// Set owner
-			owner = picker;
+			EnterInventory(picker);
 		}
 	}
 
@@ -44,12 +41,17 @@ public class Pickable : MonoBehaviour {
 			return false;
 		}
 
+		// Must be able to add to inventory
+		if (!picker.gameObject.GetComponent<Inventory>().CanAdd(this)) {
+			return false;
+		}
+
 		return true;
 	}
 
 	public void Drop(PlayerBase dropper) {
 		if (CanBeDropped(dropper)) {
-
+			LeaveInventory(dropper);
 		}
 	}
 
@@ -64,6 +66,16 @@ public class Pickable : MonoBehaviour {
 			return false;
 		}
 
+		// Dropper needs an inventory
+		if (dropper.gameObject.GetComponent<Inventory>() == null) {
+			return false;
+		}
+		
+		// Must be able to remove from inventory
+		if (!dropper.gameObject.GetComponent<Inventory>().CanRemove(this)) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -73,4 +85,31 @@ public class Pickable : MonoBehaviour {
 		transform.localPosition = Vector3.zero;
 	}
 
+	protected void EnterInventory(PlayerBase player) {
+		// Add to picker's gameObject
+		MakeChild(player);
+		// Add to inventory
+		player.GetComponent<Inventory> ().Add (this);
+		// Set owner
+		owner = player;
+	}
+
+	protected void MakeRoot(PlayerBase player) {
+		entity.gameController.entityMap.AddEntity (entity);
+		transform.parent = null;
+		entity.SetPosition (player.position);
+	}
+
+	protected void LeaveInventory(PlayerBase dropper) {
+		if (dropper != owner) {
+			throw new UnityException("Cannot drop another players' item!");
+		}
+
+		// Add to map
+		MakeRoot(owner);
+		// Remove from inventory
+		owner.GetComponent<Inventory> ().Remove (this);
+		// Set owner
+		owner = null;
+	}
 }

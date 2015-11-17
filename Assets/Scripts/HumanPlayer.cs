@@ -9,6 +9,9 @@ public class HumanPlayer : PlayerBase {
 	Dir moveDir;
 	bool mayMove = true;
 
+	// For testing drop
+	bool pickedSomething = false;
+
 	void Start () {
 		Init();
 	}
@@ -31,7 +34,23 @@ public class HumanPlayer : PlayerBase {
 		// Pick up all pickables at position.
 		List<EntityBase> pickables = GetPickableEntities ();
 		for (int i=0 ; i<pickables.Count ; i++) {
-			pickables[i].gameObject.GetComponent<Pickable>().Pick(this);
+			Pickable item = pickables[i].gameObject.GetComponent<Pickable>();
+			Debug.Log ("See item");
+			if (!pickedSomething && item.CanBePicked(this)) {
+				Debug.Log ("Picked item");
+				item.Pick(this);
+				pickedSomething = true;
+			}
+		}
+
+
+		// Test dropping item
+		List<Pickable> items = inventory.GetItems ();
+		for (int i=0 ; i<items.Count ; i++) {
+			if (items[i].CanBeDropped(this)) {
+				items[i].Drop(this);
+				Debug.Log ("Dropped item");
+			}
 		}
 
 

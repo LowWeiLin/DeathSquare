@@ -2,10 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
-/**
- * 
- **/
 [RequireComponent (typeof(PlayerBase))]
 public class Inventory : MonoBehaviour {
 
@@ -23,11 +19,30 @@ public class Inventory : MonoBehaviour {
 		items = new List<Pickable> ();
 	}
 
-	public bool CanAdd() {
+	public bool CanAdd(Pickable item) {
 		return items.Count < itemLimit;
+	}
+
+	public void Add(Pickable item) {
+		if (CanAdd(item)) {
+			items.Add(item);
+		}
+	}
+
+	public bool CanRemove(Pickable item) {
+		return items.Contains (item);
+	}
+
+	public void Remove(Pickable item) {
+		if (CanRemove(item)) {
+			items.Remove(item);
+		}
 	}
 
 	// Functions to search inventory
 
+	public List<Pickable> GetItems() {
+		return new List<Pickable>(items);
+	}
 
 }

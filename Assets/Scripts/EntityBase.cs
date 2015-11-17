@@ -21,13 +21,17 @@ public class EntityBase : MonoBehaviour {
 
 		map = GameObject.Find ("Map").GetComponent<Map> ();
 		map.Init ();
-		
-		this.position = position;
-		transform.position = map.GridToWorld (position);
+
+		SetPosition (position);
 
 		facing = Dir.Up;
 
 		gameController.RegisterEntity (this);
+	}
+
+	public void SetPosition(Vec2i position) {
+		this.position = position;
+		transform.position = map.GridToWorld (position);
 	}
 
 	public void DestroyEntity() {
