@@ -6,6 +6,7 @@ public class HumanPlayer : PlayerBase {
 	bool attackButton = false;
 	bool moveButton = false;
 	Dir moveDir;
+	bool mayMove = true;
 
 	void Start () {
 		Init();
@@ -35,7 +36,7 @@ public class HumanPlayer : PlayerBase {
 			attackButton = true;
 		}
 
-		if (moveProgress >= 0.5f) {
+		if (moveProgress >= 0.5f && mayMove) {
 			if (Input.GetKey (KeyCode.UpArrow)) {
 				StartCoroutine(MaybeMove(Dir.Up));
 			} else if (Input.GetKey (KeyCode.DownArrow)) {
@@ -49,11 +50,13 @@ public class HumanPlayer : PlayerBase {
 	}
 
 	IEnumerator MaybeMove(Dir direction) {
+		mayMove = false;
 		Face(direction);
 		yield return new WaitForSeconds(0.09f);
 		if (Input.GetKey(direction.ToArrow())) {
 			moveButton = true;
 			moveDir = direction;
 		}
+		mayMove = true;
 	}
 }
