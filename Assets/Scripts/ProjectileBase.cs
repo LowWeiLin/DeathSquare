@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class Projectile : EntityBase {
+public class ProjectileBase : EntityBase {
 
 	public Dir direction;
 	public PlayerBase attacker;

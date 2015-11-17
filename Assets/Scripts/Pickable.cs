@@ -21,6 +21,7 @@ public class Pickable : MonoBehaviour {
 	public void Pick(PlayerBase picker) {
 		if (CanBePicked (picker)) {
 			// Add to picker's inventory
+			MakeChild(picker);
 
 			// Set owner
 			owner = picker;
@@ -35,6 +36,11 @@ public class Pickable : MonoBehaviour {
 
 		// Check if in same location
 		if (entity.position != picker.position) {
+			return false;
+		}
+
+		// Picker needs an inventory
+		if (picker.gameObject.GetComponent<Inventory>() == null) {
 			return false;
 		}
 
@@ -59,6 +65,12 @@ public class Pickable : MonoBehaviour {
 		}
 
 		return true;
+	}
+
+	protected void MakeChild(PlayerBase player) {
+		entity.gameController.entityMap.RemoveEntity (entity);
+		transform.parent = player.gameObject.transform;
+		transform.localPosition = Vector3.zero;
 	}
 
 }

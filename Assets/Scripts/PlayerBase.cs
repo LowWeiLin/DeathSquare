@@ -1,11 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerBase : EntityBase {
 
-	public GameObject projectile;
-	
 	public new void Init(Vec2i position) {
 		base.Init(position);
 		willObstruct = true;
@@ -17,6 +15,10 @@ public class PlayerBase : EntityBase {
 	// ===============================
 	
 	public delegate bool Predicate(EntityBase entity);
+
+	public List<EntityBase> GetPickableEntities() {
+		return gameController.GetPickableEntities (position);
+	}
 
 	public List<EntityBase> GetEntitiesInRange(int range) {
 		return GetEntitiesInRange (range, (e)=>true);
@@ -128,8 +130,8 @@ public class PlayerBase : EntityBase {
 
 	public void Attack() {
 		foreach (Transform child in transform) {
-			if (child.gameObject.GetComponent<Weapon>() != null) {
-				child.gameObject.GetComponent<Weapon> ().Attack(this);
+			if (child.gameObject.GetComponent<WeaponBase>() != null) {
+				child.gameObject.GetComponent<WeaponBase> ().Attack(this);
 			}
 		}
 	}

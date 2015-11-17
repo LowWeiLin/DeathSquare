@@ -35,7 +35,7 @@ public class Equipments : MonoBehaviour {
 		weapon = null;
 	}
 
-	void EquipWeapon(Weapon w) {
+	void EquipWeapon(WeaponBase w) {
 		Equipable e = w.gameObject.GetComponent<Equipable>();
 		if (!CanEquip(e)) {
 			return;

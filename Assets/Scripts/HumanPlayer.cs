@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HumanPlayer : PlayerBase {
 
@@ -18,7 +19,7 @@ public class HumanPlayer : PlayerBase {
 	}
 
 	public override void Action () {
-		
+
 		if (moveButton) {
 			Move(moveDir);
 		}
@@ -26,6 +27,13 @@ public class HumanPlayer : PlayerBase {
 		if (attackButton) {
 			Attack ();
 		}
+	
+		// Pick up all pickables at position.
+		List<EntityBase> pickables = GetPickableEntities ();
+		for (int i=0 ; i<pickables.Count ; i++) {
+			pickables[i].gameObject.GetComponent<Pickable>().Pick(this);
+		}
+
 
 		attackButton = false;
 		moveButton = false;

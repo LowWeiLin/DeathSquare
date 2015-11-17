@@ -12,8 +12,8 @@ public class EntityBase : MonoBehaviour {
 
 	protected float movementRate = 4f;
 
-	protected Map map;
-	protected GameController gameController;
+	public Map map;
+	public GameController gameController;
 	
 	public void Init(Vec2i position) {
 		gameController = GameObject.Find ("GameController").GetComponent<GameController> ();

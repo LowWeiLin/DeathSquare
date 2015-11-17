@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Weapon : MonoBehaviour {
+public abstract class WeaponBase : EntityBase {
 
 	public abstract float cooldown { get; protected set; }
-
 	bool isUsable = true;
+
+	
 
 	public void Attack(PlayerBase player) {
 		if (isUsable) {

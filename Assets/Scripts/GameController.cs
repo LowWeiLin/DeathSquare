@@ -48,23 +48,35 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	// ===============================
+	// 		Player functions
+	// ===============================
+
 	public void RegisterPlayer(PlayerBase player) {
 		players.Add(player);
-	}
-
-	public void RegisterEntity(EntityBase entity) {
-		entities.Add(entity);
-		entityMap.AddEntity(entity);
 	}
 
 	public void UnregisterPlayer(PlayerBase player) {
 		players.Remove(player);
 	}
 	
+	// ===============================
+	// 		Entity functions
+	// ===============================
+
+	public void RegisterEntity(EntityBase entity) {
+		entities.Add(entity);
+		entityMap.AddEntity(entity);
+	}
+
 	public void UnregisterEntity(EntityBase entity) {
 		entities.Remove(entity);
 		entityMap.RemoveEntity(entity);
 	}
+
+	// ===============================
+	// 		Map functions
+	// ===============================
 
 	public bool IsOccupied(Vec2i v) {
 		return map.IsOccupied (v) || entityMap.IsOccupied (v);
@@ -90,6 +102,16 @@ public class GameController : MonoBehaviour {
 		return entityMap.GetOccupants (v);
 	}
 
+	public List<EntityBase> GetPickableEntities(Vec2i v) {
+		List<EntityBase> pickables = new List<EntityBase> ();
+		List<EntityBase> entities = GetOccupants (v);
+		foreach (EntityBase e in entities) {
+			if (e.GetComponent<Pickable>() != null) {
+				pickables.Add(e);
+			}
+		}
+		return pickables;
+	}
 
 	public delegate bool Predicate(int x, int y);
 	
@@ -154,6 +176,6 @@ public class GameController : MonoBehaviour {
 		}
 		
 		throw new UnityException ("No position found! Try increasing search range! " + v + " maxDist: " + maxDistance);
-		//return v;
+		//return new Vec2i(-1,-1);
 	}
 }
