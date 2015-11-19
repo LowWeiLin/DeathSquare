@@ -4,26 +4,42 @@ using System.Collections;
 [RequireComponent (typeof(EntityBase))]
 public class Pickable : MonoBehaviour {
 
-	EntityBase entity;
-	PlayerBase owner;
+	public EntityBase entity;
+	public PlayerBase owner;
 
 	void Start () {
 		Init ();
 	}
-	
+
+	private bool initialized = false;
 	public void Init() {
+		if (initialized)
+			return;
+		initialized = true;
+
 		entity = GetComponent<EntityBase> ();
 		owner = null;
 	}
 
+	
+	// =====================================
+	// 		APIs
+	// =====================================
 
-	// APIs
 	public void Pick(PlayerBase picker) {
 		if (CanBePicked (picker)) {
 			// Add to picker's inventory
 			EnterInventory(picker);
 		}
 	}
+
+	
+	public void Drop(PlayerBase dropper) {
+		if (CanBeDropped(dropper)) {
+			LeaveInventory(dropper);
+		}
+	}
+
 
 	public bool CanBePicked(PlayerBase picker) {
 		// Check if already picked
@@ -49,12 +65,6 @@ public class Pickable : MonoBehaviour {
 		return true;
 	}
 
-	public void Drop(PlayerBase dropper) {
-		if (CanBeDropped(dropper)) {
-			LeaveInventory(dropper);
-		}
-	}
-
 	public bool CanBeDropped(PlayerBase dropper) {
 		// Not already picked up, cannot drop!
 		if (owner == null) {
@@ -78,6 +88,10 @@ public class Pickable : MonoBehaviour {
 
 		return true;
 	}
+
+	// =====================================
+	// 		Internal functions
+	// =====================================
 
 	protected void MakeChild(PlayerBase player) {
 		entity.gameController.entityMap.RemoveEntity (entity);

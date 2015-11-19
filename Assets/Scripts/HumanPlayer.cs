@@ -36,23 +36,19 @@ public class HumanPlayer : PlayerBase {
 		for (int i=0 ; i<pickables.Count ; i++) {
 			Pickable item = pickables[i].gameObject.GetComponent<Pickable>();
 			Debug.Log ("See item");
-			if (!pickedSomething && item.CanBePicked(this)) {
+			if (item.CanBePicked(this)) {
 				Debug.Log ("Picked item");
 				item.Pick(this);
-				pickedSomething = true;
+
+				// Equip weapon if able to.
+				Equipable equip = item.gameObject.GetComponent<Equipable>();
+				if (equip && equip.CanEquip("weapon")) {
+					equip.Equip("weapon");
+
+				}
+
 			}
 		}
-
-
-		// Test dropping item
-		List<Pickable> items = inventory.GetItems ();
-		for (int i=0 ; i<items.Count ; i++) {
-			if (items[i].CanBeDropped(this)) {
-				items[i].Drop(this);
-				Debug.Log ("Dropped item");
-			}
-		}
-
 
 		attackButton = false;
 		moveButton = false;

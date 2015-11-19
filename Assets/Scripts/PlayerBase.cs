@@ -3,15 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent (typeof(Inventory))]
-[RequireComponent (typeof(Equipments))]
 public class PlayerBase : EntityBase {
 
 	protected Inventory inventory;
-	protected Equipments equipments;
 
 	public new void Init(Vec2i position) {
 		inventory = gameObject.GetComponent<Inventory> ();
-		equipments = gameObject.GetComponent<Equipments> ();
 		
 		base.Init(position);
 
@@ -21,8 +18,13 @@ public class PlayerBase : EntityBase {
 	}
 
 	// ===============================
-	// 		API
+	// 		APIs
 	// ===============================
+
+	
+	// =====================================
+	// 		Observation functions
+	// =====================================
 	
 	public delegate bool Predicate(EntityBase entity);
 
@@ -137,6 +139,11 @@ public class PlayerBase : EntityBase {
 	public bool IsOccupied(Dir direction) {
 		return IsOccupied(direction.ToVec() + position);
 	}
+
+	
+	// =====================================
+	// 		Action functions
+	// =====================================
 
 	public void Attack() {
 		foreach (Transform child in transform) {
