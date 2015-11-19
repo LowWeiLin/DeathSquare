@@ -146,10 +146,9 @@ public class PlayerBase : EntityBase {
 	// =====================================
 
 	public void Attack() {
-		foreach (Transform child in transform) {
-			if (child.gameObject.GetComponent<WeaponBase>() != null) {
-				child.gameObject.GetComponent<WeaponBase> ().Attack(this);
-			}
+		Equipable weapon = inventory.GetEquip ("weapon");
+		if (weapon != null) {
+			weapon.gameObject.GetComponent<WeaponBase> ().Attack (this);
 		}
 	}
 }

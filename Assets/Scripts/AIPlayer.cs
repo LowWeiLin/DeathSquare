@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AIPlayer : PlayerBase {
 	
@@ -13,6 +14,23 @@ public class AIPlayer : PlayerBase {
 	}
 	
 	public override void Action () {
+		
+		// Pick up all pickables at position.
+		List<EntityBase> pickables = GetPickableEntities ();
+		for (int i=0 ; i<pickables.Count ; i++) {
+			Pickable item = pickables[i].gameObject.GetComponent<Pickable>();
+			
+			if (item.CanBePicked(this)) {
+				item.Pick(this);
+				
+				// Equip weapon if able to.
+				Equipable equip = item.gameObject.GetComponent<Equipable>();
+				if (equip && equip.CanEquip("weapon")) {
+					equip.Equip("weapon");
+				}
+				
+			}
+		}
 
 		// Attack
 		foreach (Dir d in Dir.GetValues(typeof(Dir))) {

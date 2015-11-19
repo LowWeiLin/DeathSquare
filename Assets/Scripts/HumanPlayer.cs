@@ -35,16 +35,14 @@ public class HumanPlayer : PlayerBase {
 		List<EntityBase> pickables = GetPickableEntities ();
 		for (int i=0 ; i<pickables.Count ; i++) {
 			Pickable item = pickables[i].gameObject.GetComponent<Pickable>();
-			Debug.Log ("See item");
+
 			if (item.CanBePicked(this)) {
-				Debug.Log ("Picked item");
 				item.Pick(this);
 
 				// Equip weapon if able to.
 				Equipable equip = item.gameObject.GetComponent<Equipable>();
 				if (equip && equip.CanEquip("weapon")) {
 					equip.Equip("weapon");
-
 				}
 
 			}

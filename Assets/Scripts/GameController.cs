@@ -105,6 +105,9 @@ public class GameController : MonoBehaviour {
 	public List<EntityBase> GetPickableEntities(Vec2i v) {
 		List<EntityBase> pickables = new List<EntityBase> ();
 		List<EntityBase> entities = GetOccupants (v);
+		if (entities == null) {
+			return pickables;
+		}
 		foreach (EntityBase e in entities) {
 			if (e.GetComponent<Pickable>() != null) {
 				pickables.Add(e);
