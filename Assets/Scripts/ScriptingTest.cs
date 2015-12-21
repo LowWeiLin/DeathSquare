@@ -1,14 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UniLua;
+using Jurassic;
+using Jurassic.Library;
 
 public class ScriptingTest : MonoBehaviour {
 
-	ILuaState Lua;
+	ScriptEngine engine;
 
 	void Start () {
-		Lua = LuaAPI.NewState();
-		Lua.L_OpenLibs();
-		Lua.L_DoString("function fact (n) if n == 0 then return 1 else return n * fact(n-1) end end print(fact(5))");
+		engine  = new ScriptEngine();
+		engine.EnableExposedClrTypes = true; // You must enable this in order to use interop feaure.
+		engine.SetGlobalFunction("hello", new System.Action<int>(Hello));
+		engine.Execute("function fact(n) { return n === 0 ? 1 : n * fact(n - 1); } hello(fact(5));");
+	}
+
+	public void Hello (int result) {
+		Debug.Log("Hello from C#: " + result);
 	}
 }
