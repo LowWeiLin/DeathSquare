@@ -38,8 +38,9 @@ public class Map : MonoBehaviour {
 		this.height = height;
 
 		// Draw floor
-		GameObject floorObject = Instantiate(floor, new Vector3(width/2-0.5f,0,height/2-0.5f), Quaternion.identity) as GameObject;
+		GameObject floorObject = Instantiate(floor, new Vector3(width/2-0.5f, 0, height/2-0.5f), Quaternion.identity) as GameObject;
 		floorObject.transform.localScale =  new Vector3(0.1f*width, 1.0f, 0.1f*height);
+		floorObject.GetComponent<MeshRenderer> ().material.color = new Color (0.5f, 1f, 1f);
 
 		// Destroy existing tiles
 		DestroyTiles ();
@@ -52,7 +53,8 @@ public class Map : MonoBehaviour {
 				// Set walls
 				if (map[y,x] == 0) {
 				} else {
-					tile = Instantiate(wall, GridToWorld(new Vector2(x,y)), Quaternion.identity) as GameObject;
+					tile = Instantiate(wall, GridToWorld(new Vector2(x,y)) + new Vector3(0, 0.5f, 0), Quaternion.identity) as GameObject;
+					tile.GetComponent<MeshRenderer> ().material.color = new Color (0.5f, 0.5f, 0.5f);
 					tile.transform.parent = transform;
 					tiles.Add(tile);
 				}
