@@ -18,7 +18,7 @@ public class AIMinion : MonoBehaviour {
 //			return Maybe<GameObject>.Empty;
 //		}
 		// TODO get the closest
-		return GameObject.Find("Player");
+		return GameObject.FindGameObjectWithTag("Player");
 	}
 
 	bool InAttackRange(GameObject enemy) {
