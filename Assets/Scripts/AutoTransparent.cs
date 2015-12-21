@@ -9,7 +9,7 @@ public class AutoTransparent : MonoBehaviour {
 	private const float m_TargetTransparancy = 0.3f;
 	private const float m_FallOff = 0.1f; // returns to 100% in 0.1 sec
 
-	Renderer renderer = null;
+	new private Renderer renderer = null;
 
 	bool shouldBeTransparent = false;
 

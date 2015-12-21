@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour {
 	
 	void Update () {
 		foreach (EntityBase e in new List<EntityBase>(entities)) {
-			if (e.CanAct()) {
+			if (true) {
 				e.Action();
 			}
 		}
@@ -104,25 +104,8 @@ public class GameController : MonoBehaviour {
 	public bool IsUnobstructed(Vec2i v) {
 		return !IsObstructed (v);
 	}
-
-	public List<EntityBase> GetOccupants(Vec2i v) {
-		return entityMap.GetOccupants (v);
-	}
-
-	public List<EntityBase> GetPickableEntities(Vec2i v) {
-		List<EntityBase> pickables = new List<EntityBase> ();
-		List<EntityBase> entities = GetOccupants (v);
-		if (entities == null) {
-			return pickables;
-		}
-		foreach (EntityBase e in entities) {
-			if (e.GetComponent<Pickable>() != null) {
-				pickables.Add(e);
-			}
-		}
-		return pickables;
-	}
 	
+
 	public delegate bool Predicate(int x, int y);
 	
 	public Vec2i FindNearestUnobstructed(Vec2i v, int maxDistance=15) {

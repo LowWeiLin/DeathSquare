@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class HumanMovement : MonoBehaviour {
 
 	GameObject model;
 
@@ -16,9 +16,9 @@ public class Player : MonoBehaviour {
 
 		float speed;
 		if (dx != 0 && dy != 0) {
-			speed = 1.0f;
+			speed = 2.0f;
 		} else {
-			speed = 1.5f;
+			speed = 3.0f;
 		}
 
 		transform.Translate(Vector3.right * dx * Time.deltaTime * speed);

@@ -47,11 +47,6 @@ public class Pickable : MonoBehaviour {
 			return false;
 		}
 		
-		// Check if in same location
-		if (entity.position != picker.position) {
-			return false;
-		}
-		
 		// Picker needs an inventory
 		if (picker.gameObject.GetComponent<Inventory>() == null) {
 			return false;
@@ -111,7 +106,6 @@ public class Pickable : MonoBehaviour {
 	protected void MakeRoot(PlayerBase player) {
 		entity.gameController.entityMap.AddEntity (entity);
 		transform.parent = null;
-		entity.SetPosition (player.position);
 	}
 	
 	protected void LeaveInventory(PlayerBase dropper) {
