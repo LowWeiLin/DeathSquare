@@ -15,18 +15,24 @@ public class GameController : MonoBehaviour {
 	// ===============================
 	// 		Players
 	// ===============================
-	//public List<PlayerBase> players = new List<PlayerBase>();
+	public List<PlayerBase> players = new List<PlayerBase>();
 	
 	// ===============================
 	// 		Entities
 	// ===============================
-	/*
 	public EntityMap entityMap = new EntityMap();
 	public List<EntityBase> entities = new List<EntityBase>();
-	*/
 	
 	void Start () {
 		Init ();
+
+		
+		Board board = new Board ();
+		board.CreateBoard (map.map, width, height);
+		List<Vec2i> path = board.FindPathVec (new Vec2i (3, 3), new Vec2i (10, 10));
+		foreach (Vec2i v in path) {
+			Debug.Log (v);
+		}
 	}
 	
 	private bool initialized = false;
@@ -42,19 +48,17 @@ public class GameController : MonoBehaviour {
 	}
 	
 	void Update () {
-		/*
 		foreach (EntityBase e in new List<EntityBase>(entities)) {
 			if (e.CanAct()) {
 				e.Action();
 			}
 		}
-		*/
 	}
 	
 	// ===============================
 	// 		Player functions
 	// ===============================
-	/*
+
 	public void RegisterPlayer(PlayerBase player) {
 		players.Add(player);
 	}
@@ -62,12 +66,11 @@ public class GameController : MonoBehaviour {
 	public void UnregisterPlayer(PlayerBase player) {
 		players.Remove(player);
 	}
-	*/
+	
 	// ===============================
 	// 		Entity functions
 	// ===============================
 
-	/*
 	public void RegisterEntity(EntityBase entity) {
 		entities.Add(entity);
 		entityMap.AddEntity(entity);
@@ -83,7 +86,7 @@ public class GameController : MonoBehaviour {
 	// ===============================
 	
 	public bool IsOccupied(Vec2i v) {
-		return map.IsOccupied (v) || entityMap.IsOccupied (v);
+		return map.IsOccupied (v);
 	}
 	
 	public bool IsObstructed(int x, int y) {
@@ -91,7 +94,7 @@ public class GameController : MonoBehaviour {
 	}
 	
 	public bool IsObstructed(Vec2i v) {
-		return map.IsOccupied (v) || entityMap.IsObstructed (v);
+		return map.IsOccupied (v);
 	}
 	
 	public bool IsUnobstructed(int x, int y) {
@@ -101,11 +104,11 @@ public class GameController : MonoBehaviour {
 	public bool IsUnobstructed(Vec2i v) {
 		return !IsObstructed (v);
 	}
-	
+
 	public List<EntityBase> GetOccupants(Vec2i v) {
 		return entityMap.GetOccupants (v);
 	}
-	
+
 	public List<EntityBase> GetPickableEntities(Vec2i v) {
 		List<EntityBase> pickables = new List<EntityBase> ();
 		List<EntityBase> entities = GetOccupants (v);
@@ -185,5 +188,4 @@ public class GameController : MonoBehaviour {
 		throw new UnityException ("No position found! Try increasing search range! " + v + " maxDist: " + maxDistance);
 		//return new Vec2i(-1,-1);
 	}
-	*/
 }

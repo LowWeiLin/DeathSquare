@@ -13,7 +13,6 @@ public class ClearSight : MonoBehaviour
 		hits = Physics.RaycastAll(transform.position, transform.forward, DistanceToPlayer);
 		foreach(RaycastHit hit in hits)
 		{
-			Debug.Log("hit");
 			Renderer R = hit.collider.GetComponent<Renderer>();
 			if (R == null)
 				continue; // no renderer attached? go to next hit
