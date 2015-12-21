@@ -25,8 +25,13 @@ public struct Maybe<T> {
 	}
 		
 	private Maybe(bool hasValue, T value) {
-		this.hasValue = hasValue;
-		this.value = value;
+		if (value == null) {
+			this.hasValue = false;
+			this.value = default(T);
+		} else {
+			this.hasValue = hasValue;
+			this.value = value;
+		}
 	}
 
 	public delegate void F(T value);

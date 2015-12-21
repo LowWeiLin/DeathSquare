@@ -27,12 +27,12 @@ public class GameController : MonoBehaviour {
 		Init ();
 
 		
-		Board board = new Board ();
-		board.CreateBoard (map.map, width, height);
-		List<Vec2i> path = board.FindPathVec (new Vec2i (3, 3), new Vec2i (10, 10));
-		foreach (Vec2i v in path) {
-			Debug.Log (v);
-		}
+//		Board board = new Board ();
+//		board.CreateBoard (map.map, width, height);
+//		List<Vec2i> path = board.FindPathVec (new Vec2i (3, 3), new Vec2i (10, 10));
+//		foreach (Vec2i v in path) {
+//			Debug.Log (v);
+//		}
 	}
 	
 	private bool initialized = false;
@@ -42,9 +42,13 @@ public class GameController : MonoBehaviour {
 		initialized = true;
 		
 		map.Init();
-		Debug.Log ("Generate map");
-		map.GenerateMap(width, height);
-		map.DrawMap (width, height);
+		map.Generate(width, height);
+		map.Draw();
+
+	}
+
+	public void CreateUnit(GameObject prefab, Vec2i position) {
+		Instantiate(prefab, map.GridToWorld(position), Quaternion.identity);
 	}
 	
 	void Update () {

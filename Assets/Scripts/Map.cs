@@ -3,39 +3,39 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Map : MonoBehaviour {
-	
+
+	// Prefabs
 	public GameObject wall;
 	public GameObject floor;
-	
+
+	// Collection of walls
 	private List<GameObject> tiles = new List<GameObject>();
-	private float tileWidth;
-	private float tileHeight;
+	private float tileWidth = 1f;
+	private float tileHeight = 1f;
 	
-	public int[,] map;
+	private int[,] map;
 	private int width;
 	private int height;
 	
 	private bool initialized = false;
+
 	public void Init() {
-		if (initialized)
+		if (initialized) {
 			return;
+		}
 		initialized = true;
-		
-		tileWidth = 1;
-		tileHeight = 1;
 	}
 	
-	public int[,] GenerateMap (int width, int height) {
-		
-		DungeonGenerator dungeonGenerator = new DungeonGenerator ();
+	public int[,] Generate (int width, int height) {
+		this.width = width;
+		this.height = height;
+
+		DungeonGenerator dungeonGenerator = new DungeonGenerator();
 		map = dungeonGenerator.Generate (width, height);
-		
 		return map;
 	}
 	
-	public void DrawMap(int width, int height) {
-		this.width = width;
-		this.height = height;
+	public void Draw() {
 
 		// Draw floor
 		GameObject floorObject = Instantiate(floor, new Vector3(width/2-0.5f, 0, height/2-0.5f), Quaternion.identity) as GameObject;
@@ -104,5 +104,4 @@ public class Map : MonoBehaviour {
 	public bool WithinBounds(Vec2i v) {
 		return !OutOfBounds(v);
 	}
-	
 }

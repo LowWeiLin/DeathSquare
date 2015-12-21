@@ -18,7 +18,7 @@ public class AIMinion : MonoBehaviour {
 //			return Maybe<GameObject>.Empty;
 //		}
 		// TODO get the closest
-		return GameObject.Find("HumanPlayer");
+		return GameObject.Find("Player");
 	}
 
 	bool InAttackRange(GameObject enemy) {
@@ -30,17 +30,13 @@ public class AIMinion : MonoBehaviour {
 	void AttackEnemy(GameObject enemy) {
 		// TODO
 	}
-
-	void MoveTowards(GameObject enemy) {
-		movement.MoveTowards(enemy, 3f);
-	}
-	
+		
 	void Update () {
 		GetClosestEnemy().IfPresent(enemy => {
 			if (InAttackRange(enemy)) {
 				AttackEnemy(enemy);
 			} else {
-				MoveTowards(enemy);
+				movement.MoveTowards(enemy, 3f);
 			}
 		});
 	}
