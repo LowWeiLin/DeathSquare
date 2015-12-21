@@ -19,11 +19,14 @@ public class Map : MonoBehaviour {
 	
 	private bool initialized = false;
 
+	private LayerMask mask = -1;
+
 	public void Init() {
 		if (initialized) {
 			return;
 		}
 		initialized = true;
+		mask = LayerMask.NameToLayer ("Walls");
 	}
 	
 	public int[,] Generate (int width, int height) {
@@ -56,6 +59,7 @@ public class Map : MonoBehaviour {
 					tile = Instantiate(wall, GridToWorld(new Vector2(x,y)) + new Vector3(0, 0.5f, 0), Quaternion.identity) as GameObject;
 					tile.GetComponent<MeshRenderer> ().material.color = new Color (0.5f, 0.5f, 0.5f);
 					tile.transform.parent = transform;
+					tile.layer = mask.value;
 					tiles.Add(tile);
 				}
 			}

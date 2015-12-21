@@ -113,7 +113,7 @@ public class GameController : MonoBehaviour {
 
 	public delegate bool Predicate(int x, int y);
 	
-	public Vec2i FindNearestUnobstructed(Vec2i v, int maxDistance=15) {
+	public Vec2i FindNearestUnobstructed(Vec2i v, int maxDistance=50) {
 		return FindNearest(v, IsUnobstructed, maxDistance);
 	}
 	

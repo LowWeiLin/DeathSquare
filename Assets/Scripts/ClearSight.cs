@@ -5,12 +5,19 @@ using System.Collections;
 public class ClearSight : MonoBehaviour
 {
 	public float DistanceToPlayer = 10.0f;
+
+	public LayerMask mask = -1;
+
+	void Start () {
+		mask = 1 << LayerMask.NameToLayer ("Walls"); // only check for collisions with this layer
+	}
+
 	void Update()
 	{
 		RaycastHit[] hits;
 		// you can also use CapsuleCastAll()
 		// TODO: setup your layermask it improve performance and filter your hits.
-		hits = Physics.RaycastAll(transform.position, transform.forward, DistanceToPlayer);
+		hits = Physics.RaycastAll(transform.position, transform.forward, DistanceToPlayer, mask.value);
 		foreach(RaycastHit hit in hits)
 		{
 			Renderer R = hit.collider.GetComponent<Renderer>();
