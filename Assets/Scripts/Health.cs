@@ -14,12 +14,16 @@ public class Health : MonoBehaviour {
 		hp = maxHp;
 	}
 	
-	public void TakeDamage(int damage)
-	{
+	public void TakeDamage(int damage) {
+
+		Visuals visuals = GetComponent<Visuals>();
+		if (visuals != null) {
+			visuals.FlashRed();
+		}
+
 		hp -= damage;
 		hp = Mathf.Max (hp, 0);
-		if (hp <= 0)
-		{
+		if (hp <= 0) {
 			entity.DestroyEntity();
 		}
 	}

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Visuals))]
 public class Movement : MonoBehaviour {
 
 	GameObject model;
@@ -12,7 +13,7 @@ public class Movement : MonoBehaviour {
 	bool paused = false;
 
 	void Start () {
-		model = transform.GetChild(0).gameObject;
+		model = GetComponent<Visuals>().model;
 		r = GetComponent<Rigidbody>();
 		controller = GameObject.Find("GameController").GetComponent<GameController>();
 		controller.Init ();
