@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Movement))]
 public class HumanMovement : MonoBehaviour {
 
-	GameObject model;
+	Movement movement;
 
 	void Start () {
-		model = transform.GetChild(0).gameObject;
+		movement = GetComponent<Movement>();
 	}
 
 	void Update () {
@@ -21,18 +22,6 @@ public class HumanMovement : MonoBehaviour {
 			speed = 3.0f;
 		}
 
-		transform.Translate(Vector3.right * dx * Time.deltaTime * speed);
-		transform.Translate(Vector3.forward * dy * Time.deltaTime * speed);
-
-		Vector3 moveDirection = new Vector3(dx, 0, dy);
-
-		if (moveDirection != Vector3.zero) {
-			Quaternion newRotation = Quaternion.LookRotation(-moveDirection);
-
-			// HACK compensate for initial rotation of model
-			newRotation *= Quaternion.Euler(270, 0, 0);
-
-			model.transform.rotation = Quaternion.Slerp(model.transform.rotation, newRotation, Time.deltaTime * 8);
-		}
+		movement.Move(dx, dy, speed);
 	}
 }
