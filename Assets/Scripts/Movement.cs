@@ -58,7 +58,7 @@ public class Movement : MonoBehaviour {
 			} else if (i == path.Count-1) {
 				smoothPath.Add(goal.ToVec3());
 			} else {
-				smoothPath.Add((smoothPath[i-1] + path[i].ToVec3() + path[i+1].ToVec3())/3.0f);
+				smoothPath.Add((smoothPath[i-1] + 2*path[i].ToVec3() + path[i+1].ToVec3())/4.0f);
 			}
 		}
 		for (int i=0; i<path.Count-2; i++) {

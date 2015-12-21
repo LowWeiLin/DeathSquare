@@ -8,6 +8,6 @@ public class Cell {
 		return walkable;
 	}
 	public virtual float MovementCost() {
-		return 0;
+		return 1;
 	}
 }
