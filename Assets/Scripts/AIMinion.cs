@@ -6,9 +6,11 @@ using System.Collections.Generic;
 public class AIMinion : MonoBehaviour {
 
 	Movement movement;
+	Attack attack;
 
 	void Start() {
 		movement = GetComponent<Movement>();
+		attack = GetComponent<Attack>();
 	}
 
 	Maybe<GameObject> GetClosestEnemy() {
@@ -27,14 +29,10 @@ public class AIMinion : MonoBehaviour {
 		return false;
 	}
 
-	void AttackEnemy(GameObject enemy) {
-		// TODO
-	}
-		
 	void Update () {
 		GetClosestEnemy().IfPresent(enemy => {
-			if (InAttackRange(enemy)) {
-				AttackEnemy(enemy);
+			if (attack.InRange(enemy)) {
+				attack.Hit(enemy);
 			} else {
 				//movement.MoveTowards(enemy, 3f);
 				movement.RouteTowards(enemy);

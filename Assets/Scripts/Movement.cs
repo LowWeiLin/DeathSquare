@@ -6,9 +6,10 @@ public class Movement : MonoBehaviour {
 
 	GameObject model;
 	Rigidbody r;
+	GameController controller;
 
 	float collisionThreshold = 1.2f;
-	GameController controller;
+	bool paused = false;
 
 	void Start () {
 		model = transform.GetChild(0).gameObject;
@@ -66,6 +67,10 @@ public class Movement : MonoBehaviour {
 
 	public void Move(float dx, float dy, float speed) {
 
+		if (paused) {
+			return;
+		}
+
 		Vector3 offset = (Vector3.right * dx + Vector3.forward * dy) * Time.deltaTime * speed;
 		if (r == null) {
 			transform.Translate(offset);
@@ -83,5 +88,13 @@ public class Movement : MonoBehaviour {
 
 			model.transform.rotation = Quaternion.Slerp(model.transform.rotation, newRotation, Time.deltaTime * 8);
 		}
+	}
+
+	public void Pause() {
+		paused = true;
+	}
+
+	public void Unpause() {
+		paused = false;
 	}
 }
