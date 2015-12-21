@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Attack : MonoBehaviour {
 
+	public GameObject projectile;
+
 	public int damage = 1;
 	public float cooldown = 1f;
 	public float range = 1.5f;
@@ -29,6 +31,23 @@ public class Attack : MonoBehaviour {
 		StartCoroutine(ProcessAttack(target, targetHealth));
 	}
 
+	public void ProjectileAttack(GameObject target, Health targetHealth) {
+
+		Vector3 direction = (target.transform.position - transform.position).normalized;
+		float offset = 1f;
+		Vector3 projectilePosition = transform.position + direction * offset;
+
+		// HACK adjust height
+		projectilePosition += new Vector3(0f, 1f, 0f);
+
+		GameObject p = Instantiate(projectile, projectilePosition, Quaternion.identity) as GameObject;
+		p.GetComponent<Projectile>().Fire(damage, target);
+	}
+		
+	public void InstantAttack(Health targetHealth) {
+		targetHealth.TakeDamage(damage);
+	}
+
 	IEnumerator ProcessAttack(GameObject target, Health targetHealth) {
 
 		onCooldown = true;
@@ -39,7 +58,8 @@ public class Attack : MonoBehaviour {
 		}
 
 		yield return new WaitForSeconds(preDelay);
-		targetHealth.TakeDamage(damage);
+		ProjectileAttack(target, targetHealth);
+//		InstantAttack(targetHealth);
 		yield return new WaitForSeconds(postDelay);
 
 		yield return new WaitForSeconds(cooldown);

@@ -34,10 +34,11 @@ public class Movement : MonoBehaviour {
 
 	public void RouteTowards(GameObject target) {
 		Vec2i origin = controller.map.WorldToGrid (transform.position);
-		Vec2i goal =  controller.map.WorldToGrid (target.transform.position);
+		Vec2i goal = controller.map.WorldToGrid (target.transform.position);
 
-		if ((transform.position - target.transform.position).magnitude <= 1.5f)
+		if ((transform.position - target.transform.position).magnitude <= 1.5f) {
 			return;
+		}
 
 		Board board = new Board ();
 		board.CreateBoard (controller.map.map, controller.map.width, controller.map.height);
@@ -72,9 +73,6 @@ public class Movement : MonoBehaviour {
 				break;
 		}
 
-
-		Debug.Log (origin + " -> " + goal);
-		Debug.Log (direction);
 
 		Debug.DrawRay (origin.ToVec3 (), direction);
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class HumanPlayer : PlayerBase {
-	
+
 	bool attackButton = false;
 	bool moveButton = false;
 	Dir moveDir;
