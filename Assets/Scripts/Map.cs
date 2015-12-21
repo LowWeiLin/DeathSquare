@@ -13,9 +13,9 @@ public class Map : MonoBehaviour {
 	private float tileWidth = 1f;
 	private float tileHeight = 1f;
 	
-	private int[,] map;
-	private int width;
-	private int height;
+	public int[,] map;
+	public int width;
+	public int height;
 	
 	private bool initialized = false;
 
@@ -80,13 +80,17 @@ public class Map : MonoBehaviour {
 		}
 		tiles.Clear ();
 	}
+
+	public Vec2i WorldToGrid(Vector3 w) {
+		return new Vec2i(Mathf.RoundToInt(w.x / tileWidth), Mathf.RoundToInt(w.z / tileHeight));
+	}
 	
 	public Vec2i WorldToGrid(Vector2 w) {
-		return new Vec2i(Mathf.FloorToInt(w.x / tileWidth), Mathf.FloorToInt(w.y / tileHeight));
+		return new Vec2i(Mathf.RoundToInt(w.x / tileWidth), Mathf.RoundToInt(w.y / tileHeight));
 	}
 	
 	public Vector3 WorldToGrid(Vec2i w) {
-		return new Vector3(Mathf.Floor(w.x / tileWidth), 0, Mathf.Floor(w.y / tileHeight));
+		return new Vector3(Mathf.RoundToInt(w.x / tileWidth), 0, Mathf.RoundToInt(w.y / tileHeight));
 	}
 	
 	public Vector3 GridToWorld(Vector2 g) {

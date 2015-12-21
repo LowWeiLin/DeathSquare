@@ -36,7 +36,8 @@ public class AIMinion : MonoBehaviour {
 			if (InAttackRange(enemy)) {
 				AttackEnemy(enemy);
 			} else {
-				movement.MoveTowards(enemy, 3f);
+				//movement.MoveTowards(enemy, 3f);
+				movement.RouteTowards(enemy);
 			}
 		});
 	}

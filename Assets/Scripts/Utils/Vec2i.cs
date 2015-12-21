@@ -45,7 +45,11 @@ public struct Vec2i {
 	public static bool operator !=(Vec2i left, Vec2i right) {
 		return !(left == right);
 	}
-	
+
+	public Vector3 ToVec3 () {
+		return new Vector3 (x, 0, y);
+	}
+
 	public override string ToString () {
 		return string.Format("({0}, {1})", x, y);
 	}

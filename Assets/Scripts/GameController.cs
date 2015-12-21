@@ -25,14 +25,6 @@ public class GameController : MonoBehaviour {
 	
 	void Start () {
 		Init ();
-
-		
-//		Board board = new Board ();
-//		board.CreateBoard (map.map, width, height);
-//		List<Vec2i> path = board.FindPathVec (new Vec2i (3, 3), new Vec2i (10, 10));
-//		foreach (Vec2i v in path) {
-//			Debug.Log (v);
-//		}
 	}
 	
 	private bool initialized = false;
