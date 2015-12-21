@@ -97,7 +97,7 @@ public class Map : MonoBehaviour {
 		return new Vector3(v.x * tileWidth, 0, v.y * tileHeight);
 	}
 	
-	public Vector2 GridToWorld(int x, int y) {
+	public Vector3 GridToWorld(int x, int y) {
 		return new Vector3(x * tileWidth, 0, y * tileHeight);
 	}
 	
