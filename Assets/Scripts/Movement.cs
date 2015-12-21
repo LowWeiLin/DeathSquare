@@ -50,13 +50,28 @@ public class Movement : MonoBehaviour {
 			Debug.DrawLine(path[i].ToVec3(), path[i+1].ToVec3(), Color.black);
 		}
 
-		for (int i=0 ; i<path.Count ; i++) {
-			direction += (path[i].ToVec3() - transform.position)/((i+1)*(i+1));
-			if (i>=0)
+		// Smooth path
+		List<Vector3> smoothPath = new List<Vector3> ();
+		for (int i=0; i<path.Count-1; i++) {
+			if (i == 0) {
+				smoothPath.Add(transform.position);
+			} else if (i == path.Count-1) {
+				smoothPath.Add(goal.ToVec3());
+			} else {
+				smoothPath.Add((smoothPath[i-1] + path[i].ToVec3() + path[i+1].ToVec3())/3.0f);
+			}
+		}
+		for (int i=0; i<path.Count-2; i++) {
+			Debug.DrawLine(smoothPath[i], smoothPath[i+1], Color.red);
+		}
+
+
+		for (int i=0 ; i<smoothPath.Count ; i++) {
+			direction += (smoothPath[i] - transform.position)/((i+1)*(i+1));
+			if (i>=1)
 				break;
 		}
 
-		direction *= 2;
 
 		Debug.Log (origin + " -> " + goal);
 		Debug.Log (direction);
