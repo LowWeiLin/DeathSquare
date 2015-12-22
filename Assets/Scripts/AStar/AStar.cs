@@ -23,10 +23,10 @@ public class AStar {
 		}
 	}
 	
-	List<Node> openList;
-	List<Node> closeList;
-	List<Node> neighbours;
-	List<Node> finalPath;
+	PriorityQueue<Node> openList = new PriorityQueue<Node>();
+	List<Node> closeList = new List<Node>();
+	List<Node> neighbours = new List<Node>();
+	List<Node> finalPath = new List<Node>();
 	Node start;
 	Node end;
 	
@@ -35,10 +35,14 @@ public class AStar {
 	int mapHeight;
 	
 	public AStar () {
-		openList = new List<Node>();
-		closeList = new List<Node>();
-		neighbours = new List<Node>();
-		finalPath = new List<Node>();
+		Init ();
+	}
+
+	public void Init() {
+		openList.Clear ();
+		closeList.Clear ();
+		neighbours.Clear ();
+		finalPath.Clear ();
 	}
 	
 	public void FindPath(Cell startCell, Cell goalCell, Cell[,] map, bool targetCellMustBeFree) {
@@ -48,10 +52,10 @@ public class AStar {
 		
 		start = new Node((int)startCell.coordinates.x, (int)startCell.coordinates.y, 0, 0, 0, null, startCell);
 		end = new Node((int)goalCell.coordinates.x, (int)goalCell.coordinates.y, 0, 0, 0, null, goalCell);
-		openList.Add(start);
+		openList.Add(start.F, start);
 		bool keepSearching = true;
 		bool pathExists = true;
-		
+
 		while ((keepSearching) && (pathExists)) {
 			Node currentNode = ExtractBestNodeFromOpenList();
 			if (currentNode == null) {
@@ -72,7 +76,7 @@ public class AStar {
 						continue;
 					Node inOpenList = FindInOpenList(neighbour);
 					if (inOpenList == null) {
-						openList.Add (neighbour);
+						openList.Add (neighbour.F, neighbour);
 					}
 					else {
 						if (neighbour.G < inOpenList.G) {
@@ -117,17 +121,7 @@ public class AStar {
 	}
 	
 	Node ExtractBestNodeFromOpenList() {
-		float minF = float.MaxValue;
-		Node bestOne = null;
-		foreach (Node n in openList) {
-			if (n.F < minF) {
-				minF = n.F;
-				bestOne = n;
-			}
-		}
-		if (bestOne != null)
-			openList.Remove(bestOne);
-		return bestOne;
+		return openList.RemoveMin ();
 	}
 	
 	bool NodeIsGoal(Node node) {

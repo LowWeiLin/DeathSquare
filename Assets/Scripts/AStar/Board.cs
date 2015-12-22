@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Board {
 	Cell [,]board;
+	AStar pathFinder = new AStar();
 
 	public void CreateBoard(int[,] map, int width, int height) {
 		board = new Cell[width,height];
@@ -17,7 +18,7 @@ public class Board {
 	}
 	
 	public List<Cell> FindPath(Cell origin, Cell goal) {
-		AStar pathFinder = new AStar();
+		pathFinder.Init ();
 		pathFinder.FindPath (origin, goal, board, false);
 		return pathFinder.CellsFromPath ();
 	}

@@ -33,7 +33,7 @@ public class Movement : MonoBehaviour {
 		//}
 	}
 
-
+	public static Board board;
 	public void RouteTowards(GameObject target) {
 		Vec2i origin = controller.map.WorldToGrid (transform.position);
 		Vec2i goal = controller.map.WorldToGrid (target.transform.position);
@@ -42,18 +42,23 @@ public class Movement : MonoBehaviour {
 			return;
 		}
 
-		Board board = new Board ();
-		board.CreateBoard (controller.map.map, controller.map.width, controller.map.height);
+		if (board == null) {
+			board = new Board ();
+			board.CreateBoard (controller.map.map, controller.map.width, controller.map.height);
+		}
 		List<Vec2i> path = board.FindPathVec (origin, goal);
 
 		Vector3 direction = Vector3.zero;
 
 		// Draw path
+		/*
 		for (int i=0; i<path.Count-1; i++) {
 			Debug.DrawLine(path[i].ToVec3(), path[i+1].ToVec3(), Color.black);
 		}
+		*/
 
 		// Smooth path
+		/*
 		List<Vector3> smoothPath = new List<Vector3> ();
 		for (int i=0; i<path.Count-1; i++) {
 			if (i == 0) {
@@ -63,20 +68,22 @@ public class Movement : MonoBehaviour {
 			} else {
 				smoothPath.Add((smoothPath[i-1] + 2*path[i].ToVec3() + path[i+1].ToVec3())/4.0f);
 			}
-		}
+		}*/
+		/*
 		for (int i=0; i<path.Count-2; i++) {
 			Debug.DrawLine(smoothPath[i], smoothPath[i+1], Color.red);
 		}
+		*/
 
 
-		for (int i=0 ; i<smoothPath.Count ; i++) {
-			direction += (smoothPath[i] - transform.position)/((i+1)*(i+1));
+		for (int i=0 ; i<path.Count ; i++) {
+			direction += (path[i].ToVec3() - transform.position)/((i+1)*(i+1));
 			if (i>=1)
 				break;
 		}
 
 
-		Debug.DrawRay (origin.ToVec3 (), direction);
+		//Debug.DrawRay (origin.ToVec3 (), direction);
 
 		MoveTowards (direction, 3f);
 	}
