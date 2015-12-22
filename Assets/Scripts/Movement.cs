@@ -93,15 +93,19 @@ public class Movement : MonoBehaviour {
 		}
 
 		Vector3 moveDirection = new Vector3(dx, 0, dy);
+		Face(moveDirection);
+	}
 
-		if (moveDirection != Vector3.zero) {
-			Quaternion newRotation = Quaternion.LookRotation(-moveDirection);
-
-			// HACK compensate for initial rotation of model
-			newRotation *= Quaternion.Euler(270, 0, 0);
-
-			model.transform.rotation = Quaternion.Slerp(model.transform.rotation, newRotation, Time.deltaTime * 8);
+	public void Face(Vector3 direction) {
+		if (direction == Vector3.zero) {
+			return;
 		}
+		Quaternion newRotation = Quaternion.LookRotation(-direction);
+
+		// HACK compensate for initial rotation of model
+		newRotation *= Quaternion.Euler(270, 0, 0);
+
+		model.transform.rotation = Quaternion.Slerp(model.transform.rotation, newRotation, Time.deltaTime * 8);
 	}
 
 	public void Pause() {
