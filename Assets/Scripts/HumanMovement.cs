@@ -12,6 +12,21 @@ public class HumanMovement : MonoBehaviour {
 
 	void Update () {
 
+		if( Input.GetMouseButtonDown(0) )
+		{
+			Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
+			RaycastHit hit;
+			
+			if( Physics.Raycast( ray, out hit, 100 ) )
+			{
+				Debug.Log(hit.transform.gameObject.name);
+				if (hit.transform.gameObject.name.StartsWith("Floor")) {
+					transform.position = hit.point;
+				}
+			}
+		}
+
+
 		float dx = Input.GetAxisRaw("Horizontal");
 		float dy = Input.GetAxisRaw("Vertical");
 

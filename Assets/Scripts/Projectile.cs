@@ -24,12 +24,14 @@ public class Projectile : MonoBehaviour {
 		if (!active) {
 			return;
 		}
-		movement.MoveTowards(target, 8f);
+		movement.MoveTowards(target, 3f);
 	}
 
 	void OnTriggerEnter(Collider other) {
-		Destroy(gameObject);
-		Maybe<Health> targetHealth = other.gameObject.GetComponent<Health>();
-		targetHealth.IfPresent(t => t.TakeDamage(damage));
+		if (target == other.gameObject) {
+			Destroy (gameObject);
+			Maybe<Health> targetHealth = other.gameObject.GetComponent<Health> ();
+			targetHealth.IfPresent (t => t.TakeDamage (damage));
+		}
 	}
 }

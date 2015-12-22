@@ -37,12 +37,12 @@ public class Movement : MonoBehaviour {
 	private List<Vec2i> path;
 	private Vec2i pathOrigin;
 	private Vec2i pathGoal;
-	public void RouteTowards(GameObject target) {
+	public void RouteTowards(GameObject target, float range=0.1f) {
 		Vec2i origin = controller.map.WorldToGrid (transform.position);
 		Vec2i goal = controller.map.WorldToGrid (target.transform.position);
 
 		// Stop route if close enough to goal
-		if ((transform.position - target.transform.position).magnitude <= 1.5f) {
+		if ((transform.position - target.transform.position).magnitude <= range) {
 			return;
 		}
 
@@ -104,7 +104,7 @@ public class Movement : MonoBehaviour {
 
 		//Debug.DrawLine(transform.position, transform.position+direction, Color.red);
 
-		MoveTowards (direction, 3f);
+		MoveTowards (direction, 1f);
 	}
 
 	public void Move(float dx, float dy, float speed) {

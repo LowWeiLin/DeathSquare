@@ -56,7 +56,7 @@ public class Map : MonoBehaviour {
 				// Set walls
 				if (map[y,x] == 0) {
 				} else {
-					tile = Instantiate(wall, GridToWorld(new Vector2(x,y)) + new Vector3(0, 0.5f, 0), Quaternion.identity) as GameObject;
+					tile = Instantiate(wall, GridToWorld(new Vector2(x,y)) + new Vector3(0, 0.25f, 0), Quaternion.identity) as GameObject;
 					tile.GetComponent<MeshRenderer> ().material.color = new Color (0.5f, 0.5f, 0.5f);
 					tile.transform.parent = transform;
 					tile.layer = mask.value;

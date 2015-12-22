@@ -7,7 +7,7 @@ public class Attack : MonoBehaviour {
 
 	public int damage = 1;
 	public float cooldown = 1f;
-	public float range = 1.5f;
+	public float range = 1f;
 
 	public float preDelay = 0.1f;
 	public float postDelay = 0.1f;
@@ -42,11 +42,11 @@ public class Attack : MonoBehaviour {
 	public void ProjectileAttack(GameObject target, Health targetHealth) {
 
 		Vector3 direction = (target.transform.position - transform.position).normalized;
-		float offset = 1f;
+		float offset = 0.01f;
 		Vector3 projectilePosition = transform.position + direction * offset;
 
 		// HACK adjust height
-		projectilePosition += new Vector3(0f, 1f, 0f);
+		projectilePosition += new Vector3(0f, 0.2f, 0f);
 
 		GameObject p = Instantiate(projectile, projectilePosition, Quaternion.identity) as GameObject;
 		p.GetComponent<Projectile>().Fire(damage, target);
