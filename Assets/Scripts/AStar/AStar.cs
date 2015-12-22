@@ -179,7 +179,8 @@ public class AStar {
 	}
 	
 	float Heuristic (Node n) {
-		return Mathf.Sqrt((n.x - end.x)*(n.x - end.x) + (n.y - end.y)*(n.y - end.y));
+		//return Mathf.Sqrt((n.x - end.x)*(n.x - end.x) + (n.y - end.y)*(n.y - end.y));
+		return Mathf.Abs (n.x - end.x) + Mathf.Abs (n.y - end.y);
 	}
 	
 	float MovementCost(Node a, Node b) {

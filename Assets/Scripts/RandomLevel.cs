@@ -12,7 +12,7 @@ public class RandomLevel : MonoBehaviour {
 		controller.Init ();
 
 		controller.CreateUnit(player, new Vec2i(5, 5));
-		for (int i=0 ; i<6 ; i++)
-			controller.CreateUnit(minion, new Vec2i(Random.Range(1,49), Random.Range(1,49)));
+		for (int i=0 ; i<20 ; i++)
+			controller.CreateUnit(minion, new Vec2i(Random.Range(40,49), Random.Range(40,49)));
 	}
 }

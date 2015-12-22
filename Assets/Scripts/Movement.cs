@@ -33,20 +33,59 @@ public class Movement : MonoBehaviour {
 		//}
 	}
 
-	public static Board board;
+	private static Board board;
+	private List<Vec2i> path;
+	private Vec2i pathOrigin;
+	private Vec2i pathGoal;
 	public void RouteTowards(GameObject target) {
 		Vec2i origin = controller.map.WorldToGrid (transform.position);
 		Vec2i goal = controller.map.WorldToGrid (target.transform.position);
 
+		// Stop route if close enough to goal
 		if ((transform.position - target.transform.position).magnitude <= 1.5f) {
 			return;
 		}
 
+		// Initialize board
 		if (board == null) {
 			board = new Board ();
 			board.CreateBoard (controller.map.map, controller.map.width, controller.map.height);
 		}
-		List<Vec2i> path = board.FindPathVec (origin, goal);
+
+		// Use previously found path if no change to origin and goal
+		if (path != null && origin == pathOrigin && goal == pathGoal)
+		{
+		}
+		// If goal did not change, can use previous path if following it
+		// Or if goal did not change much as compared to distance left to travel.
+		else if (path != null && (goal == pathGoal || 
+		                          goal.ManhattanDistance(pathGoal) < 0.1f*path.Count))
+		{
+			// Remove path walked
+			while (path.Count > 0) {
+				if (path[0].ManhattanDistance(origin) < 2) {
+					path.RemoveAt(0);
+				} else {
+					break;
+				}
+			}
+			pathOrigin = origin;
+			
+			// Did not follow path, recalculate path.
+			if (path.Count == 0) {
+				Debug.Log("recalculating path");
+				path = board.FindPathVec (origin, goal);
+				pathOrigin = origin;
+				pathGoal = goal;
+			}
+		}
+		else
+		{
+			// Simply calculate path
+			path = board.FindPathVec (origin, goal);
+			pathOrigin = origin;
+			pathGoal = goal;
+		}
 
 		Vector3 direction = Vector3.zero;
 
@@ -57,33 +96,13 @@ public class Movement : MonoBehaviour {
 		}
 		*/
 
-		// Smooth path
-		/*
-		List<Vector3> smoothPath = new List<Vector3> ();
-		for (int i=0; i<path.Count-1; i++) {
-			if (i == 0) {
-				smoothPath.Add(transform.position);
-			} else if (i == path.Count-1) {
-				smoothPath.Add(goal.ToVec3());
-			} else {
-				smoothPath.Add((smoothPath[i-1] + 2*path[i].ToVec3() + path[i+1].ToVec3())/4.0f);
-			}
-		}*/
-		/*
-		for (int i=0; i<path.Count-2; i++) {
-			Debug.DrawLine(smoothPath[i], smoothPath[i+1], Color.red);
-		}
-		*/
-
-
 		for (int i=0 ; i<path.Count ; i++) {
 			direction += (path[i].ToVec3() - transform.position)/((i+1)*(i+1));
 			if (i>=1)
 				break;
 		}
 
-
-		//Debug.DrawRay (origin.ToVec3 (), direction);
+		//Debug.DrawLine(transform.position, transform.position+direction, Color.red);
 
 		MoveTowards (direction, 3f);
 	}

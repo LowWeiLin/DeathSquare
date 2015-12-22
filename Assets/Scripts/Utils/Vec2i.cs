@@ -29,6 +29,14 @@ public struct Vec2i {
 		}
 		return false;
 	}
+
+	public int ManhattanDistance(Vec2i v) {
+		return (int) (Mathf.Abs (v.x - x) + Mathf.Abs (v.y - y));
+	}
+
+	public float EucledianDistance(Vec2i v) {
+		return Mathf.Sqrt ((v.x - x)*(v.x - x) + ((v.y - y)*(v.y - y)));
+	}
 	
 	public static Vec2i operator +(Vec2i left, Vec2i right) {
 		return new Vec2i(right.x + left.x, right.y + left.y);
