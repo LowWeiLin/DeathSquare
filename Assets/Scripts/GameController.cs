@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour {
 
 	public void CreateUnit(GameObject prefab, Vec2i position) {
 		position = FindNearestUnobstructed (position);
-		Instantiate(prefab, map.GridToWorld(position), Quaternion.identity);
+		Instantiate(prefab, map.GridToWorld(position) + new Vector3(Random.Range(0,0.1f), 0, Random.Range(0,0.1f)), Quaternion.identity);
 	}
 	
 	void Update () {
