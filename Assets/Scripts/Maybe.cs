@@ -34,11 +34,33 @@ public struct Maybe<T> {
 		}
 	}
 
-	public delegate void F(T value);
-
-	public void IfPresent(F f) {
+	public void IfPresent(Action<T> f) {
 		if (hasValue) {
 			f(value);
+		}
+	}
+
+	public T OrElse(T alt) {
+		if (hasValue) {
+			return value;
+		} else {
+			return alt;
+		}
+	}
+
+	public Maybe<U> Map<U>(Func<T, U> f) {
+		if (hasValue) {
+			return f(value);
+		} else {
+			return new Maybe<U>(false, default(U));
+		}
+	}
+
+	public Maybe<U> FlatMap<U>(Func<T, Maybe<U>> f) {
+		if (hasValue) {
+			return f(value);
+		} else {
+			return new Maybe<U>(false, default(U));
 		}
 	}
 

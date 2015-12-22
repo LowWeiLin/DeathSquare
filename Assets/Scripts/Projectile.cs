@@ -29,10 +29,7 @@ public class Projectile : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		Destroy(gameObject);
-
-		Health targetHealth = other.gameObject.GetComponent<Health>();
-		if (targetHealth != null) {
-			targetHealth.TakeDamage(damage);
-		}
+		Maybe<Health> targetHealth = other.gameObject.GetComponent<Health>();
+		targetHealth.IfPresent(t => t.TakeDamage(damage));
 	}
 }

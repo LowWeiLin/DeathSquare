@@ -12,10 +12,8 @@ public class Health : MonoBehaviour {
 	
 	public void TakeDamage(int damage) {
 
-		Visuals visuals = GetComponent<Visuals>();
-		if (visuals != null) {
-			visuals.FlashRed();
-		}
+		Maybe<Visuals> visuals = GetComponent<Visuals>();
+		visuals.IfPresent(v => v.FlashRed());
 
 		hp -= damage;
 		hp = Mathf.Max (hp, 0);

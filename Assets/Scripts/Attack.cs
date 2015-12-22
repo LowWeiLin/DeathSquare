@@ -14,6 +14,14 @@ public class Attack : MonoBehaviour {
 
 	bool onCooldown = false;
 
+	Maybe<Facing> facing;
+	Maybe<Movement> movement;
+
+	void Start() {
+		facing = GetComponent<Facing>();
+		movement = GetComponent<Movement>();
+	}
+
 	public bool InRange(GameObject target) {
 		return Vector3.Distance(target.transform.position, transform.position) < range;
 	}
@@ -51,16 +59,8 @@ public class Attack : MonoBehaviour {
 	IEnumerator ProcessAttack(GameObject target, Health targetHealth) {
 
 		onCooldown = true;
-
-		Movement movement = GetComponent<Movement>();
-		if (movement != null) {
-			movement.Pause();
-		}
-
-		Facing facing = GetComponent<Facing>();
-		if (facing != null) {
-			facing.LookAt(target);
-		}
+		movement.IfPresent(m => m.Pause());
+		facing.IfPresent(f => f.LookAt(target));
 			
 		yield return new WaitForSeconds(preDelay);
 		ProjectileAttack(target, targetHealth);
@@ -69,14 +69,8 @@ public class Attack : MonoBehaviour {
 
 		yield return new WaitForSeconds(cooldown);
 
-		if (facing != null) {
-			facing.StopLooking();
-		}
-
-		if (movement != null) {
-			movement.Unpause();
-		}
-
+		facing.IfPresent(f => f.StopLooking());
+		movement.IfPresent(m => m.Unpause());
 		onCooldown = false;
 	}
 }

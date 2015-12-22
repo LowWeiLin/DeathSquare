@@ -6,10 +6,8 @@ public class Visuals : MonoBehaviour {
 	public GameObject model;
 
 	public void FlashRed() {
-		MeshRenderer renderer = model.GetComponent<MeshRenderer>();
-		if (renderer != null) {
-			StartCoroutine(ActuallyFlashRed(renderer));
-		}
+		Maybe<MeshRenderer> renderer = model.GetComponent<MeshRenderer>();
+		renderer.IfPresent(r => StartCoroutine(ActuallyFlashRed(r)));
 	}
 
 	IEnumerator ActuallyFlashRed(MeshRenderer renderer) {

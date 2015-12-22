@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Facing : MonoBehaviour {
 
-	GameObject lookingAtTarget;
-	GameObject model;
+	Maybe<GameObject> lookingAtTarget;
+	Maybe<GameObject> model;
 
 	void Start () {
 		Visuals visuals = GetComponent<Visuals>();
@@ -22,11 +22,9 @@ public class Facing : MonoBehaviour {
 		// HACK compensate for initial rotation of model
 		newRotation *= Quaternion.Euler(270, 0, 0);
 
-		if (model != null) {
-			model.transform.rotation = Quaternion.Slerp(model.transform.rotation, newRotation, Time.deltaTime * 8);
-		}
+		model.IfPresent(m =>
+			m.transform.rotation = Quaternion.Slerp(m.transform.rotation, newRotation, Time.deltaTime * 8));
 	}
-
 
 	public void LookAt(GameObject target) {
 		lookingAtTarget = target;
@@ -37,8 +35,6 @@ public class Facing : MonoBehaviour {
 	}
 
 	void Update () {
-		if (lookingAtTarget != null) {
-			Face(lookingAtTarget.transform.position - transform.position);
-		}
+		lookingAtTarget.IfPresent(t => Face(t.transform.position - transform.position));
 	}
 }
