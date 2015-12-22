@@ -57,16 +57,26 @@ public class Attack : MonoBehaviour {
 			movement.Pause();
 		}
 
+		Facing facing = GetComponent<Facing>();
+		if (facing != null) {
+			facing.LookAt(target);
+		}
+			
 		yield return new WaitForSeconds(preDelay);
 		ProjectileAttack(target, targetHealth);
 //		InstantAttack(targetHealth);
 		yield return new WaitForSeconds(postDelay);
 
 		yield return new WaitForSeconds(cooldown);
-		onCooldown = false;
+
+		if (facing != null) {
+			facing.StopLooking();
+		}
 
 		if (movement != null) {
 			movement.Unpause();
 		}
+
+		onCooldown = false;
 	}
 }
