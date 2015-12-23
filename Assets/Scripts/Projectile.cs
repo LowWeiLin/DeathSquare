@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(Movement))]
 public class Projectile : MonoBehaviour {
 
+	public GameObject cubeExplosionPrefab;
+
 	Movement movement;
 	GameObject target;
 	int damage;
@@ -30,6 +32,7 @@ public class Projectile : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (target == other.gameObject) {
 			Destroy (gameObject);
+			Instantiate(cubeExplosionPrefab, transform.position, Quaternion.identity);
 			Maybe<Health> targetHealth = other.gameObject.GetComponent<Health> ();
 			targetHealth.IfPresent (t => t.TakeDamage (damage));
 		}
