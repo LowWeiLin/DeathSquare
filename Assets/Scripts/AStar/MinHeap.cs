@@ -101,6 +101,9 @@ class PriorityQueue<T> : IEnumerable
 	
 	public T RemoveMin()
 	{
+		if (Count == 0) {
+			return default(T);
+		}
 		return minHeap.RemoveMin().O;
 	}
 	
