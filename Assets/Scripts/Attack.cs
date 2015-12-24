@@ -31,12 +31,12 @@ public class Attack : MonoBehaviour {
 			return;
 		}
 
-		Health targetHealth = target.GetComponent<Health>();
-		if (targetHealth == null) {
+		Maybe<Health> targetHealth = target.GetComponent<Health>();
+		if (!targetHealth.HasValue) {
 			return;
 		}
 
-		StartCoroutine(ProcessAttack(target, targetHealth));
+		StartCoroutine(ProcessAttack(target, targetHealth.Value));
 	}
 
 	public void ProjectileAttack(GameObject target, Health targetHealth) {
@@ -56,6 +56,21 @@ public class Attack : MonoBehaviour {
 		targetHealth.TakeDamage(damage);
 	}
 
+	public void MeleeAttack(GameObject target, Health targetHealth) {
+		Vector3 originalPosition = GetComponent<Visuals>().model.transform.position;
+		float halfTime = 0.15f;
+
+		Go.to(GetComponent<Visuals>().model.transform, halfTime, new GoTweenConfig()
+			.position(target.transform.position)
+			.setEaseType(GoEaseType.BackIn)
+			.onComplete(t =>
+				Go.to(GetComponent<Visuals>().model.transform, halfTime, new GoTweenConfig()
+					.position(originalPosition)
+					.setEaseType(GoEaseType.BackOut)
+					.onComplete(t2 => targetHealth.TakeDamage(damage)))
+			));
+	}
+
 	IEnumerator ProcessAttack(GameObject target, Health targetHealth) {
 
 		onCooldown = true;
@@ -63,7 +78,8 @@ public class Attack : MonoBehaviour {
 		facing.IfPresent(f => f.LookAt(target));
 			
 		yield return new WaitForSeconds(preDelay);
-		ProjectileAttack(target, targetHealth);
+//		ProjectileAttack(target, targetHealth);
+		MeleeAttack(target, targetHealth);
 //		InstantAttack(targetHealth);
 		yield return new WaitForSeconds(postDelay);
 
