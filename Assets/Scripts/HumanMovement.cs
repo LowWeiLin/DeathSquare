@@ -9,7 +9,10 @@ public class HumanMovement : MonoBehaviour {
 	Vector3 routeDestination = Vector3.down;
 	float routePrecision = 0.01f;
 
+	public LayerMask floorLayerMask = -1;
+	
 	void Start () {
+		floorLayerMask = 1 << LayerMask.NameToLayer ("Floor"); // only check for collisions with this layer
 		movement = GetComponent<Movement>();
 	}
 
@@ -21,14 +24,13 @@ public class HumanMovement : MonoBehaviour {
 			Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
 			RaycastHit hit;
 			
-			if( Physics.Raycast( ray, out hit, 100 ) )
+			if( Physics.Raycast( ray, out hit, 100, floorLayerMask ) )
 			{
-				Debug.Log(hit.transform.gameObject.name);
-				if (hit.transform.gameObject.name.StartsWith("Floor")) {
+				// Location is unobstructed
+				if (movement.controller.IsUnobstructed(movement.controller.map.WorldToGrid(hit.point))) {
 					// Instant teleport
 					//transform.position = hit.point;
 					routeDestination = hit.point;
-					Debug.Log(hit.point);
 				}
 			}
 		}

@@ -7,7 +7,7 @@ public class Movement : MonoBehaviour {
 
 	GameObject model;
 	Rigidbody r;
-	GameController controller;
+	public GameController controller;
 	Facing facing;
 
 	float collisionThreshold = 1.2f;
@@ -77,7 +77,7 @@ public class Movement : MonoBehaviour {
 			
 			// Did not follow path, recalculate path.
 			if (path.Count == 0) {
-				Debug.Log("recalculating path");
+				//Debug.Log("recalculating path");
 				path = board.FindPathVec (origin, goal);
 				pathOrigin = origin;
 				pathGoal = goal;

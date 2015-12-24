@@ -13,15 +13,14 @@ public class GameController : MonoBehaviour {
 	private int height = 50;
 	
 	// ===============================
-	// 		Players
+	// 		Units
 	// ===============================
-	public List<PlayerBase> players = new List<PlayerBase>();
+	public List<GameObject> units = new List<GameObject>();
 	
 	// ===============================
 	// 		Entities
 	// ===============================
-	public EntityMap entityMap = new EntityMap();
-	public List<EntityBase> entities = new List<EntityBase>();
+	public List<GameObject> entities = new List<GameObject>();
 	
 	void Start () {
 		Init ();
@@ -39,43 +38,55 @@ public class GameController : MonoBehaviour {
 
 	}
 
-	public void CreateUnit(GameObject prefab, Vec2i position) {
-		position = FindNearestUnobstructed (position);
-		Instantiate(prefab, map.GridToWorld(position) + new Vector3(Random.Range(0,0.1f), 0, Random.Range(0,0.1f)), Quaternion.identity);
-	}
-	
-	void Update () {
-		foreach (EntityBase e in new List<EntityBase>(entities)) {
-			if (true) {
-				e.Action();
-			}
+	public void SetTeam(GameObject obj, int team) {
+		Team teamComponent = obj.GetComponent<Team> ();
+		if (teamComponent == null) {
+			teamComponent = obj.AddComponent<Team>();
 		}
+		teamComponent.team = team;
+	}
+
+	public void SetHealth(GameObject obj, int health) {
+		Health healthComponent = obj.GetComponent<Health> ();
+		if (healthComponent == null) {
+			healthComponent = obj.AddComponent<Health>();
+		}
+		healthComponent.maxHp = health;
+		healthComponent.hp = health;
 	}
 	
 	// ===============================
-	// 		Player functions
+	// 		Unit functions
 	// ===============================
 
-	public void RegisterPlayer(PlayerBase player) {
-		players.Add(player);
+	public void CreateUnit(GameObject prefab, Vec2i position, int team=-1, int hp=10) {
+		position = FindNearestUnobstructed (position);
+		GameObject unit = (GameObject) Instantiate(prefab,
+		                                           map.GridToWorld(position) + new Vector3(Random.Range(0,0.1f), 0, Random.Range(0,0.1f)),
+		                                           Quaternion.identity);
+		SetTeam (unit, team);
+		SetHealth (unit, hp);
+		RegisterUnit (unit);
+	}
+
+	public void RegisterUnit(GameObject unit) {
+		units.Add(unit);
 	}
 	
-	public void UnregisterPlayer(PlayerBase player) {
-		players.Remove(player);
+	public void UnregisterUnit(GameObject unit) {
+		units.Remove(unit);
 	}
 	
 	// ===============================
 	// 		Entity functions
 	// ===============================
 
-	public void RegisterEntity(EntityBase entity) {
+	public void RegisterEntity(GameObject entity) {
 		entities.Add(entity);
-		entityMap.AddEntity(entity);
 	}
 	
-	public void UnregisterEntity(EntityBase entity) {
+	public void UnregisterEntity(GameObject entity) {
 		entities.Remove(entity);
-		entityMap.RemoveEntity(entity);
 	}
 	
 	// ===============================
