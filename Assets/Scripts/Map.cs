@@ -7,8 +7,12 @@ public class Map : MonoBehaviour {
 	// Prefabs
 	public GameObject wall;
 	public GameObject floor;
+	public GameObject[] concreteFloorModels;
+	public GameObject[] graveModels;
+
+	// Parent game objects to hold other models
 	public GameObject floorTilesParent;
-	public GameObject[] concreteFloor;
+	public GameObject decorsParent;
 
 	// Collection of walls
 	private List<GameObject> tiles = new List<GameObject>();
@@ -50,7 +54,7 @@ public class Map : MonoBehaviour {
 		//floorObject.GetComponent<Renderer> ().enabled = false;
 
 		floorTilesParent = new GameObject ("FloorTilesParent");
-
+		decorsParent = new GameObject ("DecorsParent");
 
 		// Destroy existing tiles
 		DestroyTiles ();
@@ -62,12 +66,23 @@ public class Map : MonoBehaviour {
 				GameObject tile;
 				// Set walls
 				if (map[y,x] == 0) {
-					GameObject floorTile = Instantiate(concreteFloor[Random.Range(0,concreteFloor.Length)],
+					// Place random floor tiles
+					GameObject floorTile = Instantiate(concreteFloorModels[Random.Range(0,concreteFloorModels.Length)],
 					                                   GridToWorld(new Vector2(x,y)),
 					                                   Quaternion.identity) as GameObject;
 					floorTile.transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
-					floorTile.transform.Rotate(90,0,0);
+					floorTile.transform.Rotate(90, 0, 0);
 					floorTile.transform.parent = floorTilesParent.transform;
+
+					// Place decor randomly
+					if (Random.Range(0, 5) == 0) {
+						GameObject decor = Instantiate(graveModels[Random.Range(0,graveModels.Length)],
+						                                   GridToWorld(new Vector2(x,y)) + new Vector3(Random.Range(-0.25f,0.25f),0,Random.Range(-0.25f,0.25f)),
+						                                   Quaternion.identity) as GameObject;
+						decor.transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
+						decor.transform.Rotate(-90,0,0);
+						decor.transform.parent = decorsParent.transform;
+					}
 
 				} else {
 					tile = Instantiate(wall, GridToWorld(new Vector2(x,y)) + new Vector3(0, 0.25f, 0), Quaternion.identity) as GameObject;
