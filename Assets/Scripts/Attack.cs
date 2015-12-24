@@ -57,7 +57,7 @@ public class Attack : MonoBehaviour {
 	}
 
 	public void MeleeAttack(GameObject target, Health targetHealth) {
-		Vector3 originalPosition = GetComponent<Visuals>().model.transform.position;
+		Vector3 originalPosition = GetComponent<Visuals> ().model.transform.localPosition;
 		float halfTime = 0.15f;
 
 		Go.to(GetComponent<Visuals>().model.transform, halfTime, new GoTweenConfig()
@@ -65,7 +65,7 @@ public class Attack : MonoBehaviour {
 			.setEaseType(GoEaseType.BackIn)
 			.onComplete(t =>
 				Go.to(GetComponent<Visuals>().model.transform, halfTime, new GoTweenConfig()
-					.position(originalPosition)
+					.localPosition(originalPosition)
 					.setEaseType(GoEaseType.BackOut)
 					.onComplete(t2 => targetHealth.TakeDamage(damage)))
 			));
