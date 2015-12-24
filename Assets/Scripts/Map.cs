@@ -7,6 +7,8 @@ public class Map : MonoBehaviour {
 	// Prefabs
 	public GameObject wall;
 	public GameObject floor;
+	public GameObject floorTilesParent;
+	public GameObject[] concreteFloor;
 
 	// Collection of walls
 	private List<GameObject> tiles = new List<GameObject>();
@@ -42,8 +44,13 @@ public class Map : MonoBehaviour {
 
 		// Draw floor
 		GameObject floorObject = Instantiate(floor, new Vector3(width/2-0.5f, 0, height/2-0.5f), Quaternion.identity) as GameObject;
-		floorObject.transform.localScale =  new Vector3(0.1f*width, 1.0f, 0.1f*height);
+		floorObject.transform.localScale = new Vector3(0.1f*width, 1.0f, 0.1f*height);
 		floorObject.GetComponent<MeshRenderer> ().material.color = new Color (0.5f, 1f, 1f);
+
+		//floorObject.GetComponent<Renderer> ().enabled = false;
+
+		floorTilesParent = new GameObject ("FloorTilesParent");
+
 
 		// Destroy existing tiles
 		DestroyTiles ();
@@ -55,6 +62,13 @@ public class Map : MonoBehaviour {
 				GameObject tile;
 				// Set walls
 				if (map[y,x] == 0) {
+					GameObject floorTile = Instantiate(concreteFloor[Random.Range(0,concreteFloor.Length)],
+					                                   GridToWorld(new Vector2(x,y)),
+					                                   Quaternion.identity) as GameObject;
+					floorTile.transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
+					floorTile.transform.Rotate(90,0,0);
+					floorTile.transform.parent = floorTilesParent.transform;
+
 				} else {
 					tile = Instantiate(wall, GridToWorld(new Vector2(x,y)) + new Vector3(0, 0.25f, 0), Quaternion.identity) as GameObject;
 					tile.GetComponent<MeshRenderer> ().material.color = new Color (0.5f, 0.5f, 0.5f);
