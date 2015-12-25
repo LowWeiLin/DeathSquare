@@ -5,25 +5,31 @@ using System.Collections;
 public class HumanMovement : MonoBehaviour {
 
 	Movement movement;
+	Attack attack;
 
 	Vector3 routeDestination = Vector3.down;
 	float routePrecision = 0.01f;
+	GameObject target;
 
-	public LayerMask floorLayerMask = -1;
+	private LayerMask floorLayerMask;
+	private LayerMask unitsLayerMask;
 	
 	void Start () {
 		floorLayerMask = 1 << LayerMask.NameToLayer ("Floor"); // only check for collisions with this layer
+		unitsLayerMask = 1 << LayerMask.NameToLayer ("Units"); // only check for collisions with this layer
 		movement = GetComponent<Movement>();
+		attack = GetComponent<Attack>();
 	}
 
 	void Update () {
 
-		// Click on floor to route towards point.
+
 		if( Input.GetMouseButtonDown(0) )
 		{
 			Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
 			RaycastHit hit;
-			
+
+			// Click on floor to route towards point.
 			if( Physics.Raycast( ray, out hit, 100, floorLayerMask ) )
 			{
 				// Location is unobstructed
@@ -31,6 +37,19 @@ public class HumanMovement : MonoBehaviour {
 					// Instant teleport
 					//transform.position = hit.point;
 					routeDestination = hit.point;
+					target = null;
+					routePrecision = 0.01f;
+				}
+			}
+
+			// Click on unit to move to unit, attack if enemy.
+			if( Physics.Raycast( ray, out hit, 100, unitsLayerMask ) )
+			{
+				// Is not self
+				if (hit.transform.gameObject != this.gameObject) {
+					routeDestination = Vector3.down;
+					target = hit.transform.gameObject;
+					routePrecision = 0.1f;
 				}
 			}
 		}
@@ -40,6 +59,14 @@ public class HumanMovement : MonoBehaviour {
 				routeDestination = Vector3.down;
 			}
 			movement.RouteTowards (routeDestination, routePrecision);
+		}
+
+		if (target != null) {
+			if (Vector3.Distance(transform.position, target.transform.position) < attack.range) {
+				attack.Hit(target);
+			} else {
+				movement.RouteTowards (target, routePrecision);
+			}
 		}
 
 		/*
