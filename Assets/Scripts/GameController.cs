@@ -3,7 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
-	
+
+	static GameController _instance;
+	public static GameController Instance {
+		get {
+			if (_instance == null) {
+				_instance = GameObject.Find("GameController").GetComponent<GameController>();
+			}
+			return _instance;
+		}
+	}
+
 	// ===============================
 	// 		Map
 	// ===============================

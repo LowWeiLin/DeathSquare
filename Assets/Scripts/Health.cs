@@ -21,8 +21,8 @@ public class Health : MonoBehaviour {
 		hp = Mathf.Max (hp, 0);
 		if (hp <= 0) {
 
-			GameObject.Find("GameController").GetComponent<GameController>().UnregisterUnit(gameObject);
-			GameObject.Find("GameController").GetComponent<GameController>().UnregisterEntity(gameObject);
+			GameController.Instance.UnregisterUnit(gameObject);
+			GameController.Instance.UnregisterEntity(gameObject);
 
 			if (gameObject.GetComponentInChildren<Camera>() != null) {
 				gameObject.GetComponentInChildren<Camera>().transform.parent = null;

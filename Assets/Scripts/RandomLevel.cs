@@ -8,7 +8,7 @@ public class RandomLevel : MonoBehaviour {
 	GameController controller;
 
 	void Start () {
-		controller = GameObject.Find("GameController").GetComponent<GameController>();
+		controller = GameController.Instance;
 		controller.Init ();
 
 		controller.CreateUnit(player, new Vec2i(5, 5), 1, 100);

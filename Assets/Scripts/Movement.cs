@@ -17,7 +17,7 @@ public class Movement : MonoBehaviour {
 		facing = GetComponent<Facing>();
 		model = GetComponent<Visuals>().model;
 		r = GetComponent<Rigidbody>();
-		controller = GameObject.Find("GameController").GetComponent<GameController>();
+		controller = GameController.Instance;
 		controller.Init ();
 	}
 
