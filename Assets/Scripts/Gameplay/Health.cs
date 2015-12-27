@@ -3,13 +3,13 @@ using System.Collections;
 
 public class Health : MonoBehaviour {
 	
-	public int maxHp = 10;
-	public int hp = 10;
+	public int maxValue = 10;
+	public int value = 10;
 
 	Maybe<Visuals> visuals;
 
 	void Start () {
-		hp = maxHp;
+		value = maxValue;
 		visuals = GetComponent<Visuals>();
 	}
 	
@@ -17,9 +17,9 @@ public class Health : MonoBehaviour {
 
 		visuals.IfPresent(v => v.FlashRed());
 
-		hp -= damage;
-		hp = Mathf.Max (hp, 0);
-		if (hp <= 0) {
+		value -= damage;
+		value = Mathf.Max (value, 0);
+		if (value <= 0) {
 
 			GameController.Instance.UnregisterUnit(gameObject);
 			GameController.Instance.UnregisterEntity(gameObject);
@@ -34,8 +34,8 @@ public class Health : MonoBehaviour {
 	
 	public void Heal(int amount)
 	{
-		hp += amount;
-		hp = Mathf.Min (hp, maxHp);
+		value += amount;
+		value = Mathf.Min (value, maxValue);
 	}
 	
 }

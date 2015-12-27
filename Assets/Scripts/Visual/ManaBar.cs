@@ -1,29 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof(Health))]
-public class HealthBar : GenericBar {
+[RequireComponent (typeof(Mana))]
+public class ManaBar : GenericBar {
 
-	Health health;
+	Mana mana;
 
 	void Start() {
 		Init();
-		health = GetComponent<Health>();
+		mana = GetComponent<Mana>();
 	}
 
 	protected override float Value() {
-		return health.value;
+		return mana.value;
 	}
 
 	protected override float MaxValue() {
-		return health.maxValue;
+		return mana.maxValue;
 	}
 
 	protected override Vector2 Offset() {
-		return new Vector2(-20, -40);
+		return new Vector2(-20, -38);
 	}
 
 	protected override Color ForegroundColour() {
-		return Color.green;
+		return Color.blue;
 	}
 }

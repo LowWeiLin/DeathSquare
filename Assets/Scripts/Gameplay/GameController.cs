@@ -61,8 +61,8 @@ public class GameController : MonoBehaviour {
 		if (healthComponent == null) {
 			healthComponent = obj.AddComponent<Health>();
 		}
-		healthComponent.maxHp = health;
-		healthComponent.hp = health;
+		healthComponent.maxValue = health;
+		healthComponent.value = health;
 	}
 	
 	// ===============================
