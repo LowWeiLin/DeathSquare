@@ -5,9 +5,17 @@ public class Mana : MonoBehaviour {
 
 	public int maxValue = 100;
 	public int value = 100;
+	public int regen = 4;
 
 	void Start () {
-		value = maxValue;
+		StartCoroutine(Regenerate());
+	}
+
+	IEnumerator Regenerate() {
+		while (true) {
+			value += regen;
+			yield return new WaitForSeconds(1f);
+		}
 	}
 
 	public void Consume(int amount) {

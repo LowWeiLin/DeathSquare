@@ -11,6 +11,10 @@ public class HealthBar : GenericBar {
 		health = GetComponent<Health>();
 	}
 
+	protected virtual Rect Size() {
+		return new Rect(0, 0, 40, 4);
+	}
+
 	protected override float Value() {
 		return health.value;
 	}
