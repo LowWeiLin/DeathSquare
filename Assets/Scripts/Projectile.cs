@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour {
 	public GameObject cubeExplosionPrefab;
 
 	Movement movement;
-	GameObject target;
+	Maybe<GameObject> target;
 	int damage;
 
 	bool active = false;
@@ -16,7 +16,7 @@ public class Projectile : MonoBehaviour {
 		movement = GetComponent<Movement>();
 	}
 
-	public void Fire(int damage, GameObject target) {
+	public void Fire(int damage, Maybe<GameObject> target) {
 		this.target = target;
 		this.damage = damage;
 		active = true;
@@ -26,15 +26,26 @@ public class Projectile : MonoBehaviour {
 		if (!active) {
 			return;
 		}
-		movement.MoveTowards(target, 3f);
+		if (target.IsPresent) {
+			movement.MoveTowards(target.Value, 3f);
+		} else {
+			DamageTarget();
+		}
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if (target == other.gameObject) {
-			Destroy (gameObject);
-			Instantiate(cubeExplosionPrefab, transform.position, Quaternion.identity);
-			Maybe<Health> targetHealth = other.gameObject.GetComponent<Health> ();
-			targetHealth.IfPresent (t => t.TakeDamage (damage));
-		}
+		target.IfPresent(t => {
+			if (t == other.gameObject) {
+				DamageTarget();
+			}
+		});
+	}
+
+	void DamageTarget() {
+		Destroy(gameObject);
+		Instantiate(cubeExplosionPrefab, transform.position, Quaternion.identity);
+		target.IfPresent(t =>
+			Maybe<Health>.Of(t.gameObject.GetComponent<Health>()).IfPresent(
+				th => th.TakeDamage (damage)));
 	}
 }

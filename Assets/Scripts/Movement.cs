@@ -21,9 +21,11 @@ public class Movement : MonoBehaviour {
 		controller.Init ();
 	}
 
-	public void MoveTowards(GameObject target, float speed) {
-		Vector3 direction = target.transform.position - transform.position;
-		MoveTowards (direction, speed);
+	public void MoveTowards(Maybe<GameObject> target, float speed) {
+		target.IfPresent(t => {
+			Vector3 direction = t.transform.position - transform.position;
+			MoveTowards (direction, speed);
+		});
 	}
 
 	public void MoveTowards(Vector3 direction, float speed) {

@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Attack : MonoBehaviour {
-
-	public GameObject projectile;
+public abstract class Attack : MonoBehaviour {
 
 	public int damage = 1;
 	public float cooldown = 1f;
@@ -16,7 +14,7 @@ public class Attack : MonoBehaviour {
 
 	Maybe<Facing> facing;
 	Maybe<Movement> movement;
-	Maybe<GameObject> model;
+	protected Maybe<GameObject> model;
 
 	void Start() {
 		facing = GetComponent<Facing>();
@@ -46,45 +44,11 @@ public class Attack : MonoBehaviour {
 		StartCoroutine(ProcessAttack(target, targetHealth.Value));
 	}
 
-	public void ProjectileAttack(GameObject target, Health targetHealth) {
-
-		Vector3 direction = (target.transform.position - transform.position).normalized;
-		float offset = 0.01f;
-		Vector3 projectilePosition = transform.position + direction * offset;
-
-		// HACK adjust height
-		projectilePosition += new Vector3(0f, 0.2f, 0f);
-
-		GameObject p = Instantiate(projectile, projectilePosition, Quaternion.identity) as GameObject;
-		p.GetComponent<Projectile>().Fire(damage, target);
-	}
-		
-	public void InstantAttack(Health targetHealth) {
-		targetHealth.TakeDamage(damage);
-	}
-
-	public void MeleeAttack(Vector3 targetPosition, Maybe<Health> targetHealth) {
-		float halfTime = 0.15f;
-
-		model.IfPresent(m => {
-			Vector3 basePosition = m.transform.localPosition;
-
-			GoTweenChain chain = new GoTweenChain()
-				.append(new GoTween(m.transform, halfTime, new GoTweenConfig()
-					.position(targetPosition)
-					.setEaseType(GoEaseType.BackIn)))
-				.append(new GoTween(m.transform, halfTime, new GoTweenConfig()
-					.localPosition(basePosition)
-					.setEaseType(GoEaseType.BackOut)));
-
-			// The target may have died by the time the tween completes, hence the Maybe<Health>
-			chain.setOnCompleteHandler(c => targetHealth.IfPresent(t => t.TakeDamage(damage)));
-			chain.play();
-		});			
-	}
+	// In general attacks take place over time, and the target may have died by the time they complete, hence the Maybes
+	public abstract void AttackTarget(Maybe<GameObject> target, Vector3 targetPosition, Maybe<Health> targetHealth);
 
 	IEnumerator ProcessAttack(GameObject target, Health targetHealth) {
-
+		
 		// The target may have died by the time this is used, so we get it here
 		Vector3 targetPosition = target.transform.position;
 
@@ -93,9 +57,7 @@ public class Attack : MonoBehaviour {
 		facing.IfPresent(f => f.LookAt(target));
 			
 		yield return new WaitForSeconds(preDelay);
-//		ProjectileAttack(target, targetHealth);
-		MeleeAttack(targetPosition, targetHealth);
-//		InstantAttack(targetHealth);
+		AttackTarget(target, targetPosition, targetHealth);
 		yield return new WaitForSeconds(postDelay);
 
 		yield return new WaitForSeconds(cooldown);

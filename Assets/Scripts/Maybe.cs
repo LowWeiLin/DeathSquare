@@ -5,6 +5,9 @@ public struct Maybe<T> {
 	private readonly bool _hasValue;
 	public bool HasValue { get { return _hasValue && value != null && !value.Equals(null); } }
 
+	public bool IsPresent { get { return HasValue; } }
+	public bool NotPresent { get { return !IsPresent; } }
+
 	private readonly T value;
 	public T Value {
 		get {
@@ -35,6 +38,10 @@ public struct Maybe<T> {
 		}
 	}
 
+	public static implicit operator Maybe<T>(T value) {
+		return new Maybe<T>(true, value);
+	}
+
 	public void IfPresent(Action<T> f) {
 		if (HasValue) {
 			f(value);
@@ -63,9 +70,5 @@ public struct Maybe<T> {
 		} else {
 			return new Maybe<U>(false, default(U));
 		}
-	}
-
-	public static implicit operator Maybe<T>(T value) {
-		return new Maybe<T>(true, value);
 	}
 }
