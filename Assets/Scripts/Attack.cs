@@ -16,10 +16,17 @@ public class Attack : MonoBehaviour {
 
 	Maybe<Facing> facing;
 	Maybe<Movement> movement;
+	Maybe<GameObject> model;
 
 	void Start() {
 		facing = GetComponent<Facing>();
 		movement = GetComponent<Movement>();
+		Visuals visuals = GetComponent<Visuals>();
+		if (visuals != null) {
+			model = visuals.model;
+		} else {
+			model = null;
+		}
 	}
 
 	public bool InRange(GameObject target) {
@@ -56,22 +63,30 @@ public class Attack : MonoBehaviour {
 		targetHealth.TakeDamage(damage);
 	}
 
-	public void MeleeAttack(GameObject target, Health targetHealth) {
-		Vector3 originalPosition = GetComponent<Visuals> ().model.transform.localPosition;
+	public void MeleeAttack(Vector3 targetPosition, Maybe<Health> targetHealth) {
 		float halfTime = 0.15f;
 
-		Go.to(GetComponent<Visuals>().model.transform, halfTime, new GoTweenConfig()
-			.position(target.transform.position)
-			.setEaseType(GoEaseType.BackIn)
-			.onComplete(t =>
-				Go.to(GetComponent<Visuals>().model.transform, halfTime, new GoTweenConfig()
-					.localPosition(originalPosition)
-					.setEaseType(GoEaseType.BackOut)
-					.onComplete(t2 => targetHealth.TakeDamage(damage)))
-			));
+		model.IfPresent(m => {
+			Vector3 basePosition = m.transform.localPosition;
+
+			GoTweenChain chain = new GoTweenChain()
+				.append(new GoTween(m.transform, halfTime, new GoTweenConfig()
+					.position(targetPosition)
+					.setEaseType(GoEaseType.BackIn)))
+				.append(new GoTween(m.transform, halfTime, new GoTweenConfig()
+					.localPosition(basePosition)
+					.setEaseType(GoEaseType.BackOut)));
+
+			// The target may have died by the time the tween completes, hence the Maybe<Health>
+			chain.setOnCompleteHandler(c => targetHealth.IfPresent(t => t.TakeDamage(damage)));
+			chain.play();
+		});			
 	}
 
 	IEnumerator ProcessAttack(GameObject target, Health targetHealth) {
+
+		// The target may have died by the time this is used, so we get it here
+		Vector3 targetPosition = target.transform.position;
 
 		onCooldown = true;
 		movement.IfPresent(m => m.Pause());
@@ -79,7 +94,7 @@ public class Attack : MonoBehaviour {
 			
 		yield return new WaitForSeconds(preDelay);
 //		ProjectileAttack(target, targetHealth);
-		MeleeAttack(target, targetHealth);
+		MeleeAttack(targetPosition, targetHealth);
 //		InstantAttack(targetHealth);
 		yield return new WaitForSeconds(postDelay);
 

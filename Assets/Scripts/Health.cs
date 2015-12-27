@@ -5,14 +5,16 @@ public class Health : MonoBehaviour {
 	
 	public int maxHp = 10;
 	public int hp = 10;
-	
+
+	Maybe<Visuals> visuals;
+
 	void Start () {
 		hp = maxHp;
+		visuals = GetComponent<Visuals>();
 	}
 	
 	public void TakeDamage(int damage) {
 
-		Maybe<Visuals> visuals = GetComponent<Visuals>();
 		visuals.IfPresent(v => v.FlashRed());
 
 		hp -= damage;
