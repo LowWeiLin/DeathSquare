@@ -1,13 +1,14 @@
 ﻿using System;
 
 public struct Maybe<T> {
-	private readonly bool hasValue;
-	public bool HasValue { get { return hasValue; } }
+	
+	private readonly bool _hasValue;
+	public bool HasValue { get { return _hasValue && value != null && !value.Equals(null); } }
 
 	private readonly T value;
 	public T Value {
 		get {
-			if (!hasValue) {
+			if (!_hasValue) {
 				throw new InvalidOperationException();
 			}
 			return value;
@@ -25,23 +26,23 @@ public struct Maybe<T> {
 	}
 		
 	private Maybe(bool hasValue, T value) {
-		if (value == null) {
-			this.hasValue = false;
+		if (value == null || value.Equals(null)) {
+			this._hasValue = false;
 			this.value = default(T);
 		} else {
-			this.hasValue = hasValue;
+			this._hasValue = hasValue;
 			this.value = value;
 		}
 	}
 
 	public void IfPresent(Action<T> f) {
-		if (hasValue) {
+		if (HasValue) {
 			f(value);
 		}
 	}
 
 	public T OrElse(T alt) {
-		if (hasValue) {
+		if (HasValue) {
 			return value;
 		} else {
 			return alt;
@@ -49,7 +50,7 @@ public struct Maybe<T> {
 	}
 
 	public Maybe<U> Map<U>(Func<T, U> f) {
-		if (hasValue) {
+		if (HasValue) {
 			return f(value);
 		} else {
 			return new Maybe<U>(false, default(U));
@@ -57,7 +58,7 @@ public struct Maybe<T> {
 	}
 
 	public Maybe<U> FlatMap<U>(Func<T, Maybe<U>> f) {
-		if (hasValue) {
+		if (HasValue) {
 			return f(value);
 		} else {
 			return new Maybe<U>(false, default(U));
