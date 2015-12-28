@@ -67,7 +67,7 @@ public class HumanMovement : MonoBehaviour {
 		if (target != null) {
 			if (Vector3.Distance(transform.position, target.transform.position) < attack.range) {
 				Team team = target.GetComponent<Team>();
-				if (this.GetComponent<Team>().IsEnemyTeam(team)) {
+				if (this.GetComponent<Team>().IsEnemy(team)) {
 					attack.Hit(target);
 				} else {
 					movement.RouteTowards (target, routePrecision);

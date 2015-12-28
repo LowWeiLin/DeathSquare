@@ -3,22 +3,29 @@ using System.Collections;
 
 public class Team : MonoBehaviour {
 	
-	public int team = -1;
-	
-	public bool IsNoTeam() {
-		return team == -1;
-	}
-	
-	public bool IsSameTeam(int team) {
-		return !IsNoTeam() && this.team == team;
-	}
-	
-	public bool IsSameTeam(Team team) {
-		return !IsNoTeam() && this.team == team.team;
+	public Maybe<int> team;
+
+	public void AllyWith(Team other) {
+		this.team = other.team;
 	}
 
-	public bool IsEnemyTeam(Team team) {
-		return !IsSameTeam(team);
+	public void UnallyWith(Team other) {
+		this.team = Maybe<int>.Empty;
+	}
+
+	public bool HasNoTeam() {
+		return team.NotPresent;
 	}
 	
+	public bool IsAlly(int otherTeam) {
+		return !HasNoTeam() && this.team.IsPresent && this.team.Value.Equals(otherTeam);
+	}
+	
+	public bool IsAlly(Team otherTeam) {
+		return !HasNoTeam() && this.team.Equals(otherTeam.team);
+	}
+
+	public bool IsEnemy(Team team) {
+		return !IsAlly(team);
+	}
 }

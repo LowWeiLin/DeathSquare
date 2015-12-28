@@ -121,7 +121,7 @@ public class GameController : MonoBehaviour {
 			if (u == unit)
 				continue;
 			Team teamComponent = u.GetComponent<Team> ();
-			if (teamComponent == null || teamComponent.IsEnemyTeam(unitTeamComponent)) {
+			if (teamComponent == null || teamComponent.IsEnemy(unitTeamComponent)) {
 				if (Vector3.Distance(u.transform.position, unit.transform.position) <= range) {
 					enemyUnits.Add(u);
 				}

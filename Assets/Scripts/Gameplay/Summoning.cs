@@ -7,12 +7,14 @@ public class Summoning : MonoBehaviour {
 	public GameObject smoke;
 	public GameObject minion;
 	Facing facing;
+	Maybe<Team> team;
 
 	void Start () {
 		facing = GetComponent<Facing>();
+		team = GetComponent<Team>();
 	}
 
-	void SpawnUnit() {
+	IEnumerator SpawnUnit() {
 		// This makes it possible for units to spawn inside something and get pushed out of the map
 //		float max = 1f;
 //		float min = 0.5f;
@@ -25,13 +27,19 @@ public class Summoning : MonoBehaviour {
 		offset.Scale(new Vector3(0.5f, 0.5f, 0.5f));
 		Vector3 position = transform.position + offset;
 
-		Instantiate(minion, position, minion.transform.rotation);
 		Instantiate(smoke, position, smoke.transform.rotation);
+
+		yield return new WaitForSeconds(0.2f);
+
+		Instantiate(minion, position, minion.transform.rotation);
+		Maybe<Team>.Of(minion.GetComponent<Team>()).IfPresent(mt =>
+			team.IfPresent(t =>
+				mt.AllyWith(t)));
 	}
-	
+
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Space)) {
-			SpawnUnit();
+			StartCoroutine(SpawnUnit());
 		}
 	}
 }
