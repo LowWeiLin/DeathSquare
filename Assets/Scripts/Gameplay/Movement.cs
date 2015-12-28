@@ -28,13 +28,14 @@ public class Movement : MonoBehaviour {
 	}
 
 	public void MoveTo(Vector3 targetPosition, float speed=float.MaxValue) {
-		Vector3 accel = steeringBasics.seek(targetPosition);
+		Vector3 accel = steeringBasics.arrive(targetPosition);
 		steeringBasics.steer(accel);
 		//steeringBasics.lookWhereYoureGoing();
 	}
 
 	public void RouteTowards(GameObject target, float range=0.1f, float speed=float.MaxValue) {
-		RouteTowards(target.transform.position, range, speed);
+		MoveTo (target.transform.position, speed);
+		//RouteTowards(target.transform.position, range, speed);
 	}
 
 	private static Board board;
@@ -42,6 +43,9 @@ public class Movement : MonoBehaviour {
 	private Vec2i pathOrigin;
 	private Vec2i pathGoal;
 	public void RouteTowards(Vector3 target, float range=0.1f, float speed=float.MaxValue) {
+		MoveTo (target, speed);
+		return;
+
 		Vec2i origin = controller.map.WorldToGrid (transform.position);
 		Vec2i goal = controller.map.WorldToGrid (target);
 

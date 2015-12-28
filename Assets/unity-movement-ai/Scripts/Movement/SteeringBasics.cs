@@ -45,7 +45,7 @@ public class SteeringBasics : MonoBehaviour {
 	}
 
 	public void steer(Vector2 linearAcceleration) {
-		this.steer (new Vector3 (linearAcceleration.x, linearAcceleration.y, 0));
+		this.steer (new Vector3 (linearAcceleration.x, 0, linearAcceleration.y));
 	}
 	
 	/* A seek steering behavior. Will return the steering for the current game object to seek a given position */
@@ -53,8 +53,8 @@ public class SteeringBasics : MonoBehaviour {
 		//Get the direction
 		Vector3 acceleration = targetPosition - transform.position;
 		
-		//Remove the z coordinate
-		acceleration.z = 0;
+		//Remove the y coordinate
+		acceleration.y = 0;
 		
 		acceleration.Normalize ();
 		
@@ -98,7 +98,7 @@ public class SteeringBasics : MonoBehaviour {
 		// If we have a non-zero direction then look towards that direciton otherwise do nothing
 		if (direction.sqrMagnitude > 0.001f) {
 			float toRotation = (Mathf.Atan2 (direction.y, direction.x) * Mathf.Rad2Deg);
-			float rotation = Mathf.LerpAngle(transform.rotation.eulerAngles.z, toRotation, Time.deltaTime*turnSpeed);
+			float rotation = Mathf.LerpAngle(transform.rotation.eulerAngles.y, toRotation, Time.deltaTime*turnSpeed);
 			
 			transform.rotation = Quaternion.Euler(0, 0, rotation);
 		}
@@ -106,14 +106,14 @@ public class SteeringBasics : MonoBehaviour {
 
     public void lookAtDirection(Quaternion toRotation)
     {
-        lookAtDirection(toRotation.eulerAngles.z);
+        lookAtDirection(toRotation.eulerAngles.y);
     }
 
     public void lookAtDirection(float toRotation)
     {
-            float rotation = Mathf.LerpAngle(transform.rotation.eulerAngles.z, toRotation, Time.deltaTime * turnSpeed);
+            float rotation = Mathf.LerpAngle(transform.rotation.eulerAngles.y, toRotation, Time.deltaTime * turnSpeed);
 
-            transform.rotation = Quaternion.Euler(0, 0, rotation);
+            transform.rotation = Quaternion.Euler(0, rotation, 0);
     }
 
     /* Returns the steering for a character so it arrives at the target */
@@ -121,8 +121,8 @@ public class SteeringBasics : MonoBehaviour {
 		/* Get the right direction for the linear acceleration */
 		Vector3 targetVelocity = targetPosition - transform.position;
 
-		// Remove the z coordinate
-		targetVelocity.z = 0;
+		// Remove the y coordinate
+		targetVelocity.y = 0;
 		
 		/* Get the distance to the target */
 		float dist = targetVelocity.magnitude;
@@ -146,7 +146,7 @@ public class SteeringBasics : MonoBehaviour {
 		targetVelocity *= targetSpeed;
 		
 		/* Calculate the linear acceleration we want */
-		Vector3 acceleration = targetVelocity - new Vector3(rb.velocity.x, rb.velocity.y, 0);
+		Vector3 acceleration = targetVelocity - new Vector3(rb.velocity.x, 0, rb.velocity.y);
 		/*
 		 Rather than accelerate the character to the correct speed in 1 second, 
 		 accelerate so we reach the desired speed in timeToTarget seconds 
@@ -184,7 +184,7 @@ public class SteeringBasics : MonoBehaviour {
     }
 
     public bool isFacing(Vector3 target, float cosineValue) { 
-        Vector2 facing = transform.right.normalized;
+        Vector2 facing = transform.up.normalized;
 
         Vector2 directionToTarget = (target - transform.position);
         directionToTarget.Normalize();
