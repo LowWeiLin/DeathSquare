@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public struct Maybe<T> {
 	
@@ -70,5 +71,23 @@ public struct Maybe<T> {
 		} else {
 			return new Maybe<U>(false, default(U));
 		}
+	}
+		
+	public override bool Equals(Object obj) {
+		return obj is Maybe<T> &&
+			HasValue == ((Maybe<T>) obj).HasValue &&
+			EqualityComparer<T>.Default.Equals(Value, ((Maybe<T>) obj).Value);
+	}
+
+	public override int GetHashCode() {
+		return HasValue ? Value.GetHashCode() : 0;
+	}
+
+	public static bool operator ==(Maybe<T> x, Maybe<T> y) {
+		return x.Equals(y);
+	}
+
+	public static bool operator !=(Maybe<T> x, Maybe<T> y) {
+		return !(x == y);
 	}
 }
