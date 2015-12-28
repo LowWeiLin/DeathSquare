@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour {
 	// ===============================
 	// 		Units
 	// ===============================
+	public GameObject player;
 	public List<GameObject> units = new List<GameObject>();
 	
 	// ===============================
@@ -85,7 +86,7 @@ public class GameController : MonoBehaviour {
 	// 		Unit functions
 	// ===============================
 
-	public void CreateUnit(GameObject prefab, Vec2i position, int team, int hp=10) {
+	public GameObject CreateUnit(GameObject prefab, Vec2i position, int team, int hp=10) {
 		position = FindNearestUnobstructed (position);
 		GameObject unit = (GameObject) Instantiate(prefab,
 		                                           map.GridToWorld(position) + new Vector3(Random.Range(0,0.1f), 0, Random.Range(0,0.1f)),
@@ -93,6 +94,7 @@ public class GameController : MonoBehaviour {
 		SetTeam (unit, team);
 		SetHealth (unit, hp);
 		RegisterUnit (unit);
+		return unit;
 	}
 
 	public void RegisterUnit(GameObject unit) {
