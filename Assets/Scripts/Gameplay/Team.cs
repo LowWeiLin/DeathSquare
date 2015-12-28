@@ -17,6 +17,10 @@ public class Team : MonoBehaviour {
 		return team.NotPresent;
 	}
 	
+	public bool HasTeam() {
+		return !HasNoTeam();
+	}
+
 	public bool IsAlly(int otherTeam) {
 		return !HasNoTeam() && this.team.IsPresent && this.team.Value.Equals(otherTeam);
 	}

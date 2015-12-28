@@ -110,18 +110,18 @@ public class GameController : MonoBehaviour {
 	}
 
 	public List<GameObject> GetEnemyUnits(GameObject unit, float range=float.MaxValue) {
-		Team unitTeamComponent = unit.GetComponent<Team> ();
-		List<GameObject> enemyUnits = new List<GameObject> ();
-		if (unitTeamComponent == null) {
-			unitTeamComponent = new Team();
-			unitTeamComponent.transform.parent = unit.transform;
-		}
+		List<GameObject> enemyUnits = new List<GameObject>();
+
+		Team unitTeamComponent = unit.GetComponent<Team>();
+		Util.Assert(unitTeamComponent != null);
 
 		foreach (GameObject u in units) {
-			if (u == unit)
-				continue;
-			Team teamComponent = u.GetComponent<Team> ();
-			if (teamComponent == null || teamComponent.IsEnemy(unitTeamComponent)) {
+			if (u == unit) continue;
+
+			Team teamComponent = u.GetComponent<Team>();
+			Util.Assert(teamComponent != null);
+
+			if (teamComponent.IsEnemy(unitTeamComponent)) {
 				if (Vector3.Distance(u.transform.position, unit.transform.position) <= range) {
 					enemyUnits.Add(u);
 				}
