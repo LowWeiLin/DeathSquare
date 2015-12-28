@@ -18,7 +18,7 @@ public class AIMinion : MonoBehaviour {
 	Maybe<GameObject> GetClosestEnemy() {
 		// TODO get list of all units which are not on this minion's team
 		// TODO get the closest
-		List<GameObject> enemyUnits = controller.GetEnemyUnits (this.gameObject);
+		List<GameObject> enemyUnits = controller.GetEnemyUnits (this.gameObject, 5);
 		return controller.GetClosest (this.gameObject, enemyUnits);
 	}
 

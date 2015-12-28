@@ -107,13 +107,12 @@ public class GameController : MonoBehaviour {
 		return units;
 	}
 
-	public List<GameObject> GetEnemyUnits(GameObject unit) {
+	public List<GameObject> GetEnemyUnits(GameObject unit, float range=float.MaxValue) {
 		Team unitTeamComponent = unit.GetComponent<Team> ();
 		List<GameObject> enemyUnits = new List<GameObject> ();
 		if (unitTeamComponent == null) {
-			enemyUnits.AddRange(units);
-			enemyUnits.Remove(unit);
-			return enemyUnits;
+			unitTeamComponent = new Team();
+			unitTeamComponent.transform.parent = unit.transform;
 		}
 
 		foreach (GameObject u in units) {
@@ -121,7 +120,9 @@ public class GameController : MonoBehaviour {
 				continue;
 			Team teamComponent = u.GetComponent<Team> ();
 			if (teamComponent == null || teamComponent.IsEnemyTeam(unitTeamComponent)) {
-				enemyUnits.Add(u);
+				if (Vector3.Distance(u.transform.position, unit.transform.position) <= range) {
+					enemyUnits.Add(u);
+				}
 			}
 		}
 
