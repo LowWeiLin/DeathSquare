@@ -4,13 +4,15 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(Visuals), typeof(Facing))]
 public class Movement : MonoBehaviour {
+	
+	public GameController controller;
+
+	public float speed = 1f;
 
 	GameObject model;
 	Rigidbody r;
-	public GameController controller;
 	Facing facing;
 
-	float collisionThreshold = 1.2f;
 	bool paused = false;
 
 	void Start () {
@@ -21,29 +23,27 @@ public class Movement : MonoBehaviour {
 		controller.Init ();
 	}
 
-	public void MoveTowards(Maybe<GameObject> target, float speed) {
+	public void MoveTowards(Maybe<GameObject> target, float speed=float.MaxValue) {
 		target.IfPresent(t => {
 			Vector3 direction = t.transform.position - transform.position;
 			MoveTowards (direction, speed);
 		});
 	}
 
-	public void MoveTowards(Vector3 direction, float speed) {
-		//if (direction.sqrMagnitude > collisionThreshold) {
-			direction.Normalize();
-			Move(direction.x, direction.z, speed);
-		//}
+	public void MoveTowards(Vector3 direction, float speed=float.MaxValue) {
+		direction.Normalize();
+		Move(direction.x, direction.z, speed);
 	}
 
-	public void RouteTowards(GameObject target, float range=0.1f) {
-		RouteTowards(target.transform.position, range);
+	public void RouteTowards(GameObject target, float range=0.1f, float speed=float.MaxValue) {
+		RouteTowards(target.transform.position, range, speed);
 	}
 
 	private static Board board;
 	private List<Vec2i> path;
 	private Vec2i pathOrigin;
 	private Vec2i pathGoal;
-	public void RouteTowards(Vector3 target, float range=0.1f) {
+	public void RouteTowards(Vector3 target, float range=0.1f, float speed=float.MaxValue) {
 		Vec2i origin = controller.map.WorldToGrid (transform.position);
 		Vec2i goal = controller.map.WorldToGrid (target);
 
@@ -113,13 +113,16 @@ public class Movement : MonoBehaviour {
 			direction = target - transform.position;
 		}
 
-		MoveTowards (direction, 1f);
+		MoveTowards (direction, speed);
 	}
 
-	public void Move(float dx, float dy, float speed) {
-
+	public void Move(float dx, float dy, float speed=float.MaxValue) {
 		if (paused) {
 			return;
+		}
+
+		if (speed == float.MaxValue) {
+			speed = this.speed;
 		}
 
 		Vector3 offset = (Vector3.right * dx + Vector3.forward * dy) * Time.deltaTime * speed;

@@ -27,7 +27,7 @@ public class Projectile : MonoBehaviour {
 			return;
 		}
 		if (target.IsPresent) {
-			movement.MoveTowards(target.Value, 3f);
+			movement.MoveTowards(target.Value);
 		} else {
 			DamageTarget();
 		}
