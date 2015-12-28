@@ -13,7 +13,7 @@ public class Mana : MonoBehaviour {
 
 	IEnumerator Regenerate() {
 		while (true) {
-			value += regen;
+			Restore(regen);
 			yield return new WaitForSeconds(1f);
 		}
 	}
