@@ -3,18 +3,14 @@ using System.Collections;
 
 public class Team : MonoBehaviour {
 	
-	public Maybe<int> team;
+	public int team = -1;
 
 	public void AllyWith(Team other) {
 		this.team = other.team;
 	}
 
-	public void UnallyWith(Team other) {
-		this.team = Maybe<int>.Empty;
-	}
-
 	public bool HasNoTeam() {
-		return team.NotPresent;
+		return team == -1;
 	}
 	
 	public bool HasTeam() {
@@ -22,11 +18,11 @@ public class Team : MonoBehaviour {
 	}
 
 	public bool IsAlly(int otherTeam) {
-		return !HasNoTeam() && this.team.IsPresent && this.team.Value.Equals(otherTeam);
+		return !HasNoTeam() && this.team == otherTeam;
 	}
 	
 	public bool IsAlly(Team otherTeam) {
-		return !HasNoTeam() && this.team.Equals(otherTeam.team);
+		return !HasNoTeam() && this.team == otherTeam.team;
 	}
 
 	public bool IsEnemy(Team team) {
