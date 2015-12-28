@@ -24,7 +24,8 @@ public class Summoning : MonoBehaviour {
 //		}
 
 		Vector3 offset = facing.Direction.normalized;
-		offset.Scale(new Vector3(0.5f, 0.5f, 0.5f));
+		float offsetDist = 0.8f;
+		offset.Scale(new Vector3(offsetDist, offsetDist, offsetDist));
 		Vector3 position = transform.position + offset;
 
 		Instantiate(smoke, position, smoke.transform.rotation);
