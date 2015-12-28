@@ -5,6 +5,13 @@ public class Facing : MonoBehaviour {
 
 	Maybe<GameObject> lookingAtTarget;
 	Maybe<GameObject> model;
+	Vector3 facing;
+
+	public Vector3 Direction {
+		get {
+			return facing;
+		}
+	}
 
 	void Start () {
 		Visuals visuals = GetComponent<Visuals>();
@@ -17,6 +24,7 @@ public class Facing : MonoBehaviour {
 		if (direction == Vector3.zero) {
 			return;
 		}
+		facing = direction;
 		Quaternion newRotation = Quaternion.LookRotation(-direction);
 
 		// HACK compensate for initial rotation of model
