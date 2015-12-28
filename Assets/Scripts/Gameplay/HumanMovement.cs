@@ -13,6 +13,7 @@ public class HumanMovement : MonoBehaviour {
 
 	private LayerMask floorLayerMask;
 	private LayerMask unitsLayerMask;
+	public GameObject movementEffect;
 	
 	void Start () {
 		floorLayerMask = 1 << LayerMask.NameToLayer ("Floor"); // only check for collisions with this layer
@@ -32,6 +33,8 @@ public class HumanMovement : MonoBehaviour {
 			// Click on floor to route towards point.
 			if( Physics.Raycast( ray, out hit, 100, floorLayerMask ) )
 			{
+				Instantiate(movementEffect, hit.point + movementEffect.transform.localPosition, Quaternion.identity);
+
 				// Location is unobstructed
 				if (movement.controller.IsUnobstructed(movement.controller.map.WorldToGrid(hit.point))) {
 					// Instant teleport
