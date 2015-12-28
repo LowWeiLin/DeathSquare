@@ -5,7 +5,7 @@ public class Mana : MonoBehaviour {
 
 	public int maxValue = 100;
 	public int value = 100;
-	public int regen = 4;
+	public int regen = 2;
 
 	void Start () {
 		StartCoroutine(Regenerate());

@@ -5,10 +5,12 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Movement))]
 public class AIMinion : MonoBehaviour {
 
+	GameController controller;
 	Movement movement;
 	Attack attack;
 
 	void Start() {
+		controller = GameController.Instance;
 		movement = GetComponent<Movement>();
 		attack = GetComponent<Attack>();
 	}
@@ -16,7 +18,8 @@ public class AIMinion : MonoBehaviour {
 	Maybe<GameObject> GetClosestEnemy() {
 		// TODO get list of all units which are not on this minion's team
 		// TODO get the closest
-		return GameObject.FindGameObjectWithTag("Player");
+		List<GameObject> enemyUnits = controller.GetEnemyUnits (this.gameObject);
+		return controller.GetClosest (this.gameObject, enemyUnits);
 	}
 
 	void Update () {

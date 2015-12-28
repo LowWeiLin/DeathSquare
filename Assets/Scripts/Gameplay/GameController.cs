@@ -64,12 +64,28 @@ public class GameController : MonoBehaviour {
 		healthComponent.maxValue = health;
 		healthComponent.value = health;
 	}
+
+	public GameObject GetClosest(GameObject obj, List<GameObject> objList) {
+		if (objList.Count == 0) {
+			return null;
+		}
+		float minDist = float.MaxValue;
+		GameObject closest = objList[0];
+		foreach (GameObject o in objList) {
+			float dist = Vector3.Distance(o.transform.position, obj.transform.position);
+			if (dist < minDist) {
+				minDist = dist;
+				closest = o;
+			}
+		}
+		return closest;
+	}
 	
 	// ===============================
 	// 		Unit functions
 	// ===============================
 
-	public void CreateUnit(GameObject prefab, Vec2i position, int team=-1, int hp=10) {
+	public void CreateUnit(GameObject prefab, Vec2i position, int team, int hp=10) {
 		position = FindNearestUnobstructed (position);
 		GameObject unit = (GameObject) Instantiate(prefab,
 		                                           map.GridToWorld(position) + new Vector3(Random.Range(0,0.1f), 0, Random.Range(0,0.1f)),
@@ -85,6 +101,31 @@ public class GameController : MonoBehaviour {
 	
 	public void UnregisterUnit(GameObject unit) {
 		units.Remove(unit);
+	}
+
+	public List<GameObject> GetAllUnits() {
+		return units;
+	}
+
+	public List<GameObject> GetEnemyUnits(GameObject unit) {
+		Team unitTeamComponent = unit.GetComponent<Team> ();
+		List<GameObject> enemyUnits = new List<GameObject> ();
+		if (unitTeamComponent == null) {
+			enemyUnits.AddRange(units);
+			enemyUnits.Remove(unit);
+			return enemyUnits;
+		}
+
+		foreach (GameObject u in units) {
+			if (u == unit)
+				continue;
+			Team teamComponent = u.GetComponent<Team> ();
+			if (teamComponent == null || teamComponent.IsEnemyTeam(unitTeamComponent)) {
+				enemyUnits.Add(u);
+			}
+		}
+
+		return enemyUnits;
 	}
 	
 	// ===============================

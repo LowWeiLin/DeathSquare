@@ -3,12 +3,7 @@ using System.Collections;
 
 public class Team : MonoBehaviour {
 	
-	public int team;
-	
-	// Use this for initialization
-	void Start () {
-		team = -1;
-	}
+	public int team = -1;
 	
 	public bool IsNoTeam() {
 		return team == -1;
@@ -20,6 +15,10 @@ public class Team : MonoBehaviour {
 	
 	public bool IsSameTeam(Team team) {
 		return !IsNoTeam() && this.team == team.team;
+	}
+
+	public bool IsEnemyTeam(Team team) {
+		return !IsSameTeam(team);
 	}
 	
 }
