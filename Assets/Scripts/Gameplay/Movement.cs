@@ -2,20 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Visuals), typeof(Facing))]
+[RequireComponent(typeof(Visuals), typeof(SteeringBasics))]
 public class Movement : MonoBehaviour {
 	
 	public GameController controller;
+	private SteeringBasics steeringBasics;
 
 	public float speed = 1f;
 
 	Rigidbody r;
-	Facing facing;
 
 	bool paused = false;
 
 	void Start () {
-		facing = GetComponent<Facing>();
+		steeringBasics = GetComponent<SteeringBasics> ();
 		r = GetComponent<Rigidbody>();
 		controller = GameController.Instance;
 		controller.Init ();
@@ -23,14 +23,14 @@ public class Movement : MonoBehaviour {
 
 	public void MoveTowards(Maybe<GameObject> target, float speed=float.MaxValue) {
 		target.IfPresent(t => {
-			Vector3 direction = t.transform.position - transform.position;
-			MoveTowards (direction, speed);
+			MoveTo (t.transform.position, speed);
 		});
 	}
 
-	public void MoveTowards(Vector3 direction, float speed=float.MaxValue) {
-		direction.Normalize();
-		Move(direction.x, direction.z, speed);
+	public void MoveTo(Vector3 targetPosition, float speed=float.MaxValue) {
+		Vector3 accel = steeringBasics.seek(targetPosition);
+		steeringBasics.steer(accel);
+		//steeringBasics.lookWhereYoureGoing();
 	}
 
 	public void RouteTowards(GameObject target, float range=0.1f, float speed=float.MaxValue) {
@@ -91,29 +91,11 @@ public class Movement : MonoBehaviour {
 			pathGoal = goal;
 		}
 
-		Vector3 direction = Vector3.zero;
-
-		// Draw path
-		/*
-		for (int i=0; i<path.Count-1; i++) {
-			Debug.DrawLine(path[i].ToVec3(), path[i+1].ToVec3(), Color.black);
-		}
-		*/
-
-		for (int i=0 ; i<path.Count ; i++) {
-			direction += (path[i].ToVec3() - transform.position)/((i+1)*(i+1));
-			if (i>=1)
-				break;
-		}
-
-		//Debug.DrawLine(transform.position, transform.position+direction, Color.red);
-		if (direction == Vector3.zero) {
-			direction = target - transform.position;
-		}
-
-		MoveTowards (direction, speed);
+		if (path.Count > 1)
+			MoveTo (path[1].ToVec3(), speed);
 	}
 
+	/*
 	public void Move(float dx, float dy, float speed=float.MaxValue) {
 		if (paused) {
 			return;
@@ -131,8 +113,7 @@ public class Movement : MonoBehaviour {
 		}
 
 		Vector3 moveDirection = new Vector3(dx, 0, dy);
-		facing.Face(moveDirection);
-	}
+	}*/
 
 	public void Pause() {
 		paused = true;
