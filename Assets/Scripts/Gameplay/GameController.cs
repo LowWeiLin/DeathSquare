@@ -86,14 +86,20 @@ public class GameController : MonoBehaviour {
 	// 		Unit functions
 	// ===============================
 
+	public GameObject CreateUnit(GameObject prefab, Vector3 position, Maybe<Team> team, int hp=10) {
+		return CreateUnit(prefab, position, team.Map(t => t.team).OrElse(-1), hp);
+	}
+
 	public GameObject CreateUnit(GameObject prefab, Vec2i position, int team, int hp=10) {
 		position = FindNearestUnobstructed (position);
-		GameObject unit = (GameObject) Instantiate(prefab,
-		                                           map.GridToWorld(position) + new Vector3(Random.Range(0,0.1f), 0, Random.Range(0,0.1f)),
-		                                           Quaternion.identity);
-		SetTeam (unit, team);
-		SetHealth (unit, hp);
-		RegisterUnit (unit);
+		return CreateUnit(prefab, map.GridToWorld(position) + new Vector3(Random.Range(0,0.1f), 0, Random.Range(0,0.1f)), team, hp);
+	}
+
+	public GameObject CreateUnit(GameObject prefab, Vector3 position, int team, int hp=10) {
+		GameObject unit = Instantiate(prefab, position, prefab.transform.rotation) as GameObject;
+		SetTeam(unit, team);
+		SetHealth(unit, hp);
+		RegisterUnit(unit);
 		return unit;
 	}
 

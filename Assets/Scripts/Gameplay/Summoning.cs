@@ -31,10 +31,7 @@ public class Summoning : MonoBehaviour {
 
 		yield return new WaitForSeconds(0.2f);
 
-		Instantiate(minion, position, minion.transform.rotation);
-		Maybe<Team>.Of(minion.GetComponent<Team>()).IfPresent(mt =>
-			team.IfPresent(t =>
-				mt.AllyWith(t)));
+		GameController.Instance.CreateUnit(minion, position, team);
 	}
 
 	void Update () {
