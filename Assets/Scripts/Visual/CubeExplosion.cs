@@ -12,18 +12,18 @@ public class CubeExplosion : MonoBehaviour {
 	public float ttl = 3f;
 	public float particleScale = 0.03f;
 
-	private Vector3 rotationAxis;
+//	private Vector3 rotationAxis;
 
 	private List<GameObject> particles = new List<GameObject>();
 	private List<Vector3> direction = new List<Vector3>();
-	private float originalTTL;
+//	private float originalTTL;
 
 	private static HashSet<GameObject> allParticles = new HashSet<GameObject>();
 	private int particleLimit = 100;
 
 	void Start () {
 
-		originalTTL = ttl;
+//		originalTTL = ttl;
 		for (int i=0 ; i<numParticles ; i++) {
 
 			if (allParticles.Count >= particleLimit) {
@@ -41,7 +41,7 @@ public class CubeExplosion : MonoBehaviour {
 			direction.Add(Random.onUnitSphere);
 		}
 
-		rotationAxis = Random.onUnitSphere;
+//		rotationAxis = Random.onUnitSphere;
 		
 		
 		// No particles to handle

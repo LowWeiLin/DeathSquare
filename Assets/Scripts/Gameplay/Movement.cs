@@ -9,7 +9,6 @@ public class Movement : MonoBehaviour {
 
 	public float speed = 1f;
 
-	GameObject model;
 	Rigidbody r;
 	Facing facing;
 
@@ -17,7 +16,6 @@ public class Movement : MonoBehaviour {
 
 	void Start () {
 		facing = GetComponent<Facing>();
-		model = GetComponent<Visuals>().model;
 		r = GetComponent<Rigidbody>();
 		controller = GameController.Instance;
 		controller.Init ();
