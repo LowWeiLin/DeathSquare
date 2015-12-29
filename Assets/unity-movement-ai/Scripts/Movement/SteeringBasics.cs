@@ -147,7 +147,7 @@ public class SteeringBasics : MonoBehaviour {
 		targetVelocity *= targetSpeed;
 		
 		/* Calculate the linear acceleration we want */
-		Vector3 acceleration = targetVelocity - new Vector3(rb.velocity.x, 0, rb.velocity.y);
+		Vector3 acceleration = targetVelocity - new Vector3(rb.velocity.x, 0, rb.velocity.z);
 		/*
 		 Rather than accelerate the character to the correct speed in 1 second, 
 		 accelerate so we reach the desired speed in timeToTarget seconds 
