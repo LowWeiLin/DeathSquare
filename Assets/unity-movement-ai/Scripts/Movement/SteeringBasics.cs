@@ -28,7 +28,7 @@ public class SteeringBasics : MonoBehaviour {
 
 	public bool smoothing = true;
 	public int numSamplesForSmoothing = 5;
-	private Queue<Vector2> velocitySamples = new Queue<Vector2>();
+	private Queue<Vector3> velocitySamples = new Queue<Vector3>();
 
 	// Use this for initialization
 	void Start () {
@@ -71,7 +71,7 @@ public class SteeringBasics : MonoBehaviour {
 
     /* Makes the current game object look where he is going */
     public void lookWhereYoureGoing() {
-		Vector2 direction = rb.velocity;
+		Vector3 direction = rb.velocity;
 
 		if (smoothing) {
 			if (velocitySamples.Count == numSamplesForSmoothing) {
@@ -80,9 +80,9 @@ public class SteeringBasics : MonoBehaviour {
 
 			velocitySamples.Enqueue (rb.velocity);
 
-			direction = Vector2.zero;
+			direction = Vector3.zero;
 
-			foreach (Vector2 v in velocitySamples) {
+			foreach (Vector3 v in velocitySamples) {
 				direction += v;
 			}
 
@@ -92,15 +92,16 @@ public class SteeringBasics : MonoBehaviour {
 		lookAtDirection (direction);
 	}
 
-	public void lookAtDirection(Vector2 direction) {
+	public void lookAtDirection(Vector3 direction) {
 		direction.Normalize();
+		Debug.DrawRay (transform.position, direction);
 		
 		// If we have a non-zero direction then look towards that direciton otherwise do nothing
 		if (direction.sqrMagnitude > 0.001f) {
-			float toRotation = (Mathf.Atan2 (direction.y, direction.x) * Mathf.Rad2Deg);
+			float toRotation = (Mathf.Atan2 (direction.x, direction.z) * Mathf.Rad2Deg);
 			float rotation = Mathf.LerpAngle(transform.rotation.eulerAngles.y, toRotation, Time.deltaTime*turnSpeed);
-			
-			transform.rotation = Quaternion.Euler(0, 0, rotation);
+
+			transform.rotation = Quaternion.Euler(0, rotation, 0);
 		}
 	}
 

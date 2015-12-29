@@ -32,7 +32,7 @@ public class Movement : MonoBehaviour {
 	public void MoveTo(Vector3 targetPosition, float speed=float.MaxValue) {
 		Vector3 accel = steeringBasics.arrive(targetPosition);
 		steeringBasics.steer(accel);
-		//steeringBasics.lookWhereYoureGoing();
+		steeringBasics.lookWhereYoureGoing();
 	}
 
 	public void RouteTowards(GameObject target, float range=0.1f, float speed=float.MaxValue) {
