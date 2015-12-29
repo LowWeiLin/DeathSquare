@@ -39,8 +39,14 @@ public class CameraFollow : MonoBehaviour {
 	}
 
 	void Update() {
-
-		transform.position = target.transform.position + offset;
-		transform.LookAt(target.transform);
+		if (target != null) {
+			transform.position = target.transform.position + offset;
+			transform.LookAt (target.transform);
+		} else {
+			if (disabled != true) {
+				disabled = true;
+				StartCoroutine (LookForPlayer ());
+			}
+		}
 	}
 }
