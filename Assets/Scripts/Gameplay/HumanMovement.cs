@@ -8,7 +8,7 @@ public class HumanMovement : MonoBehaviour {
 	Attack attack;
 
 	Vector3 routeDestination = Vector3.down;
-	float routePrecision = 0.01f;
+	float routePrecision = 0.1f;
 	GameObject target;
 
 	private LayerMask floorLayerMask;
@@ -76,20 +76,5 @@ public class HumanMovement : MonoBehaviour {
 				movement.RouteTowards (target, routePrecision);
 			}
 		}
-
-		/*
-
-		float dx = Input.GetAxisRaw("Horizontal");
-		float dy = Input.GetAxisRaw("Vertical");
-
-		float speed;
-		if (dx != 0 && dy != 0) {
-			speed = 2.0f;
-		} else {
-			speed = 3.0f;
-		}
-
-		movement.Move(dx, dy, speed);
-		*/
 	}
 }
