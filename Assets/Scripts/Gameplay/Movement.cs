@@ -4,9 +4,11 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(Visuals), typeof(SteeringBasics))]
 public class Movement : MonoBehaviour {
-	
+
+	[HideInInspector]
 	public GameController controller;
-	private SteeringBasics steeringBasics;
+
+	SteeringBasics steeringBasics;
 
 	public float speed = 1f;
 
