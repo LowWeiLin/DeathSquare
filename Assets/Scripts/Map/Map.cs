@@ -78,7 +78,6 @@ public class Map : MonoBehaviour {
 						GameObject decor = Instantiate(graveModels[Random.Range(0,graveModels.Length)],
 						                                   GridToWorld(new Vector2(x,y)) + new Vector3(Random.Range(-0.25f,0.25f),0,Random.Range(-0.25f,0.25f)),
 						                                   Quaternion.identity) as GameObject;
-						decor.transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
 						decor.transform.Rotate(-90,0,0);
 						decor.transform.parent = decorsParent.transform;
 					}
