@@ -38,7 +38,7 @@ public class FollowPath : MonoBehaviour {
             if (!pathLoop)
             {
                 /* Find the final destination of the character on this path */
-                Vector2 finalDestination = (pathDirection > 0) ? path[path.Length - 1] : path[0];
+                Vector3 finalDestination = (pathDirection > 0) ? path[path.Length - 1] : path[0];
 
                 /* If we are close enough to the final destination then either stop moving or reverse if 
                  * the character is set to loop on paths */
@@ -46,8 +46,8 @@ public class FollowPath : MonoBehaviour {
                 {
                     targetPosition = finalDestination;
 
-                    rb.velocity = Vector2.zero;
-                    return Vector2.zero;
+                    rb.velocity = Vector3.zero;
+                    return Vector3.zero;
                 }
             }
 			

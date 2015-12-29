@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Visuals), typeof(SteeringBasics))]
+[RequireComponent(typeof(Visuals), typeof(SteeringBasics), typeof(FollowPath))]
 public class Movement : MonoBehaviour {
 
 	[HideInInspector]
 	public GameController controller;
 
 	SteeringBasics steeringBasics;
+	FollowPath followPath;
 
 	public float speed = 1f;
 
@@ -18,6 +19,7 @@ public class Movement : MonoBehaviour {
 
 	void Start () {
 		steeringBasics = GetComponent<SteeringBasics> ();
+		followPath = GetComponent<FollowPath> ();
 		r = GetComponent<Rigidbody>();
 		controller = GameController.Instance;
 		controller.Init ();
@@ -36,8 +38,7 @@ public class Movement : MonoBehaviour {
 	}
 
 	public void RouteTowards(GameObject target, float range=0.1f, float speed=float.MaxValue) {
-		MoveTo (target.transform.position, speed);
-		//RouteTowards(target.transform.position, range, speed);
+		RouteTowards(target.transform.position, range, speed);
 	}
 
 	private static Board board;
@@ -45,8 +46,6 @@ public class Movement : MonoBehaviour {
 	private Vec2i pathOrigin;
 	private Vec2i pathGoal;
 	public void RouteTowards(Vector3 target, float range=0.1f, float speed=float.MaxValue) {
-		MoveTo (target, speed);
-		return;
 
 		Vec2i origin = controller.map.WorldToGrid (transform.position);
 		Vec2i goal = controller.map.WorldToGrid (target);
@@ -73,7 +72,7 @@ public class Movement : MonoBehaviour {
 		{
 			// Remove path walked
 			while (path.Count > 0) {
-				if (path[0].ManhattanDistance(origin) < 2) {
+				if (path[0].EucledianDistance(origin) < 0.5f) {
 					path.RemoveAt(0);
 				} else {
 					break;
@@ -96,9 +95,25 @@ public class Movement : MonoBehaviour {
 			pathOrigin = origin;
 			pathGoal = goal;
 		}
+		
+		if (path.Count <= 1) {
+			MoveTo(target);
+		} else {
+			LinePath linePath = Vec2iToLinePath (path);
+			Vector3 accel = followPath.getSteering(linePath, false);
+			steeringBasics.steer(accel);
+			steeringBasics.lookWhereYoureGoing();
+		}
 
-		if (path.Count > 1)
-			MoveTo (path[1].ToVec3(), speed);
+	}
+
+	LinePath Vec2iToLinePath(List<Vec2i> path) {
+		LinePath linePath;
+		Vector3[] vec3Array = new Vector3[path.Count];
+		for (int i=0 ; i<path.Count ; i++) {
+			vec3Array[i] = path[i].ToVec3();
+		}
+		return new LinePath(vec3Array);
 	}
 
 	/*
