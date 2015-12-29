@@ -21,13 +21,15 @@ public class AIMinion : MonoBehaviour {
 	}
 
 	void Update () {
-		GetClosestEnemy().IfPresent(enemy => {
-			if (attack.InRange(enemy)) {
-				attack.Hit(enemy);
+		Maybe<GameObject> enemy = GetClosestEnemy ();
+		if (enemy.HasValue) {
+			if (attack.InRange (enemy.Value)) {
+				attack.Hit (enemy.Value);
 			} else {
-				//movement.MoveTowards(enemy, 3f);
-				movement.RouteTowards(enemy);
+				movement.RouteTowards (enemy.Value);
 			}
-		});
+		} else {
+			movement.Wander ();
+		}
 	}
 }
