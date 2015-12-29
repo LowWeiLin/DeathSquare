@@ -27,7 +27,7 @@ public class Wander1 : MonoBehaviour {
 	}
 
     public Vector3 getSteering() {
-		float characterOrientation = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
+		float characterOrientation = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
 
         /* Update the wander orientation */
         wanderOrientation += randomBinomial() * wanderRate;
@@ -55,7 +55,7 @@ public class Wander1 : MonoBehaviour {
 	
 	/* Returns the orientation as a unit vector */
 	Vector3 orientationToVector(float orientation) {
-		return new Vector3(Mathf.Cos(orientation), Mathf.Sin(orientation), 0);
+		return new Vector3(Mathf.Cos(orientation), 0, Mathf.Sin(orientation));
 	}
 
 }

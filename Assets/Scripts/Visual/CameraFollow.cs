@@ -5,8 +5,6 @@ public class CameraFollow : MonoBehaviour {
 
 	
 	GameObject target;
-
-	float damping = 0;
 	bool disabled = true;
 
 	float cameraDist = 5f;
