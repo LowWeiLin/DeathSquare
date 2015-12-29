@@ -70,7 +70,6 @@ public class Map : MonoBehaviour {
 					GameObject floorTile = Instantiate(concreteFloorModels[Random.Range(0,concreteFloorModels.Length)],
 					                                   GridToWorld(new Vector2(x,y)),
 					                                   Quaternion.identity) as GameObject;
-					floorTile.transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
 					floorTile.transform.Rotate(90, 0, 0);
 					floorTile.transform.parent = floorTilesParent.transform;
 
