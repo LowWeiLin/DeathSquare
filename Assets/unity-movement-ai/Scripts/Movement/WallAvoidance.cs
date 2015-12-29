@@ -38,7 +38,7 @@ public class WallAvoidance : MonoBehaviour {
         Vector3[] rayDirs = new Vector3[3];
         rayDirs[0] = facingDir.normalized;
 
-        float orientation = Mathf.Atan2(rb.velocity.y, rb.velocity.x);
+        float orientation = Mathf.Atan2(rb.velocity.z, rb.velocity.x);
 
         rayDirs[1] = orientationToVector(orientation + sideWhiskerAngle * Mathf.Deg2Rad);
         rayDirs[2] = orientationToVector(orientation - sideWhiskerAngle * Mathf.Deg2Rad);

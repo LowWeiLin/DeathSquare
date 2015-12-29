@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Visuals), typeof(SteeringBasics), typeof(FollowPath))]
+[RequireComponent(typeof(Visuals), 
+                  typeof(SteeringBasics),
+                  typeof(FollowPath))]
+[RequireComponent(typeof(WallAvoidance))]
 public class Movement : MonoBehaviour {
 
 	[HideInInspector]
@@ -10,6 +13,7 @@ public class Movement : MonoBehaviour {
 
 	SteeringBasics steeringBasics;
 	FollowPath followPath;
+	WallAvoidance wallAvoidance;
 
 	public float speed = 1f;
 
@@ -20,6 +24,8 @@ public class Movement : MonoBehaviour {
 	void Start () {
 		steeringBasics = GetComponent<SteeringBasics> ();
 		followPath = GetComponent<FollowPath> ();
+		wallAvoidance = GetComponent<WallAvoidance> ();
+
 		r = GetComponent<Rigidbody>();
 		controller = GameController.Instance;
 		controller.Init ();
@@ -99,8 +105,15 @@ public class Movement : MonoBehaviour {
 		if (path.Count <= 1) {
 			MoveTo(target);
 		} else {
-			LinePath linePath = Vec2iToLinePath (path);
-			Vector3 accel = followPath.getSteering(linePath, false);
+
+			Vector3 accel = wallAvoidance.getSteering();
+			
+			if (accel.magnitude < 0.005f)
+			{
+				LinePath linePath = Vec2iToLinePath (path);
+				accel = followPath.getSteering(linePath);
+			}
+
 			steeringBasics.steer(accel);
 			steeringBasics.lookWhereYoureGoing();
 		}
