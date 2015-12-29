@@ -8,7 +8,7 @@ public class HumanMovement : MonoBehaviour {
 	Attack attack;
 
 	Vector3 routeDestination = Vector3.down;
-	float routePrecision = 0.1f;
+	const float routePrecision = 0.3f;
 	GameObject target;
 
 	private LayerMask floorLayerMask;
@@ -41,7 +41,6 @@ public class HumanMovement : MonoBehaviour {
 					//transform.position = hit.point;
 					routeDestination = hit.point;
 					target = null;
-					routePrecision = 0.01f;
 				}
 			}
 
@@ -52,7 +51,6 @@ public class HumanMovement : MonoBehaviour {
 				if (hit.transform.gameObject != this.gameObject) {
 					routeDestination = Vector3.down;
 					target = hit.transform.gameObject;
-					routePrecision = 0.1f;
 				}
 			}
 		}
@@ -60,6 +58,7 @@ public class HumanMovement : MonoBehaviour {
 		if (routeDestination != Vector3.down) {
 			if (Vector3.Distance(transform.position, routeDestination) < routePrecision) {
 				routeDestination = Vector3.down;
+				movement.Stop();
 			}
 			movement.RouteTowards (routeDestination, routePrecision);
 		}

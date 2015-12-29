@@ -50,6 +50,11 @@ public class Movement : MonoBehaviour {
 		steeringBasics.lookWhereYoureGoing();
 	}
 
+	public void Stop() {
+		this.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+		this.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
+	}
+
 	private static Board board;
 	private List<Vec2i> path;
 	private Vec2i pathOrigin;
@@ -105,7 +110,7 @@ public class Movement : MonoBehaviour {
 			pathGoal = goal;
 		}
 		
-		if (path.Count <= 1) {
+		if (path.Count <= 1 || Vector3.Distance(transform.position, target) < 0.5f) {
 			MoveTo(target);
 		} else {
 			
