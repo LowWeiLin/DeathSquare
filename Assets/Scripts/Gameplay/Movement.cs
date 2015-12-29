@@ -5,7 +5,6 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Visuals))]
 [RequireComponent(typeof(SteeringBasics))]
 [RequireComponent(typeof(FollowPath))]
-[RequireComponent(typeof(WallAvoidance))]
 [RequireComponent(typeof(Wander1))]
 public class Movement : MonoBehaviour {
 
@@ -14,7 +13,6 @@ public class Movement : MonoBehaviour {
 
 	SteeringBasics steeringBasics;
 	FollowPath followPath;
-	WallAvoidance wallAvoidance;
 	Wander1 wander1;
 
 	public float speed = 1f;
@@ -24,7 +22,6 @@ public class Movement : MonoBehaviour {
 	void Start () {
 		steeringBasics = GetComponent<SteeringBasics> ();
 		followPath = GetComponent<FollowPath> ();
-		wallAvoidance = GetComponent<WallAvoidance> ();
 		wander1 = GetComponent<Wander1> ();
 
 		controller = GameController.Instance;
@@ -38,12 +35,7 @@ public class Movement : MonoBehaviour {
 	}
 
 	public void MoveTo(Vector3 targetPosition, float speed=float.MaxValue) {
-		Vector3 accel = wallAvoidance.getSteering();
-		
-		if (accel.magnitude < 0.005f) {
-			accel = steeringBasics.arrive(targetPosition);
-		}
-
+		Vector3 accel = steeringBasics.arrive(targetPosition);
 		steeringBasics.steer(accel);
 		steeringBasics.lookWhereYoureGoing();
 	}
@@ -53,12 +45,7 @@ public class Movement : MonoBehaviour {
 	}
 
 	public void Wander() {
-		Vector3 accel = wallAvoidance.getSteering();
-		
-		if (accel.magnitude < 0.005f) {
-			accel = wander1.getSteering();
-		}
-
+		Vector3 accel = wander1.getSteering();
 		steeringBasics.steer(accel);
 		steeringBasics.lookWhereYoureGoing();
 	}
@@ -121,15 +108,9 @@ public class Movement : MonoBehaviour {
 		if (path.Count <= 1) {
 			MoveTo(target);
 		} else {
-
-			Vector3 accel = wallAvoidance.getSteering();
 			
-			if (accel.magnitude < 0.005f)
-			{
-				LinePath linePath = Vec2iToLinePath (path);
-				accel = followPath.getSteering(linePath);
-			}
-
+			LinePath linePath = Vec2iToLinePath (path);
+			Vector3 accel = followPath.getSteering(linePath);
 			steeringBasics.steer(accel);
 			steeringBasics.lookWhereYoureGoing();
 		}
