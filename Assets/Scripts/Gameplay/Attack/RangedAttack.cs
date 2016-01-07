@@ -7,11 +7,10 @@ public class RangedAttack : Attack {
 
 	public override void AttackTarget(Maybe<GameObject> target, Vector3 targetPosition, Maybe<Health> targetHealth) {
 		Vector3 direction = (targetPosition - transform.position).normalized;
-		float offset = 0.01f;
+		float offset = 0.4f;
 		Vector3 projectilePosition = transform.position + direction * offset;
 
-		// HACK adjust height
-		projectilePosition += new Vector3(0f, 0.2f, 0f);
+		projectilePosition += projectile.transform.position;
 
 		GameObject p = Instantiate(projectile, projectilePosition, Quaternion.identity) as GameObject;
 		p.GetComponent<Projectile>().Fire(damage, target);
