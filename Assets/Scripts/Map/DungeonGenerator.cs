@@ -91,12 +91,16 @@ public class DungeonGenerator
 			
 			int x3 = x2;
 			int y3 = y1;
-			for (int x=(int)Mathf.Min(x1,x3) ; x<=(int)Mathf.Max(x1,x3) ; x++) {
-				map[y3,x] = 0;
-			}
-			
-			for (int y=(int)Mathf.Min(y2,y3) ; y<=(int)Mathf.Max(y2,y3) ; y++) {
-				map[y,x3] = 0;
+
+			int cWidth = 1;
+			for (int offset=-cWidth ; offset<=cWidth ; offset++) {
+				for (int x=(int)Mathf.Min(x1,x3) ; x<=(int)Mathf.Max(x1,x3) ; x++) {
+					map[y3 + offset,x] = 0;
+				}
+				
+				for (int y=(int)Mathf.Min(y2,y3) ; y<=(int)Mathf.Max(y2,y3) ; y++) {
+					map[y,x3 + offset] = 0;
+				}
 			}
 			
 		}
